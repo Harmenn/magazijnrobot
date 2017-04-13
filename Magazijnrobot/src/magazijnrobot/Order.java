@@ -8,7 +8,6 @@ public class Order {
 
 	public Order() {
 		this.producten = new ArrayList();
-		//testtt
 	}
 	
 	public Order(ArrayList<Product> producten) {
