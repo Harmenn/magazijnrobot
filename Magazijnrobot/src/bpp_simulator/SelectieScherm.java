@@ -274,6 +274,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
+    private void ResetScherm() {
         jcBestfit.setSelected(false);
         jcBruteforce.setSelected(false);
         jcFirstfit.setSelected(false);
