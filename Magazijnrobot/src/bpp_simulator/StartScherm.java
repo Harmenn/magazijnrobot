@@ -37,7 +37,6 @@ public class StartScherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbStart) {
             SelectieScherm scherm = new SelectieScherm();
-            setVisible(false);
         }
         if (e.getSource() == jbResultaat) {
             System.out.println("resultaat");
