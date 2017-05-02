@@ -57,20 +57,14 @@ public class SerialEvent implements SerialPortEventListener  {
 	    try {
 	    	
 	    	BufferedReader input = null;
-	        switch (oEvent.getEventType() ) {
-	            case SerialPortEvent.DATA_AVAILABLE: 
-	                if ( input == null ) {
-	                    input = new BufferedReader(
-	                        new InputStreamReader(
-	                                serialPort.getInputStream()));
-	                }
-	                String inputLine = input.readLine();
-	                System.out.println(inputLine);
-	                break;
-	 
-	            default:
-	                break;
-	        }
+	    	if(oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE)
+	    	{
+	    		if ( input == null ) {
+                    input = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
+                }
+                String inputLine = input.readLine();
+                System.out.println(inputLine);
+	    	}
 	    } 
 	    catch (Exception e) {
 	        System.err.println(e.toString());
