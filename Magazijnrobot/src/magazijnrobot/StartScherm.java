@@ -1,28 +1,25 @@
 package magazijnrobot;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.Panel;
 import java.awt.BorderLayout;
-import java.awt.Button;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
-import java.awt.Toolkit;
+import javax.swing.table.DefaultTableModel;
 
 public class StartScherm {
 
 	private JFrame frmMagazijnrobot;
 	private JTable table;
-	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -77,29 +74,34 @@ public class StartScherm {
 		JButton btnNieuweOrder = new JButton("Nieuwe order");
 		btnNieuweOrder.setBounds(10, 11, 130, 29);
 		frmMagazijnrobot.getContentPane().add(btnNieuweOrder);
-		Object[][] data = {
-			    {"1", "Lego doos",
-			     "€5,00", new Integer(5), "Opgehaalt"},
-			    {"2", "Lego tas",
-			     "€3,00", new Integer(3), "Kwijt geraakt"}
-			};
+		
+		Product p1 = new Product(1, "test", (float) 1.00, 1, "tset");
+		ArrayList<Product> tmpProducten = new ArrayList();
+		tmpProducten.add(p1);
+		Order order = new Order(tmpProducten);
+		
+		
+		ArrayList<Product> producten = order.getProducten();
+		Object[][] data = {{}};
 		String[] columnNames = {"#",
                 "Omschrijving",
                 "Prijs",
                 "Grootte",
                 "Status"};
 		
-		
-		// = new JTable(data, columnNames);
-		//table_1.setBounds(150, 18, 242, 105);
-		//frame.getContentPane().add(new JScrollPane(table_1));
-
-
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		model.removeRow(0);
 		JPanel tablePanel = new JPanel(new BorderLayout());
-		table_1 = new JTable(data, columnNames);
-		tablePanel.add(table_1, BorderLayout.CENTER);
-		tablePanel.add(table_1.getTableHeader(), BorderLayout.NORTH);
+		table = new JTable(model);
+		tablePanel.add(table, BorderLayout.CENTER);
+		tablePanel.add(table.getTableHeader(), BorderLayout.NORTH);
 		tablePanel.setBounds(150, 11, 408, 228);
 		frmMagazijnrobot.getContentPane().add(tablePanel);
+		
+		
+		for(Product i : producten) {
+			Object[] product = {i.getId(), i.getOmschrijving(), i.getPrijs(), i.getGrootte(), i.getStatus()};
+			model.addRow(product);
+		}
 	}
 }
