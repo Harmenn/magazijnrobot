@@ -18,7 +18,8 @@ public class SerialEvent implements SerialPortEventListener  {
     
     
 	public SerialEvent() {
-	    Enumeration enumComm = CommPortIdentifier.getPortIdentifiers();
+	    @SuppressWarnings("rawtypes")
+		Enumeration enumComm = CommPortIdentifier.getPortIdentifiers();
 	    
 	    try {
 		    while (portId == null && enumComm.hasMoreElements()) {
