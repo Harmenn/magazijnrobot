@@ -7,7 +7,7 @@ package bpp_simulator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTable;
+
 import javax.swing.table.DefaultTableModel;
 
 public class SelectieScherm extends javax.swing.JFrame implements ActionListener {
