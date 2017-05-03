@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bpp_simulator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class SelectieScherm extends javax.swing.JFrame implements ActionListener {
@@ -19,8 +15,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jbStart = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jtInhoud = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jtAantalDozen = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jtGrootte = new javax.swing.JTextField();
@@ -44,15 +38,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jLabel1.setText("Inhoud per doos:");
 
         jtInhoud.setText("0");
-
-        jLabel2.setText("Aantal dozen:");
-
-        jtAantalDozen.setText("0");
-        jtAantalDozen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtAantalDozenActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Grootte product:");
 
@@ -107,7 +92,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jcBestfit.setText("Best fit");
 
-        jLabel5.setText("Selecteer uw algoritme:");
+        jLabel5.setText("Selecteer te gebruiken algoritme:");
 
         jbReset.setText("Resetten");
 
@@ -116,40 +101,39 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtInhoud)
-                    .addComponent(jtAantalDozen, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jbToevoegen)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jtGrootte, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jtAantalProducten, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jcBruteforce)
-                    .addComponent(jcNextfit)
-                    .addComponent(jcFirstfit)
-                    .addComponent(jcBestfit))
-                .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbReset)
-                .addGap(18, 18, 18)
-                .addComponent(jbStart)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtInhoud, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jcBruteforce)
+                                    .addComponent(jcNextfit)
+                                    .addComponent(jcFirstfit)
+                                    .addComponent(jcBestfit)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jbToevoegen)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel3))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jtGrootte, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jtAantalProducten, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbReset)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbStart)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,42 +153,36 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jtInhoud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jtAantalDozen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(71, 71, 71))
+                        .addGap(100, 100, 100))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jbToevoegen)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jbStart)
+                                    .addComponent(jbReset)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jcBruteforce)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jcNextfit)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jcFirstfit)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jcBestfit)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jbStart)
-                            .addComponent(jbReset))
+                                .addComponent(jcBestfit)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtAantalDozenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtAantalDozenActionPerformed
-    }//GEN-LAST:event_jtAantalDozenActionPerformed
-
     private void jtGrootteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtGrootteActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jtGrootteActionPerformed
 
     public SelectieScherm() {
@@ -217,12 +195,19 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
     }
 
-    public int[] getAantal() {
-        return ArrayAantal;
+    public void addArray(int aantal, int grootte) {
+        if (aantal > 0 && grootte > 0) {
+            DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
+            for (int i = 0; i < aantal; i++) {
+                ArrayPakketten.add(new Pakket(grootte));
+            }
+            model.addRow(new Object[]{grootte, aantal});
+        } else {
+            JOptionPane.showMessageDialog(null, "De grootte en het aantal moet groter dan 0 zijn", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -234,43 +219,58 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JCheckBox jcBruteforce;
     private javax.swing.JCheckBox jcFirstfit;
     private javax.swing.JCheckBox jcNextfit;
-    private javax.swing.JTextField jtAantalDozen;
     private javax.swing.JTextField jtAantalProducten;
     private javax.swing.JTextField jtGrootte;
     private javax.swing.JTextField jtInhoud;
     private javax.swing.JTable jtProducten;
     // End of variables declaration//GEN-END:variables
-    private int[] ArrayGrootte;
-    private int[] ArrayAantal;
+    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private boolean BruteForceEnabled = false;
+    private boolean NextFitEnabled = false;
+    private boolean FirstFitEnabled = false;
+    private boolean BestFitEnabled = false;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
-
         if (e.getSource() == jbToevoegen) {
-            System.out.println("STARTEN");
             int grootte = tryParse(jtGrootte.getText());
             int aantal = tryParse(jtAantalProducten.getText());
-            if (aantal > 0 || grootte > 0) {
-                model.addRow(new Object[]{grootte, aantal});
-            }
+            addArray(aantal, grootte);
             jtAantalProducten.setText("0");
             jtGrootte.setText("0");
-        }
-        if (e.getSource() == jbReset) {
+        } else if (e.getSource() == jbReset) {
             ResetScherm();
+        } else if (e.getSource() == jbStart) {
+            int inhoud;
+            inhoud = tryParse(jtInhoud.getText());
+            if (inhoud > 0) {
+
+                if (ArrayPakketten.size() > 0) {
+                    BruteForceEnabled = jcBruteforce.isSelected();
+                    NextFitEnabled = jcNextfit.isSelected();
+                    FirstFitEnabled = jcFirstfit.isSelected();
+                    BestFitEnabled = jcBestfit.isSelected();
+                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled) {
+                        JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
+                        setVisible(false);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
-    }
-
-    private void VulTabel() {
-
     }
 
     public static Integer tryParse(String text) {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
-            return null;
+            return 0;
         }
     }
 
@@ -279,9 +279,16 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jcBruteforce.setSelected(false);
         jcFirstfit.setSelected(false);
         jcNextfit.setSelected(false);
-        jtAantalDozen.setText("0");
         jtAantalProducten.setText("0");
         jtGrootte.setText("0");
         jtInhoud.setText("0");
+        DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+        for (Pakket pakket : ArrayPakketten) {
+            pakket = null;
+        }
+        ArrayPakketten.removeAll(ArrayPakketten);
     }
 }
