@@ -4,22 +4,25 @@ import java.util.ArrayList;
 
 public class Simulatie extends javax.swing.JFrame {
 
-    private ArrayList<Integer> ArrayGrootte = new ArrayList<>();
-    private ArrayList<Integer> ArrayAantal = new ArrayList<>();
+    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private int DoosInhoud;
+    private int AantalDozen;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
     private Nextfit NextFitAlgoritme;
     private Firstfit FirstFitAlgoritme;
     private Bestfit BestFitAlgoritme;
 
-    public Simulatie(ArrayList<Integer> grootte, ArrayList<Integer> aantal, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
+    public Simulatie(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, int aantaldozen, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
         initComponents();
-        ArrayGrootte = grootte;
-        ArrayAantal = aantal;
+        setResizable(false);
+        this.ArrayPakketten = ArrayPakketten;
+        this.DoosInhoud = DoosInhoud;
+        this.AantalDozen = aantaldozen;
         Algoritmes = new Algoritme();
         if (BruteForceEnabled) {
             jlBruteforceStatus.setText("In wachtrij");
-            BruteForceAlgoritme = new Bruteforce();
+            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud, aantaldozen);
             Algoritmes.addAlgoritme(BruteForceAlgoritme);
         }
         if (NextFitEnabled) {
@@ -41,29 +44,40 @@ public class Simulatie extends javax.swing.JFrame {
         StartSimulatie();
     }
 
-    public void StartSimulatie() {
+    public int getDoosInhoud() {
+        return DoosInhoud;
+    }
+
+    public int getAantalDozen() {
+        return AantalDozen;
+    }
+
+    private void StartSimulatie() {
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             if (Algoritme1 instanceof Bruteforce) {
                 jlBruteforceStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Bruteforce");
                 jProgressBar1.setIndeterminate(true);
                 BruteForceAlgoritme.start();
                 jlBruteforceStatus.setText("Voltooid");
-
             }
             if (Algoritme1 instanceof Nextfit) {
                 jlNextFitStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Nextfit");
                 jProgressBar1.setIndeterminate(true);
                 NextFitAlgoritme.start();
                 jlNextFitStatus.setText("Voltooid");
             }
             if (Algoritme1 instanceof Firstfit) {
                 jlFirstFitStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Firstfit");
                 jProgressBar1.setIndeterminate(true);
                 FirstFitAlgoritme.start();
                 jlFirstFitStatus.setText("Voltooid");
             }
             if (Algoritme1 instanceof Bestfit) {
                 jlBestFitStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Bestfit");
                 jProgressBar1.setIndeterminate(true);
                 BestFitAlgoritme.start();
                 jlBestFitStatus.setText("Voltooid");
@@ -71,6 +85,7 @@ public class Simulatie extends javax.swing.JFrame {
         }
         jProgressBar1.setIndeterminate(false);
         jProgressBar1.setValue(100);
+        setTitle("Bin Packing Problem Simulation - Voltooid");
     }
 
     @SuppressWarnings("unchecked")
@@ -96,8 +111,9 @@ public class Simulatie extends javax.swing.JFrame {
         jlNextFitStatus = new javax.swing.JLabel();
         jlFirstFitStatus = new javax.swing.JLabel();
         jlBestFitStatus = new javax.swing.JLabel();
+        jlHuidigeSimulatie = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
 
         jLabel1.setText("Huidig product:");
@@ -150,6 +166,8 @@ public class Simulatie extends javax.swing.JFrame {
 
         jlBestFitStatus.setText("Wordt niet uitgevoerd");
 
+        jlHuidigeSimulatie.setText("x");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,9 +203,12 @@ public class Simulatie extends javax.swing.JFrame {
                             .addComponent(jlFirstFitStatus)
                             .addComponent(jlBestFitStatus))
                         .addGap(86, 86, 86)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlHuidigeSimulatie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
@@ -198,7 +219,8 @@ public class Simulatie extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jlHuidigeSimulatie))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -258,6 +280,7 @@ public class Simulatie extends javax.swing.JFrame {
     private javax.swing.JLabel jlFirstFit;
     private javax.swing.JLabel jlFirstFitStatus;
     private javax.swing.JLabel jlGrootte;
+    private javax.swing.JLabel jlHuidigeSimulatie;
     private javax.swing.JLabel jlNextFit;
     private javax.swing.JLabel jlNextFitStatus;
     private javax.swing.JLabel jlProgressie;

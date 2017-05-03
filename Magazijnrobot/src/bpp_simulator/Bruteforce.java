@@ -1,9 +1,33 @@
 package bpp_simulator;
 
+import java.util.ArrayList;
+
 public class Bruteforce extends Algoritme {
+
+    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private int DoosInhoud;
+    private int AantalDozen;
+    private int tijd;
+
+    public Bruteforce(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, int AantalDozen) {
+        this.ArrayPakketten = ArrayPakketten;
+
+        this.DoosInhoud = DoosInhoud;
+        this.AantalDozen = AantalDozen;
+    }
 
     public void start() {
         System.out.println("STARTEN BRUTEFORCE");
-
+        System.out.println(ArrayPakketten.size());
+        //bruteforce(ArrayGrootte, ArrayAantal);
     }
+
+    private void bruteforce(ArrayList<Integer> grootte, ArrayList<Integer> aantal) {
+        for (Integer integer : grootte) {
+            if (integer > 0) {
+
+            }
+        }
+    }
+
 }

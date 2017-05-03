@@ -31,7 +31,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jLabel5 = new javax.swing.JLabel();
         jbReset = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bin Packing Problem Simulator");
         setResizable(false);
 
@@ -43,7 +43,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jLabel2.setText("Aantal dozen:");
 
-        jtAantalDozen.setText("0");
+        jtAantalDozen.setText("1");
         jtAantalDozen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtAantalDozenActionPerformed(evt);
@@ -133,18 +133,17 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                                     .addComponent(jcNextfit)
                                     .addComponent(jcFirstfit)
                                     .addComponent(jcBestfit)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jbToevoegen)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel3))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jtGrootte, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jtAantalProducten, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jbToevoegen)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel3))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jtGrootte, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jtAantalProducten, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbReset)
@@ -206,7 +205,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     }//GEN-LAST:event_jtAantalDozenActionPerformed
 
     private void jtGrootteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtGrootteActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jtGrootteActionPerformed
 
     public SelectieScherm() {
@@ -222,8 +220,10 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     public void addArray(int aantal, int grootte) {
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
-            ArrayAantal.add(aantal);
-            ArrayGrootte.add(grootte);
+            for (int i = 0; i < aantal; i++) {
+                ArrayPakketten.add(new Pakket(grootte));
+                System.out.println(i);
+            }
             model.addRow(new Object[]{grootte, aantal});
         } else {
             JOptionPane.showMessageDialog(null, "De grootte en het aantal moet groter dan 0 zijn", "Foutmelding", JOptionPane.ERROR_MESSAGE);
@@ -249,8 +249,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField jtInhoud;
     private javax.swing.JTable jtProducten;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<Integer> ArrayGrootte = new ArrayList<>();
-    private ArrayList<Integer> ArrayAantal = new ArrayList<>();
+    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
     private boolean BruteForceEnabled = false;
     private boolean NextFitEnabled = false;
     private boolean FirstFitEnabled = false;
@@ -268,21 +267,29 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         } else if (e.getSource() == jbReset) {
             ResetScherm();
         } else if (e.getSource() == jbStart) {
-            if (ArrayAantal.size() > 0 && ArrayGrootte.size() > 0) {
-                BruteForceEnabled = jcBruteforce.isSelected();
-                NextFitEnabled = jcNextfit.isSelected();
-                FirstFitEnabled = jcFirstfit.isSelected();
-                BestFitEnabled = jcBestfit.isSelected();
-                if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled) {
-                    JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
-                } else {
+            int aantal, inhoud;
+            aantal = tryParse(jtAantalDozen.getText());
+            inhoud = tryParse(jtInhoud.getText());
+            if (aantal > 0 && inhoud > 0) {
 
-                    Simulatie s1 = new Simulatie(ArrayGrootte, ArrayAantal, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
-                    setVisible(false);
+                if (ArrayPakketten.size() > 0) {
+                    BruteForceEnabled = jcBruteforce.isSelected();
+                    NextFitEnabled = jcNextfit.isSelected();
+                    FirstFitEnabled = jcFirstfit.isSelected();
+                    BestFitEnabled = jcBestfit.isSelected();
+                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled) {
+                        JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, aantal, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
+                        setVisible(false);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
             }
+
         }
     }
 
@@ -292,14 +299,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         } catch (NumberFormatException e) {
             return 0;
         }
-    }
-
-    public ArrayList<Integer> getArrayGrootte() {
-        return ArrayGrootte;
-    }
-
-    public ArrayList<Integer> getArrayAantal() {
-        return ArrayAantal;
     }
 
     private void ResetScherm() {
@@ -315,7 +314,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
-        ArrayAantal.removeAll(ArrayAantal);
-        ArrayGrootte.removeAll(ArrayGrootte);
+        for (Pakket pakket : ArrayPakketten) {
+            pakket = null;
+        }
+        ArrayPakketten.removeAll(ArrayPakketten);
     }
 }
