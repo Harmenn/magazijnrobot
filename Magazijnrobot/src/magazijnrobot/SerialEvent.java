@@ -64,6 +64,17 @@ public class SerialEvent implements SerialPortEventListener  {
                 }
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
+                switch (inputLine.split(" ")[0]) {
+                	case "update":
+                		
+                		break;
+                	case "commando":
+                		
+                		break;
+                	default:
+                		
+                		break;
+                }
 	    	}
 	    } 
 	    catch (Exception e) {
