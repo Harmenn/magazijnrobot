@@ -6,11 +6,16 @@ package bpp_simulator;
  */
 public class Bin {
 
-    private int HuidigeGrootte;
+    private int HuidigeGrootte, Grootte;
     private int id;
 
-    public Bin(int id) {
-        this.id = id;
+    public Bin() {
+
+    }
+
+    public Bin(int grootte) {
+
+        this.HuidigeGrootte = grootte;
     }
 
     public int getId() {
