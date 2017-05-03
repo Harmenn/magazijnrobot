@@ -6,23 +6,22 @@ public class Simulatie extends javax.swing.JFrame {
 
     private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
-    private int AantalDozen;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
     private Nextfit NextFitAlgoritme;
     private Firstfit FirstFitAlgoritme;
     private Bestfit BestFitAlgoritme;
 
-    public Simulatie(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, int aantaldozen, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
+    public Simulatie(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
         initComponents();
         setResizable(false);
         this.ArrayPakketten = ArrayPakketten;
         this.DoosInhoud = DoosInhoud;
-        this.AantalDozen = aantaldozen;
+
         Algoritmes = new Algoritme();
         if (BruteForceEnabled) {
             jlBruteforceStatus.setText("In wachtrij");
-            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud, aantaldozen);
+            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud);
             Algoritmes.addAlgoritme(BruteForceAlgoritme);
         }
         if (NextFitEnabled) {
@@ -48,10 +47,6 @@ public class Simulatie extends javax.swing.JFrame {
         return DoosInhoud;
     }
 
-    public int getAantalDozen() {
-        return AantalDozen;
-    }
-
     private void StartSimulatie() {
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             if (Algoritme1 instanceof Bruteforce) {
@@ -65,14 +60,14 @@ public class Simulatie extends javax.swing.JFrame {
                 jlNextFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Nextfit");
                 jProgressBar1.setIndeterminate(true);
-                NextFitAlgoritme.start();
+                System.out.println(NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlNextFitStatus.setText("Voltooid");
             }
             if (Algoritme1 instanceof Firstfit) {
                 jlFirstFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Firstfit");
                 jProgressBar1.setIndeterminate(true);
-                FirstFitAlgoritme.start();
+                System.out.println(FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlFirstFitStatus.setText("Voltooid");
             }
             if (Algoritme1 instanceof Bestfit) {

@@ -6,14 +6,12 @@ public class Bruteforce extends Algoritme {
 
     private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
-    private int AantalDozen;
     private int tijd;
 
-    public Bruteforce(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, int AantalDozen) {
+    public Bruteforce(ArrayList<Pakket> ArrayPakketten, int DoosInhoud) {
         this.ArrayPakketten = ArrayPakketten;
 
         this.DoosInhoud = DoosInhoud;
-        this.AantalDozen = AantalDozen;
     }
 
     public void start() {

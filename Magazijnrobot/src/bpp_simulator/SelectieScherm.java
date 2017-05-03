@@ -15,8 +15,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jbStart = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jtInhoud = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jtAantalDozen = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jtGrootte = new javax.swing.JTextField();
@@ -40,15 +38,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jLabel1.setText("Inhoud per doos:");
 
         jtInhoud.setText("0");
-
-        jLabel2.setText("Aantal dozen:");
-
-        jtAantalDozen.setText("1");
-        jtAantalDozen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtAantalDozenActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Grootte product:");
 
@@ -115,13 +104,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtInhoud)
-                            .addComponent(jtAantalDozen, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                        .addComponent(jtInhoud, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -168,11 +153,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jtInhoud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jtAantalDozen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(71, 71, 71))
+                        .addGap(100, 100, 100))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jbToevoegen)
@@ -201,9 +182,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtAantalDozenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtAantalDozenActionPerformed
-    }//GEN-LAST:event_jtAantalDozenActionPerformed
-
     private void jtGrootteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtGrootteActionPerformed
     }//GEN-LAST:event_jtGrootteActionPerformed
 
@@ -230,7 +208,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -242,7 +219,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JCheckBox jcBruteforce;
     private javax.swing.JCheckBox jcFirstfit;
     private javax.swing.JCheckBox jcNextfit;
-    private javax.swing.JTextField jtAantalDozen;
     private javax.swing.JTextField jtAantalProducten;
     private javax.swing.JTextField jtGrootte;
     private javax.swing.JTextField jtInhoud;
@@ -265,10 +241,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         } else if (e.getSource() == jbReset) {
             ResetScherm();
         } else if (e.getSource() == jbStart) {
-            int aantal, inhoud;
-            aantal = tryParse(jtAantalDozen.getText());
+            int inhoud;
             inhoud = tryParse(jtInhoud.getText());
-            if (aantal > 0 && inhoud > 0) {
+            if (inhoud > 0) {
 
                 if (ArrayPakketten.size() > 0) {
                     BruteForceEnabled = jcBruteforce.isSelected();
@@ -278,7 +253,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                     if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled) {
                         JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, aantal, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
+                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
                         setVisible(false);
                     }
                 } else {
@@ -304,7 +279,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jcBruteforce.setSelected(false);
         jcFirstfit.setSelected(false);
         jcNextfit.setSelected(false);
-        jtAantalDozen.setText("0");
         jtAantalProducten.setText("0");
         jtGrootte.setText("0");
         jtInhoud.setText("0");
