@@ -113,7 +113,7 @@ public class Simulatie extends javax.swing.JFrame {
         jlBestFitStatus = new javax.swing.JLabel();
         jlHuidigeSimulatie = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
 
         jLabel1.setText("Huidig product:");

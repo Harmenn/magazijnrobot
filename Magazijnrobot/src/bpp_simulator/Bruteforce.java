@@ -19,14 +19,12 @@ public class Bruteforce extends Algoritme {
     public void start() {
         System.out.println("STARTEN BRUTEFORCE");
         System.out.println(ArrayPakketten.size());
-        //bruteforce(ArrayGrootte, ArrayAantal);
+        bruteforce();
     }
 
-    private void bruteforce(ArrayList<Integer> grootte, ArrayList<Integer> aantal) {
-        for (Integer integer : grootte) {
-            if (integer > 0) {
+    private void bruteforce() {
+        for (Pakket pakket : ArrayPakketten) {
 
-            }
         }
     }
 

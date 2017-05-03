@@ -31,7 +31,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jLabel5 = new javax.swing.JLabel();
         jbReset = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulator");
         setResizable(false);
 
@@ -222,7 +222,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
             for (int i = 0; i < aantal; i++) {
                 ArrayPakketten.add(new Pakket(grootte));
-                System.out.println(i);
             }
             model.addRow(new Object[]{grootte, aantal});
         } else {
@@ -258,7 +257,6 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbToevoegen) {
-            System.out.println("Toevoegen");
             int grootte = tryParse(jtGrootte.getText());
             int aantal = tryParse(jtAantalProducten.getText());
             addArray(aantal, grootte);
