@@ -4,12 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Bestfit extends Algoritme {
+/**
+ *
+ * @author leroy
+ */
+public class EigenAlgoritme extends Algoritme {
 
     private ArrayList<Bin> Dozen = new ArrayList<Bin>();
 
     public int start(ArrayList<Product> pk, int grootte) {
         int berekening = 0;
+        Collections.sort(pk, new Comparator<Product>() {
+            public int compare(Product a, Product b) {
+                return ((Integer) (grootte - a.getLength()))
+                        .compareTo(grootte - b.getLength());
+            }
+        });
         producttenloop:
         for (Product product : pk) {
             if (Dozen.isEmpty()) {
@@ -33,9 +43,6 @@ public class Bestfit extends Algoritme {
                 Dozen.add(new Bin(product));
             }
         }
-//        for (Bin doos : Dozen) {
-//            System.out.println(doos.getHuidigeGrootte());
-//        }
         return Dozen.size();
     }
 }

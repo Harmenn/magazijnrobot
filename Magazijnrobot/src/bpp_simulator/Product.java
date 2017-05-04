@@ -4,11 +4,11 @@ package bpp_simulator;
  *
  * @author leroy
  */
-public class Pakket {
+public class Product {
 
     private int length;
 
-    public Pakket(int length) {
+    public Product(int length) {
         this.length = length;
     }
 

@@ -6,27 +6,25 @@ public class Firstfit extends Algoritme {
 
     private ArrayList<Bin> Dozen = new ArrayList<Bin>();
 
-    public int start(ArrayList<Pakket> pk, int grootte) {
-
-        int binCount = 0;
+    public int start(ArrayList<Product> pk, int grootte) {
         int berekening = 0;
-        Dozen.add(new Bin());
-        for (Pakket pakket : pk) {
-            for (Bin doos : Dozen) {
-                berekening = doos.getHuidigeGrootte() + pakket.getLength();
-                if (berekening <= grootte) {
-                    doos.setHuidigeGrootte(berekening);
-
-                    break;
-                }
-                System.out.println("Huidige grootte: " + doos.getHuidigeGrootte());
+        producttenloop:
+        for (Product product : pk) {
+            if (Dozen.isEmpty()) {
+                Dozen.add(new Bin());
             }
-
+            for (Bin doos : Dozen) {
+                berekening = doos.getHuidigeGrootte() + product.getLength();
+                if (berekening <= grootte) {
+                    doos.addProduct(product);
+                    continue producttenloop;
+                }
+            }
             if (berekening >= grootte) {
-                int nieuwedoos = Dozen.size() + 1;
-                Dozen.add(new Bin(pakket.getLength()));
+                Dozen.add(new Bin(product));
             }
         }
+
         return Dozen.size();
     }
 }

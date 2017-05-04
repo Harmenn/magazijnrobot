@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class Nextfit extends Algoritme {
 
-    public int start(ArrayList<Pakket> pk, int grootte) {
+    public int start(ArrayList<Product> pk, int grootte) {
         int binCount = 0;
         int s = grootte;
-        for (Pakket pakket : pk) {
+        for (Product product : pk) {
 
-            if (s - pakket.getLength() > 0) {
-                s -= pakket.getLength();
-                if (s - pakket.getLength() < 0) {
+            if (s - product.getLength() > 0) {
+                s -= product.getLength();
+                if (s - product.getLength() < 0) {
                     binCount++;
                     s = grootte;
                 }

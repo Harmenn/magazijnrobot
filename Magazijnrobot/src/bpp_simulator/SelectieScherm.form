@@ -43,6 +43,7 @@
                                   <Component id="jcNextfit" min="-2" max="-2" attributes="0"/>
                                   <Component id="jcFirstfit" min="-2" max="-2" attributes="0"/>
                                   <Component id="jcBestfit" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jcEigenAlgoritme" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -99,15 +100,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbToevoegen" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jScrollPane1" min="-2" pref="166" max="-2" attributes="0"/>
-                              <EmptySpace pref="22" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jbStart" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jbReset" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -118,8 +111,15 @@
                               <Component id="jcFirstfit" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jcBestfit" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                              <Component id="jcEigenAlgoritme" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jScrollPane1" min="-2" pref="166" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="22" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jbStart" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jbReset" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -236,6 +236,11 @@
     <Component class="javax.swing.JButton" name="jbReset">
       <Properties>
         <Property name="text" type="java.lang.String" value="Resetten"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="jcEigenAlgoritme">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Eigen algoritme"/>
       </Properties>
     </Component>
   </SubComponents>

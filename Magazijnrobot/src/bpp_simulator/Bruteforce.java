@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Bruteforce extends Algoritme {
 
-    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
     private int tijd;
 
-    public Bruteforce(ArrayList<Pakket> ArrayPakketten, int DoosInhoud) {
+    public Bruteforce(ArrayList<Product> ArrayPakketten, int DoosInhoud) {
         this.ArrayPakketten = ArrayPakketten;
 
         this.DoosInhoud = DoosInhoud;
@@ -21,7 +21,7 @@ public class Bruteforce extends Algoritme {
     }
 
     private void bruteforce() {
-        for (Pakket pakket : ArrayPakketten) {
+        for (Product pakket : ArrayPakketten) {
 
         }
     }

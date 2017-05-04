@@ -28,6 +28,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jcBestfit = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jbReset = new javax.swing.JButton();
+        jcEigenAlgoritme = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulator");
@@ -96,6 +97,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jbReset.setText("Resetten");
 
+        jcEigenAlgoritme.setText("Eigen algoritme");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,7 +120,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                                     .addComponent(jcBruteforce)
                                     .addComponent(jcNextfit)
                                     .addComponent(jcFirstfit)
-                                    .addComponent(jcBestfit)))
+                                    .addComponent(jcBestfit)
+                                    .addComponent(jcEigenAlgoritme)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jbToevoegen)
                                 .addGroup(layout.createSequentialGroup()
@@ -158,13 +162,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                         .addGap(18, 18, 18)
                         .addComponent(jbToevoegen)
                         .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jbStart)
-                                    .addComponent(jbReset)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -175,7 +173,13 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                                 .addComponent(jcFirstfit)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jcBestfit)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(1, 1, 1)
+                                .addComponent(jcEigenAlgoritme))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbStart)
+                            .addComponent(jbReset))
                         .addContainerGap())))
         );
 
@@ -199,7 +203,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
             for (int i = 0; i < aantal; i++) {
-                ArrayPakketten.add(new Pakket(grootte));
+                ArrayPakketten.add(new Product(grootte));
             }
             model.addRow(new Object[]{grootte, aantal});
         } else {
@@ -217,6 +221,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JButton jbToevoegen;
     private javax.swing.JCheckBox jcBestfit;
     private javax.swing.JCheckBox jcBruteforce;
+    private javax.swing.JCheckBox jcEigenAlgoritme;
     private javax.swing.JCheckBox jcFirstfit;
     private javax.swing.JCheckBox jcNextfit;
     private javax.swing.JTextField jtAantalProducten;
@@ -224,11 +229,12 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField jtInhoud;
     private javax.swing.JTable jtProducten;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private boolean BruteForceEnabled = false;
     private boolean NextFitEnabled = false;
     private boolean FirstFitEnabled = false;
     private boolean BestFitEnabled = false;
+    private boolean EigenAlgoritmeEnabled = false;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -250,10 +256,11 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                     NextFitEnabled = jcNextfit.isSelected();
                     FirstFitEnabled = jcFirstfit.isSelected();
                     BestFitEnabled = jcBestfit.isSelected();
-                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled) {
+                    EigenAlgoritmeEnabled = jcEigenAlgoritme.isSelected();
+                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled && !EigenAlgoritmeEnabled) {
                         JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled);
+                        Simulatie s1 = new Simulatie(ArrayPakketten, inhoud, BruteForceEnabled, NextFitEnabled, FirstFitEnabled, BestFitEnabled, EigenAlgoritmeEnabled);
                         setVisible(false);
                     }
                 } else {
@@ -286,7 +293,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
-        for (Pakket pakket : ArrayPakketten) {
+        for (Product pakket : ArrayPakketten) {
             pakket = null;
         }
         ArrayPakketten.removeAll(ArrayPakketten);

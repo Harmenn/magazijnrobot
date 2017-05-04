@@ -51,9 +51,11 @@
                           <Component id="jlFirstFit" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jlBestFit" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlEigenFit" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jlEigenFitStatus" min="-2" max="-2" attributes="0"/>
                           <Component id="jlProgressie" min="-2" max="-2" attributes="0"/>
                           <Component id="jlBruteforceStatus" min="-2" max="-2" attributes="0"/>
                           <Component id="jlNextFitStatus" min="-2" max="-2" attributes="0"/>
@@ -115,6 +117,11 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlBestFit" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlBestFitStatus" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jlEigenFit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlEigenFitStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -257,6 +264,16 @@
     <Component class="javax.swing.JLabel" name="jlHuidigeSimulatie">
       <Properties>
         <Property name="text" type="java.lang.String" value="x"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlEigenFit">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Best fit"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlEigenFitStatus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Wordt niet uitgevoerd"/>
       </Properties>
     </Component>
   </SubComponents>
