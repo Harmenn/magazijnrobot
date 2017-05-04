@@ -17,8 +17,8 @@ public class SelectieScherm {
 
 	private ArrayList<Coordinate> punten = new ArrayList<Coordinate>();
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtHeight;
+	private JTextField txtWidth;
 	private DefaultListModel<String> model = new DefaultListModel<>();
 	private final JList<String> list = new JList<>(model);
 	private JTextField txtX;
@@ -60,7 +60,7 @@ public class SelectieScherm {
 		lblNewLabel.setBounds(10, 21, 139, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Lengte:");
+		JLabel lblNewLabel_1 = new JLabel("Hoogte:");
 		lblNewLabel_1.setBounds(10, 46, 64, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
@@ -68,17 +68,17 @@ public class SelectieScherm {
 		lblBreedte.setBounds(10, 71, 64, 14);
 		frame.getContentPane().add(lblBreedte);
 		
-		textField = new JTextField();
-		textField.setText("5");
-		textField.setBounds(77, 46, 72, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		txtHeight = new JTextField();
+		txtHeight.setText("5");
+		txtHeight.setBounds(77, 46, 72, 20);
+		frame.getContentPane().add(txtHeight);
+		txtHeight.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setText("5");
-		textField_1.setBounds(77, 71, 72, 20);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		txtWidth = new JTextField();
+		txtWidth.setText("5");
+		txtWidth.setBounds(77, 71, 72, 20);
+		frame.getContentPane().add(txtWidth);
+		txtWidth.setColumns(10);
 		
 		JLabel lblPunten = new JLabel("Punten:");
 		lblPunten.setBounds(159, 21, 139, 14);
@@ -134,7 +134,7 @@ public class SelectieScherm {
 		btnVoltooien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.setVisible(false);
-				SimulatieScherm ss = new SimulatieScherm();
+				AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()), Integer.parseInt(txtHeight.getText()), punten);
 			}
 		});
 		btnVoltooien.setBounds(84, 281, 89, 23);

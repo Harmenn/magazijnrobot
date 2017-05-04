@@ -24,12 +24,17 @@ public class SimulatiePanel extends JPanel {
 	int pointWidth = 20;
 	int pointHeight = 20;
 	
-	ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
-	public SimulatiePanel() {
+	
+	ArrayList<Coordinate> coords;// = new ArrayList<Coordinate>();
+	public SimulatiePanel(int gridWidth, int gridHeight, ArrayList<Coordinate> coords) {
 		setPreferredSize(new Dimension(400, 400));		
-		coords.add(new Coordinate(1,1));
-		coords.add(new Coordinate(3,3));
-		coords.add(new Coordinate(5,1));
+		
+		this.gridHeight = gridHeight;
+		this.gridWidth = gridWidth;
+		this.coords = coords;
+		//this.coords.add(new Coordinate(1,1));
+		//this.coords.add(new Coordinate(3,3));
+		//this.coords.add(new Coordinate(5,1));
 	}
 	
 	@Override 
