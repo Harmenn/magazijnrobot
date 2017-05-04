@@ -7,10 +7,7 @@ public class Firstfit extends Algoritme {
     private ArrayList<Bin> Dozen = new ArrayList<Bin>();
 
     public int start(ArrayList<Product> pk, int grootte) {
-
-        int binCount = 0;
         int berekening = 0;
-
         producttenloop:
         for (Product product : pk) {
             if (Dozen.isEmpty()) {
@@ -23,15 +20,11 @@ public class Firstfit extends Algoritme {
                     continue producttenloop;
                 }
             }
-
             if (berekening >= grootte) {
-                int nieuwedoos = Dozen.size() + 1;
                 Dozen.add(new Bin(product));
             }
         }
-//        for (Bin doos : Dozen) {
-//            System.out.println(doos.getHuidigeGrootte());
-//        }
+
         return Dozen.size();
     }
 }

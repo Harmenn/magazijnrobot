@@ -11,10 +11,13 @@ public class Simulatie extends javax.swing.JFrame {
     private Nextfit NextFitAlgoritme;
     private Firstfit FirstFitAlgoritme;
     private Bestfit BestFitAlgoritme;
+    private EigenAlgoritme EigenAlgoritme;
 
-    public Simulatie(ArrayList<Product> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
+    public Simulatie(ArrayList<Product> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
         initComponents();
         setResizable(false);
+
+        setVisible(true);
         this.ArrayPakketten = ArrayPakketten;
         this.DoosInhoud = DoosInhoud;
 
@@ -39,7 +42,11 @@ public class Simulatie extends javax.swing.JFrame {
             BestFitAlgoritme = new Bestfit();
             Algoritmes.addAlgoritme(BestFitAlgoritme);
         }
-        setVisible(true);
+        if (EigenAlgoritmeEnabled) {
+            jlEigenFitStatus.setText("In wachtrij");
+            EigenAlgoritme = new EigenAlgoritme();
+            Algoritmes.addAlgoritme(EigenAlgoritme);
+        }
         StartSimulatie();
     }
 
@@ -74,8 +81,15 @@ public class Simulatie extends javax.swing.JFrame {
                 jlBestFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Bestfit");
                 jProgressBar1.setIndeterminate(true);
-                BestFitAlgoritme.start();
+                System.out.println(BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlBestFitStatus.setText("Voltooid");
+            }
+            if (Algoritme1 instanceof EigenAlgoritme) {
+                jlEigenFitStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Eigen Algoritme");
+                jProgressBar1.setIndeterminate(true);
+                System.out.println(EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
+                jlEigenFitStatus.setText("Voltooid");
             }
         }
         jProgressBar1.setIndeterminate(false);
@@ -107,6 +121,8 @@ public class Simulatie extends javax.swing.JFrame {
         jlFirstFitStatus = new javax.swing.JLabel();
         jlBestFitStatus = new javax.swing.JLabel();
         jlHuidigeSimulatie = new javax.swing.JLabel();
+        jlEigenFit = new javax.swing.JLabel();
+        jlEigenFitStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
@@ -163,6 +179,10 @@ public class Simulatie extends javax.swing.JFrame {
 
         jlHuidigeSimulatie.setText("x");
 
+        jlEigenFit.setText("Best fit");
+
+        jlEigenFitStatus.setText("Wordt niet uitgevoerd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,9 +209,11 @@ public class Simulatie extends javax.swing.JFrame {
                             .addComponent(jlNextFit)
                             .addComponent(jlFirstFit)
                             .addComponent(jlBestFit)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jlEigenFit))
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlEigenFitStatus)
                             .addComponent(jlProgressie)
                             .addComponent(jlBruteforceStatus)
                             .addComponent(jlNextFitStatus)
@@ -240,6 +262,10 @@ public class Simulatie extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlBestFit)
                             .addComponent(jlBestFitStatus))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlEigenFit)
+                            .addComponent(jlEigenFitStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -272,6 +298,8 @@ public class Simulatie extends javax.swing.JFrame {
     private javax.swing.JLabel jlBestFitStatus;
     private javax.swing.JLabel jlBruteForce;
     private javax.swing.JLabel jlBruteforceStatus;
+    private javax.swing.JLabel jlEigenFit;
+    private javax.swing.JLabel jlEigenFitStatus;
     private javax.swing.JLabel jlFirstFit;
     private javax.swing.JLabel jlFirstFitStatus;
     private javax.swing.JLabel jlGrootte;
