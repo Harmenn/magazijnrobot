@@ -199,7 +199,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducten.getModel();
             for (int i = 0; i < aantal; i++) {
-                ArrayPakketten.add(new Pakket(grootte));
+                ArrayPakketten.add(new Product(grootte));
             }
             model.addRow(new Object[]{grootte, aantal});
         } else {
@@ -224,7 +224,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField jtInhoud;
     private javax.swing.JTable jtProducten;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private boolean BruteForceEnabled = false;
     private boolean NextFitEnabled = false;
     private boolean FirstFitEnabled = false;
@@ -286,7 +286,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
-        for (Pakket pakket : ArrayPakketten) {
+        for (Product pakket : ArrayPakketten) {
             pakket = null;
         }
         ArrayPakketten.removeAll(ArrayPakketten);

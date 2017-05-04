@@ -1,25 +1,27 @@
 package bpp_simulator;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author leroy
  */
 public class Bin {
 
-    private int HuidigeGrootte, Grootte;
-    private int id;
+    private int HuidigeGrootte = 0;
+    private ArrayList<Product> Producten = new ArrayList<Product>();
 
     public Bin() {
-
     }
 
-    public Bin(int grootte) {
-
-        this.HuidigeGrootte = grootte;
+    public Bin(Product Product) {
+        Producten.add(Product);
+        HuidigeGrootte += Product.getLength();
     }
 
-    public int getId() {
-        return id;
+    public void addProduct(Product Product) {
+        Producten.add(Product);
+        HuidigeGrootte += Product.getLength();
     }
 
     public int getHuidigeGrootte() {
@@ -30,4 +32,7 @@ public class Bin {
         this.HuidigeGrootte = HuidigeGrootte;
     }
 
+    public void addHuidigeGrootte(int HuidigeGrootte) {
+        this.HuidigeGrootte = Integer.sum(this.HuidigeGrootte, HuidigeGrootte);
+    }
 }

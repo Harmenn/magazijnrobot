@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Simulatie extends javax.swing.JFrame {
 
-    private ArrayList<Pakket> ArrayPakketten = new ArrayList<>();
+    private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
@@ -12,7 +12,7 @@ public class Simulatie extends javax.swing.JFrame {
     private Firstfit FirstFitAlgoritme;
     private Bestfit BestFitAlgoritme;
 
-    public Simulatie(ArrayList<Pakket> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
+    public Simulatie(ArrayList<Product> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled) {
         initComponents();
         setResizable(false);
         this.ArrayPakketten = ArrayPakketten;
