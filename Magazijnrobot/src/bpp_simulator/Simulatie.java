@@ -1,5 +1,6 @@
 package bpp_simulator;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class Simulatie extends javax.swing.JFrame {
@@ -55,41 +56,59 @@ public class Simulatie extends javax.swing.JFrame {
     }
 
     private void StartSimulatie() {
+        int dozen;
+        long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             if (Algoritme1 instanceof Bruteforce) {
+                nu = Instant.now().toEpochMilli();
                 jlBruteforceStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Bruteforce");
                 jProgressBar1.setIndeterminate(true);
                 BruteForceAlgoritme.start();
                 jlBruteforceStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                System.out.println("Bruteforce tijd: " + tijdsduur + "ms");
             }
             if (Algoritme1 instanceof Nextfit) {
+                nu = Instant.now().toEpochMilli();
                 jlNextFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Nextfit");
                 jProgressBar1.setIndeterminate(true);
-                System.out.println(NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                dozen = (NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlNextFitStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                System.out.println("Nextfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
+
             }
             if (Algoritme1 instanceof Firstfit) {
+                nu = Instant.now().toEpochMilli();
                 jlFirstFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Firstfit");
                 jProgressBar1.setIndeterminate(true);
-                System.out.println(FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                dozen = (FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlFirstFitStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                System.out.println("Firstfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
             }
             if (Algoritme1 instanceof Bestfit) {
+                nu = Instant.now().toEpochMilli();
                 jlBestFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Bestfit");
                 jProgressBar1.setIndeterminate(true);
-                System.out.println(BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                dozen = (BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlBestFitStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                System.out.println("Bestfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
+                nu = Instant.now().toEpochMilli();
                 jlEigenFitStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Eigen Algoritme");
                 jProgressBar1.setIndeterminate(true);
-                System.out.println(EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
+                dozen = (EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlEigenFitStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                System.out.println("Eigenfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
             }
         }
         jProgressBar1.setIndeterminate(false);
