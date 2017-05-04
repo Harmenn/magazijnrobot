@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -44,9 +45,10 @@ public class AlgoritmeScherm {
 		rdbtnAlgoritme.setBounds(6, 328, 109, 23);
 		frame.getContentPane().add(rdbtnAlgoritme);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Nearest Neighbour");
-		rdbtnNewRadioButton.setBounds(6, 354, 180, 23);
-		frame.getContentPane().add(rdbtnNewRadioButton);
+		JRadioButton rdbtnNearestNeighbour = new JRadioButton("Nearest Neighbour");
+		rdbtnNearestNeighbour.setSelected(true);
+		rdbtnNearestNeighbour.setBounds(6, 354, 180, 23);
+		frame.getContentPane().add(rdbtnNearestNeighbour);
 		
 		JRadioButton rdbtnoptTour = new JRadioButton("2-opt tour");
 		rdbtnoptTour.setBounds(6, 380, 109, 23);
@@ -55,13 +57,26 @@ public class AlgoritmeScherm {
 		JRadioButton rdbtnEigen = new JRadioButton("Eigen");
 		rdbtnEigen.setBounds(6, 405, 109, 23);
 		frame.getContentPane().add(rdbtnEigen);
+
+	    ButtonGroup group = new ButtonGroup();
+	    group.add(rdbtnAlgoritme);
+	    group.add(rdbtnNearestNeighbour);
+	    group.add(rdbtnoptTour);
+	    group.add(rdbtnEigen);
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("Start Simulatie");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(rdbtnNearestNeighbour.isSelected()) {
+					panel.setAlgorithm(SimulatiePanel.NEAREST_NEIGBOUR_ALGORITHM);
+					frame.repaint();
+				} else if(rdbtnAlgoritme.isSelected()) {
+					panel.setAlgorithm(SimulatiePanel.BRUTE_FORCE_ALGORITHM);
+					frame.repaint();
+				}
 			}
 		});
-		btnNewButton.setBounds(10, 435, 89, 23);
+		btnNewButton.setBounds(10, 435, 105, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		frame.setVisible(true);

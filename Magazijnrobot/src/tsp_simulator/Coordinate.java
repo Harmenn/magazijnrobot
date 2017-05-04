@@ -7,4 +7,18 @@ public class Coordinate {
 	  this.x = x;
 	  this.y = y;
   }
+  
+  public boolean equals(Object o) {
+	  Coordinate c = (Coordinate) o;
+	  if(this.x==c.x && this.y==c.y){ 
+		  return true;
+	  } else {
+		  return false;
+	  }
+	  
+  }
+  
+  public String toString() {
+	  return "x: " + this.x + ", y: " + this.y;
+  }
 }
