@@ -1,9 +1,16 @@
 package bpp_simulator;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.font.TextAttribute;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Map;
 
-public class Simulatie extends javax.swing.JFrame {
+public class Simulatie extends javax.swing.JFrame implements MouseListener {
 
     private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
@@ -13,6 +20,7 @@ public class Simulatie extends javax.swing.JFrame {
     private Firstfit FirstFitAlgoritme;
     private Bestfit BestFitAlgoritme;
     private EigenAlgoritme EigenAlgoritme;
+    private Resultaat BruteForceResult, NextFitResult, FirstFitResult, BestFitResult, EigenFitResult;
 
     public Simulatie(ArrayList<Product> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
         initComponents();
@@ -55,8 +63,18 @@ public class Simulatie extends javax.swing.JFrame {
         return DoosInhoud;
     }
 
+    public void MaakHyperlink(javax.swing.JLabel label) {
+        label.setText("Bekijk resultaat");
+        label.setForeground(Color.blue);
+        Font font = label.getFont();
+        Map attributes = font.getAttributes();
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        label.setFont(font.deriveFont(attributes));
+        label.addMouseListener(this);
+    }
+
     private void StartSimulatie() {
-        int dozen;
+        ArrayList<Bin> dozen;
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             if (Algoritme1 instanceof Bruteforce) {
@@ -64,10 +82,12 @@ public class Simulatie extends javax.swing.JFrame {
                 jlBruteforceStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Bruteforce");
                 jProgressBar1.setIndeterminate(true);
-                BruteForceAlgoritme.start();
+                dozen = (BruteForceAlgoritme.start());
                 jlBruteforceStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Bruteforce tijd: " + tijdsduur + "ms");
+                System.out.println("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                MaakHyperlink(jlBruteforceStatus);
+                BruteForceResult = new Resultaat(dozen, BruteForceAlgoritme.getArrayPakketten());
             }
             if (Algoritme1 instanceof Nextfit) {
                 nu = Instant.now().toEpochMilli();
@@ -77,7 +97,7 @@ public class Simulatie extends javax.swing.JFrame {
                 dozen = (NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlNextFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Nextfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
+                System.out.println("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
 
             }
             if (Algoritme1 instanceof Firstfit) {
@@ -88,7 +108,7 @@ public class Simulatie extends javax.swing.JFrame {
                 dozen = (FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlFirstFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Firstfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
+                System.out.println("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
             }
             if (Algoritme1 instanceof Bestfit) {
                 nu = Instant.now().toEpochMilli();
@@ -98,7 +118,7 @@ public class Simulatie extends javax.swing.JFrame {
                 dozen = (BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlBestFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Bestfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
+                System.out.println("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
                 nu = Instant.now().toEpochMilli();
@@ -108,7 +128,7 @@ public class Simulatie extends javax.swing.JFrame {
                 dozen = (EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlEigenFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Eigenfit:\nAantal dozen:" + dozen + "\nTijd: " + tijdsduur + "ms\n");
+                System.out.println("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
             }
         }
         jProgressBar1.setIndeterminate(false);
@@ -327,4 +347,39 @@ public class Simulatie extends javax.swing.JFrame {
     private javax.swing.JLabel jlNextFitStatus;
     private javax.swing.JLabel jlProgressie;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == jlBruteforceStatus) {
+            BruteForceResult.setVisible(true);
+        } else if (e.getSource() == jlBestFitStatus) {
+            BestFitResult.setVisible(true);
+        } else if (e.getSource() == jlNextFitStatus) {
+            NextFitResult.setVisible(true);
+        } else if (e.getSource() == jlEigenFitStatus) {
+            EigenFitResult.setVisible(true);
+        } else if (e.getSource() == jlFirstFitStatus) {
+            FirstFitResult.setVisible(true);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

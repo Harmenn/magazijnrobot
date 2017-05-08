@@ -8,7 +8,7 @@ public class Bestfit extends Algoritme {
 
     private ArrayList<Bin> Dozen = new ArrayList<Bin>();
 
-    public int start(ArrayList<Product> pk, int grootte) {
+    public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
         int berekening = 0;
         producttenloop:
         for (Product product : pk) {
@@ -30,12 +30,12 @@ public class Bestfit extends Algoritme {
                 }
             }
             if (berekening >= grootte) {
-                Dozen.add(new Bin(product));
+                Dozen.add(new Bin(product, grootte));
             }
         }
 //        for (Bin doos : Dozen) {
 //            System.out.println(doos.getHuidigeGrootte());
 //        }
-        return Dozen.size();
+        return Dozen;
     }
 }

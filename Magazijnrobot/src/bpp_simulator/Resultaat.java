@@ -5,14 +5,21 @@
  */
 package bpp_simulator;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author leroy
  */
 public class Resultaat extends javax.swing.JFrame {
 
-    public Resultaat() {
+    ArrayList<Bin> Bins = new ArrayList<>();
+    ArrayList<Product> Producten = new ArrayList<>();
+
+    public Resultaat(ArrayList<Bin> Bins, ArrayList<Product> Producten) {
         initComponents();
+        this.Bins = Bins;
+        this.Producten = Producten;
     }
 
     /**

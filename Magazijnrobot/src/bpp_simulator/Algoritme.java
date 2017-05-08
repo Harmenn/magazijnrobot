@@ -14,4 +14,11 @@ public class Algoritme {
         this.Algoritmes.add(Algoritme);
     }
 
+    public ArrayList<Bin> deepCopy(ArrayList<Bin> bins) {
+        ArrayList<Bin> copy = new ArrayList<Bin>();
+        for (int i = 0; i < bins.size(); i++) {
+            copy.add(bins.get(i).deepCopy());
+        }
+        return copy;
+    }
 }
