@@ -15,10 +15,26 @@ public class Bin {
     public Bin() {
     }
 
+    public int getMaxGrootte() {
+        return MaxGrootte;
+    }
+
+    public ArrayList<Product> getProducten() {
+        return Producten;
+    }
+
     public Bin(Product Product, int MaxGrootte) {
         Producten.add(Product);
         this.MaxGrootte = MaxGrootte;
         HuidigeGrootte += Product.getLength();
+    }
+
+    public Bin(Product Product) {
+        Producten.add(Product);
+    }
+
+    public Bin(int MaxGrootte) {
+        this.MaxGrootte = MaxGrootte;
     }
 
     public void addProduct(Product Product) {

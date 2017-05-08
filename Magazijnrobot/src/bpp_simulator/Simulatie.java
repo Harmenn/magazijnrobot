@@ -1,8 +1,8 @@
 package bpp_simulator;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
@@ -71,6 +71,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         label.setFont(font.deriveFont(attributes));
         label.addMouseListener(this);
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void StartSimulatie() {
@@ -87,7 +88,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
                 MaakHyperlink(jlBruteforceStatus);
-                BruteForceResult = new Resultaat(dozen, BruteForceAlgoritme.getArrayPakketten());
+                BruteForceResult = new Resultaat(dozen);
             }
             if (Algoritme1 instanceof Nextfit) {
                 nu = Instant.now().toEpochMilli();
@@ -98,6 +99,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 jlNextFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                NextFitResult = new Resultaat(dozen);
+                MaakHyperlink(jlNextFitStatus);
 
             }
             if (Algoritme1 instanceof Firstfit) {
@@ -109,6 +112,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 jlFirstFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                FirstFitResult = new Resultaat(dozen);
+                MaakHyperlink(jlFirstFitStatus);
             }
             if (Algoritme1 instanceof Bestfit) {
                 nu = Instant.now().toEpochMilli();
@@ -119,6 +124,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 jlBestFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                BestFitResult = new Resultaat(dozen);
+                MaakHyperlink(jlBestFitStatus);
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
                 nu = Instant.now().toEpochMilli();
@@ -129,6 +136,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 jlEigenFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                EigenFitResult = new Resultaat(dozen);
+                MaakHyperlink(jlEigenFitStatus);
             }
         }
         jProgressBar1.setIndeterminate(false);
