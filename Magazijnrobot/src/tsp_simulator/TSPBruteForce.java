@@ -13,6 +13,7 @@ public class TSPBruteForce extends TSPAlgorithm{
 			System.out.println(c);
 		}
 	}
+	
 	public static void main(String[] args) {
 		ArrayList<Coordinate> lijstje = new ArrayList<Coordinate>();
 		lijstje.add(new Coordinate(1,1));

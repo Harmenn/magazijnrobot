@@ -73,6 +73,12 @@ public class AlgoritmeScherm {
 				} else if(rdbtnAlgoritme.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.BRUTE_FORCE_ALGORITHM);
 					frame.repaint();
+				} else if(rdbtnoptTour.isSelected()) {
+					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
+					frame.repaint();
+				} else if(rdbtnEigen.isSelected()) {
+					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
+					frame.repaint();
 				}
 			}
 		});

@@ -40,11 +40,16 @@ public class SimulatiePanel extends JPanel {
 		this.gridHeight = gridHeight;
 		this.gridWidth = gridWidth;
 		this.coords = coords;
-		this.coords.add(new Coordinate(1,1));
-		this.coords.add(new Coordinate(3,3));
 		this.coords.add(new Coordinate(5,1));
 		this.coords.add(new Coordinate(4,2));
 		this.coords.add(new Coordinate(2,1));
+		
+		this.coords.add(new Coordinate(1,1));
+		this.coords.add(new Coordinate(3,1));
+		this.coords.add(new Coordinate(1,3));
+		this.coords.add(new Coordinate(3,3));
+		
+		System.out.println(coords);
 	}
 	
 	@Override 
@@ -112,10 +117,10 @@ public class SimulatiePanel extends JPanel {
 				currentAlgorithm =  new TSPNearestNeighbour(coords);
 				break;
 			case TWO_OPT_ALGORITHM:
-				
+				currentAlgorithm =  new TSPOptTwo(coords);
 				break;
 			case OWN_ALGORITHM:
-				
+				currentAlgorithm =  new TSPOwnAlgorithm(coords);
 				break;
 		}
 		this.coords = currentAlgorithm.getSortedList();
