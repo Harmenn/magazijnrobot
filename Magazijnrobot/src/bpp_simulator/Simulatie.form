@@ -26,36 +26,41 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jlGrootte" max="32767" attributes="0"/>
+                                          <Component id="jlAantal" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jlBruteForce" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlNextFit" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlFirstFit" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlBestFit" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlEigenFit" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jlGrootte" max="32767" attributes="0"/>
-                                  <Component id="jlAantal" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jlEigenFitStatus" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlProgressie" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlBruteforceStatus" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlNextFitStatus" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlFirstFitStatus" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlBestFitStatus" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="jlBruteForce" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlNextFit" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlFirstFit" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlBestFit" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlEigenFit" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jlEigenFitStatus" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlProgressie" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlBruteforceStatus" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlNextFitStatus" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlFirstFitStatus" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlBestFitStatus" min="-2" max="-2" attributes="0"/>
+                          <Component id="jbOpslaan" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -67,12 +72,10 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jProgressBar1" min="-2" pref="489" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jProgressBar1" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jbAnnuleren" min="-2" pref="91" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jbStart" min="-2" pref="91" max="-2" attributes="0"/>
+                      <Component id="jbAnnuleren" min="-2" pref="109" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
@@ -100,12 +103,7 @@
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlAantal" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jlBruteForce" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jlBruteforceStatus" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlNextFit" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlNextFitStatus" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -125,7 +123,14 @@
                           <Component id="jlEigenFit" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlEigenFitStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jlBruteForce" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlBruteforceStatus" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbOpslaan" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jlProgressie" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -139,10 +144,7 @@
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jbAnnuleren" alignment="3" max="32767" attributes="0"/>
-                      <Component id="jbStart" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jbAnnuleren" min="-2" max="-2" attributes="0"/>
                   <Component id="jProgressBar1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -281,9 +283,9 @@
         <Property name="text" type="java.lang.String" value="Wordt niet uitgevoerd"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jbStart">
+    <Component class="javax.swing.JButton" name="jbOpslaan">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Start"/>
+        <Property name="text" type="java.lang.String" value="Sla resultaten op"/>
       </Properties>
     </Component>
   </SubComponents>

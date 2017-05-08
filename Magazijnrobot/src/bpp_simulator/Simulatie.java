@@ -1,21 +1,20 @@
 package bpp_simulator;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Simulatie extends javax.swing.JFrame implements MouseListener, Runnable {
+public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
     private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
+    private StringBuilder eindResultaat = new StringBuilder();
+
     private Thread t;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
@@ -33,11 +32,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
         this.ArrayPakketten = ArrayPakketten;
         this.DoosInhoud = DoosInhoud;
         Algoritmes = new Algoritme();
-        if (BruteForceEnabled) {
-            jlBruteforceStatus.setText("In wachtrij");
-            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud);
-            Algoritmes.addAlgoritme(BruteForceAlgoritme);
-        }
         if (NextFitEnabled) {
             jlNextFitStatus.setText("In wachtrij");
             NextFitAlgoritme = new Nextfit();
@@ -58,17 +52,51 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
             EigenAlgoritme = new EigenAlgoritme();
             Algoritmes.addAlgoritme(EigenAlgoritme);
         }
+        if (BruteForceEnabled) {
+            jlBruteforceStatus.setText("In wachtrij");
+            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud);
+            Algoritmes.addAlgoritme(BruteForceAlgoritme);
+        }
+        jbAnnuleren.addActionListener(this);
+        jbOpslaan.addActionListener(this);
         if (t == null) {
-            t = new Thread(this, "Bruteforce");
+            t = new Thread(this, "StartSimulatie");
             t.start();
         }
+        eindResultaat.append("Naam Algoritme");
+        eindResultaat.append(';');
+        eindResultaat.append("Aantal dozen");
+        eindResultaat.append(';');
+        eindResultaat.append("Tijd (ms)");
+        eindResultaat.append('\n');
+        eindResultaat.append('\n');
     }
 
     public int getDoosInhoud() {
         return DoosInhoud;
     }
 
-    public void MaakHyperlink(javax.swing.JLabel label) {
+    private void ResultatenOpslaan() {
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new File("Resultaat.csv"));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Simulatie.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        pw.write(eindResultaat.toString());
+        pw.close();
+        System.out.println("done!");
+        if (BruteForceResult != null) {
+            BruteForceResult.Opslaan("bruteforce.png");
+        }
+        if (NextFitResult != null) {
+            NextFitResult.setVisible(true);
+            NextFitResult.Opslaan("nextfit.png");
+            NextFitResult.setVisible(false);
+        }
+    }
+
+    private void MaakHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
         Font font = label.getFont();
@@ -83,18 +111,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
         ArrayList<Bin> dozen;
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
-            if (Algoritme1 instanceof Bruteforce) {
-                nu = Instant.now().toEpochMilli();
-                jlBruteforceStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Bruteforce");
-                jProgressBar1.setIndeterminate(true);
-                dozen = (BruteForceAlgoritme.starten());
-                jlBruteforceStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                MaakHyperlink(jlBruteforceStatus);
-                BruteForceResult = new Resultaat(dozen);
-            }
             if (Algoritme1 instanceof Nextfit) {
                 nu = Instant.now().toEpochMilli();
                 jlNextFitStatus.setText("Uitvoeren...");
@@ -103,7 +119,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                 dozen = (NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlNextFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                //eindResultaat.append("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                eindResultaat.append("Nextfit");
+                eindResultaat.append(';');
+                eindResultaat.append(dozen.size());
+                eindResultaat.append(';');
+                eindResultaat.append(tijdsduur);
+                eindResultaat.append('\n');
                 NextFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlNextFitStatus);
 
@@ -116,7 +138,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                 dozen = (FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlFirstFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                //eindResultaat.append("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                eindResultaat.append("Firstfit");
+                eindResultaat.append(';');
+                eindResultaat.append(dozen.size());
+                eindResultaat.append(';');
+                eindResultaat.append(tijdsduur);
+                eindResultaat.append('\n');
                 FirstFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlFirstFitStatus);
             }
@@ -128,7 +156,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                 dozen = (BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlBestFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                //eindResultaat.append("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                eindResultaat.append("Bestfit");
+                eindResultaat.append(';');
+                eindResultaat.append(dozen.size());
+                eindResultaat.append(';');
+                eindResultaat.append(tijdsduur);
+                eindResultaat.append('\n');
                 BestFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlBestFitStatus);
             }
@@ -140,14 +174,39 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                 dozen = (EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlEigenFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
-                System.out.println("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                // eindResultaat.append("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                eindResultaat.append("Eigenfit");
+                eindResultaat.append(';');
+                eindResultaat.append(dozen.size());
+                eindResultaat.append(';');
+                eindResultaat.append(tijdsduur);
+                eindResultaat.append('\n');
                 EigenFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlEigenFitStatus);
+            }
+            if (Algoritme1 instanceof Bruteforce) {
+                nu = Instant.now().toEpochMilli();
+                jlBruteforceStatus.setText("Uitvoeren...");
+                jlHuidigeSimulatie.setText("Bruteforce");
+                jProgressBar1.setIndeterminate(true);
+                dozen = (BruteForceAlgoritme.starten());
+                jlBruteforceStatus.setText("Voltooid");
+                tijdsduur = Instant.now().toEpochMilli() - nu;
+                //eindResultaat.append("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
+                eindResultaat.append("Bruteforce");
+                eindResultaat.append(';');
+                eindResultaat.append(dozen.size());
+                eindResultaat.append(';');
+                eindResultaat.append(tijdsduur);
+                eindResultaat.append('\n');
+                MaakHyperlink(jlBruteforceStatus);
+                BruteForceResult = new Resultaat(dozen);
             }
         }
         jProgressBar1.setIndeterminate(false);
         jProgressBar1.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
+        System.out.println(eindResultaat);
     }
 
     @SuppressWarnings("unchecked")
@@ -176,7 +235,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
         jlHuidigeSimulatie = new javax.swing.JLabel();
         jlEigenFit = new javax.swing.JLabel();
         jlEigenFitStatus = new javax.swing.JLabel();
-        jbStart = new javax.swing.JButton();
+        jbOpslaan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
@@ -237,7 +296,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
 
         jlEigenFitStatus.setText("Wordt niet uitgevoerd");
 
-        jbStart.setText("Start");
+        jbOpslaan.setText("Sla resultaten op");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -245,32 +304,35 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jlGrootte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jlAantal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jlBruteForce)
-                            .addComponent(jlNextFit)
-                            .addComponent(jlFirstFit)
-                            .addComponent(jlBestFit)
-                            .addComponent(jLabel4)
-                            .addComponent(jlEigenFit))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlEigenFitStatus)
-                            .addComponent(jlProgressie)
-                            .addComponent(jlBruteforceStatus)
-                            .addComponent(jlNextFitStatus)
-                            .addComponent(jlFirstFitStatus)
-                            .addComponent(jlBestFitStatus))
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jlGrootte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jlAantal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jlBruteForce)
+                                    .addComponent(jlNextFit)
+                                    .addComponent(jlFirstFit)
+                                    .addComponent(jlBestFit)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jlEigenFit))
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlEigenFitStatus)
+                                    .addComponent(jlProgressie)
+                                    .addComponent(jlBruteforceStatus)
+                                    .addComponent(jlNextFitStatus)
+                                    .addComponent(jlFirstFitStatus)
+                                    .addComponent(jlBestFitStatus)))
+                            .addComponent(jbOpslaan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(86, 86, 86)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,11 +341,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlHuidigeSimulatie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbStart, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
@@ -304,11 +364,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(jlAantal))
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlBruteForce)
-                            .addComponent(jlBruteforceStatus))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlNextFit)
                             .addComponent(jlNextFitStatus))
@@ -324,7 +380,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlEigenFit)
                             .addComponent(jlEigenFitStatus))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlBruteForce)
+                            .addComponent(jlBruteforceStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbOpslaan)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jlProgressie))
@@ -334,9 +396,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbStart))
+                    .addComponent(jbAnnuleren)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -353,7 +413,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JButton jbAnnuleren;
-    private javax.swing.JButton jbStart;
+    private javax.swing.JButton jbOpslaan;
     private javax.swing.JLabel jlAantal;
     private javax.swing.JLabel jlBestFit;
     private javax.swing.JLabel jlBestFitStatus;
@@ -408,6 +468,20 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Runn
     @Override
     public void run() {
         StartSimulatie();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbAnnuleren) {
+            t.stop();
+            jProgressBar1.setForeground(Color.red);
+            jProgressBar1.setValue(100);
+            jProgressBar1.setIndeterminate(false);
+            jlHuidigeSimulatie.setText("Geannuleerd");
+        }
+        if (e.getSource() == jbOpslaan) {
+            ResultatenOpslaan();
+        }
     }
 
 }

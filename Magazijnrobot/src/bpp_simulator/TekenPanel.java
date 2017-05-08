@@ -53,6 +53,7 @@ public class TekenPanel extends JPanel {
                 startX = 50;
             }
         }
+
     }
 
 }
