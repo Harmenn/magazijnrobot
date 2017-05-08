@@ -29,10 +29,8 @@ public class Nextfit extends Algoritme {
         }
         //Hotfix voor lege doos
         for (int i = 0; i < Dozen.size(); i++) {
-            System.out.println("Doos: " + i + " grootte: " + Dozen.get(i).getHuidigeGrootte());
             if (Dozen.get(i).getHuidigeGrootte() < 1) {
                 Dozen.remove(i);
-
             }
         }
         return Dozen;

@@ -3,6 +3,8 @@ package bpp_simulator;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
@@ -10,10 +12,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Simulatie extends javax.swing.JFrame implements MouseListener {
+public class Simulatie extends javax.swing.JFrame implements MouseListener, Runnable {
 
     private ArrayList<Product> ArrayPakketten = new ArrayList<>();
     private int DoosInhoud;
+    private Thread t;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
     private Nextfit NextFitAlgoritme;
@@ -29,7 +32,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
         setVisible(true);
         this.ArrayPakketten = ArrayPakketten;
         this.DoosInhoud = DoosInhoud;
-
         Algoritmes = new Algoritme();
         if (BruteForceEnabled) {
             jlBruteforceStatus.setText("In wachtrij");
@@ -56,7 +58,10 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
             EigenAlgoritme = new EigenAlgoritme();
             Algoritmes.addAlgoritme(EigenAlgoritme);
         }
-        StartSimulatie();
+        if (t == null) {
+            t = new Thread(this, "Bruteforce");
+            t.start();
+        }
     }
 
     public int getDoosInhoud() {
@@ -83,7 +88,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                 jlBruteforceStatus.setText("Uitvoeren...");
                 jlHuidigeSimulatie.setText("Bruteforce");
                 jProgressBar1.setIndeterminate(true);
-                dozen = (BruteForceAlgoritme.start());
+                dozen = (BruteForceAlgoritme.starten());
                 jlBruteforceStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 System.out.println("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
@@ -171,6 +176,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
         jlHuidigeSimulatie = new javax.swing.JLabel();
         jlEigenFit = new javax.swing.JLabel();
         jlEigenFitStatus = new javax.swing.JLabel();
+        jbStart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
@@ -231,6 +237,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
 
         jlEigenFitStatus.setText("Wordt niet uitgevoerd");
 
+        jbStart.setText("Start");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,10 +246,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbAnnuleren))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -273,8 +277,14 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jlHuidigeSimulatie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(35, 35, 35))
+                                .addComponent(jlHuidigeSimulatie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbStart, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,9 +332,11 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbAnnuleren, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbStart))
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -341,6 +353,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JButton jbAnnuleren;
+    private javax.swing.JButton jbStart;
     private javax.swing.JLabel jlAantal;
     private javax.swing.JLabel jlBestFit;
     private javax.swing.JLabel jlBestFitStatus;
@@ -391,4 +404,10 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    @Override
+    public void run() {
+        StartSimulatie();
+    }
+
 }

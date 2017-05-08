@@ -44,6 +44,7 @@ public class Bin {
 
     public boolean addProductCheck(Product Product) {
         if (HuidigeGrootte + Product.getLength() <= MaxGrootte) {
+            addProduct(Product);
             return true;
         } else {
             return false; // item didn't fit
@@ -75,6 +76,8 @@ public class Bin {
         Bin copy = new Bin();
         copy.Producten = new ArrayList<>(Producten);
         copy.HuidigeGrootte = HuidigeGrootte;
+        copy.MaxGrootte = MaxGrootte;
         return copy;
     }
+
 }
