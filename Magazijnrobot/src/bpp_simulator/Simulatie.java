@@ -96,6 +96,15 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
     }
 
+    private void AppendResultaat(String naam, int grootte, long tijdsduur) {
+        eindResultaat.append(naam);
+        eindResultaat.append(';');
+        eindResultaat.append(grootte);
+        eindResultaat.append(';');
+        eindResultaat.append(tijdsduur);
+        eindResultaat.append('\n');
+    }
+
     private void MaakHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
@@ -120,12 +129,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlNextFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 //eindResultaat.append("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                eindResultaat.append("Nextfit");
-                eindResultaat.append(';');
-                eindResultaat.append(dozen.size());
-                eindResultaat.append(';');
-                eindResultaat.append(tijdsduur);
-                eindResultaat.append('\n');
+                AppendResultaat("Nextfit", dozen.size(), tijdsduur);
                 NextFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlNextFitStatus);
 
@@ -139,12 +143,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlFirstFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 //eindResultaat.append("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                eindResultaat.append("Firstfit");
-                eindResultaat.append(';');
-                eindResultaat.append(dozen.size());
-                eindResultaat.append(';');
-                eindResultaat.append(tijdsduur);
-                eindResultaat.append('\n');
+                AppendResultaat("Firstfit", dozen.size(), tijdsduur);
                 FirstFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlFirstFitStatus);
             }
@@ -157,12 +156,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlBestFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 //eindResultaat.append("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                eindResultaat.append("Bestfit");
-                eindResultaat.append(';');
-                eindResultaat.append(dozen.size());
-                eindResultaat.append(';');
-                eindResultaat.append(tijdsduur);
-                eindResultaat.append('\n');
+                AppendResultaat("Bestfit", dozen.size(), tijdsduur);
                 BestFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlBestFitStatus);
             }
@@ -175,12 +169,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlEigenFitStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 // eindResultaat.append("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                eindResultaat.append("Eigenfit");
-                eindResultaat.append(';');
-                eindResultaat.append(dozen.size());
-                eindResultaat.append(';');
-                eindResultaat.append(tijdsduur);
-                eindResultaat.append('\n');
+                AppendResultaat("Eigenfit", dozen.size(), tijdsduur);
                 EigenFitResult = new Resultaat(dozen);
                 MaakHyperlink(jlEigenFitStatus);
             }
@@ -193,12 +182,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlBruteforceStatus.setText("Voltooid");
                 tijdsduur = Instant.now().toEpochMilli() - nu;
                 //eindResultaat.append("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                eindResultaat.append("Bruteforce");
-                eindResultaat.append(';');
-                eindResultaat.append(dozen.size());
-                eindResultaat.append(';');
-                eindResultaat.append(tijdsduur);
-                eindResultaat.append('\n');
+                AppendResultaat("Bruteforce", dozen.size(), tijdsduur);
                 MaakHyperlink(jlBruteforceStatus);
                 BruteForceResult = new Resultaat(dozen);
             }
@@ -206,6 +190,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jProgressBar1.setIndeterminate(false);
         jProgressBar1.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
+        jlHuidigeSimulatie.setText("");
         System.out.println(eindResultaat);
     }
 
