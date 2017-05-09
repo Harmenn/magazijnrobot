@@ -1,5 +1,6 @@
 package bpp_simulator;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 /**
@@ -21,15 +24,28 @@ public class Resultaat extends JFrame {
     ArrayList<Bin> Bins = new ArrayList<>();
     private JButton jbOpslaan;
 
-    public Resultaat(ArrayList<Bin> Bins) {
+    public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int VolumeDozen) {
         this.Bins = Bins;
         setSize(1200, 800);
         setTitle("Resultaat");
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setResizable(false);
-        TekenPanel tp = new TekenPanel(this, Bins);
+
+        TekenPanel tp = new TekenPanel(this, Bins, Algoritme, Volume, VolumeDozen);
         add(tp);
+
+        JScrollPane scrollFrame = new JScrollPane(tp);
+        if (Bins.size() < 30) {
+            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        } else {
+            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        }
+        scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        tp.setAutoscrolls(true);
+        scrollFrame.setPreferredSize(new Dimension(1200, 800));
+        this.add(scrollFrame);
+        setResizable(false);
     }
 
     public void Opslaan(String Locatie) {

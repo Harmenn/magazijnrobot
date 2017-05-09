@@ -286,6 +286,7 @@
     <Component class="javax.swing.JButton" name="jbOpslaan">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sla resultaten op"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>

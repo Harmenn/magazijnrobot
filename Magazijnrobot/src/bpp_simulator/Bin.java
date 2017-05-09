@@ -33,6 +33,14 @@ public class Bin {
         Producten.add(Product);
     }
 
+    public int getVolume() {
+        int volume = 0;
+        for (Product product : Producten) {
+            volume += product.getLength();
+        }
+        return volume;
+    }
+
     public Bin(int MaxGrootte) {
         this.MaxGrootte = MaxGrootte;
     }

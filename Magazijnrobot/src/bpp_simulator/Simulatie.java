@@ -28,7 +28,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         initComponents();
         setResizable(false);
 
-        setVisible(true);
         this.ArrayPakketten = ArrayPakketten;
         this.DoosInhoud = DoosInhoud;
         Algoritmes = new Algoritme();
@@ -59,6 +58,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         jbAnnuleren.addActionListener(this);
         jbOpslaan.addActionListener(this);
+        setVisible(true);
         if (t == null) {
             t = new Thread(this, "StartSimulatie");
             t.start();
@@ -117,81 +117,79 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     }
 
     private void StartSimulatie() {
-        ArrayList<Bin> dozen;
+        ArrayList<Bin> dozen = new ArrayList<>();
+        int vol = getVolume();
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
+            nu = Instant.now().toEpochMilli();
             if (Algoritme1 instanceof Nextfit) {
-                nu = Instant.now().toEpochMilli();
+                Algoritme1.setNaam("Nextfit");
                 jlNextFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Nextfit");
-                jProgressBar1.setIndeterminate(true);
+                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
+
                 dozen = (NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlNextFitStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                //eindResultaat.append("Nextfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                AppendResultaat("Nextfit", dozen.size(), tijdsduur);
-                NextFitResult = new Resultaat(dozen);
+                NextFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
                 MaakHyperlink(jlNextFitStatus);
-
             }
             if (Algoritme1 instanceof Firstfit) {
-                nu = Instant.now().toEpochMilli();
+                Algoritme1.setNaam("Firstfit");
                 jlFirstFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Firstfit");
-                jProgressBar1.setIndeterminate(true);
+                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
                 dozen = (FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlFirstFitStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                //eindResultaat.append("Firstfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                AppendResultaat("Firstfit", dozen.size(), tijdsduur);
-                FirstFitResult = new Resultaat(dozen);
+                FirstFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
                 MaakHyperlink(jlFirstFitStatus);
             }
             if (Algoritme1 instanceof Bestfit) {
-                nu = Instant.now().toEpochMilli();
+                Algoritme1.setNaam("Bestfit");
                 jlBestFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Bestfit");
-                jProgressBar1.setIndeterminate(true);
+                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
                 dozen = (BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlBestFitStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                //eindResultaat.append("Bestfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                AppendResultaat("Bestfit", dozen.size(), tijdsduur);
-                BestFitResult = new Resultaat(dozen);
+                BestFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
                 MaakHyperlink(jlBestFitStatus);
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
+                Algoritme1.setNaam("Eigenfit");
                 nu = Instant.now().toEpochMilli();
                 jlEigenFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Eigen Algoritme");
-                jProgressBar1.setIndeterminate(true);
+                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
                 dozen = (EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
                 jlEigenFitStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                // eindResultaat.append("Eigenfit:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                AppendResultaat("Eigenfit", dozen.size(), tijdsduur);
-                EigenFitResult = new Resultaat(dozen);
+                EigenFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
                 MaakHyperlink(jlEigenFitStatus);
             }
             if (Algoritme1 instanceof Bruteforce) {
+                Algoritme1.setNaam("Bruteforce");
                 nu = Instant.now().toEpochMilli();
                 jlBruteforceStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText("Bruteforce");
-                jProgressBar1.setIndeterminate(true);
+                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
                 dozen = (BruteForceAlgoritme.starten());
                 jlBruteforceStatus.setText("Voltooid");
-                tijdsduur = Instant.now().toEpochMilli() - nu;
-                //eindResultaat.append("Bruteforce:\nAantal dozen:" + dozen.size() + "\nTijd: " + tijdsduur + "ms\n");
-                AppendResultaat("Bruteforce", dozen.size(), tijdsduur);
                 MaakHyperlink(jlBruteforceStatus);
-                BruteForceResult = new Resultaat(dozen);
+                BruteForceResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
             }
+            jProgressBar1.setIndeterminate(true);
+            tijdsduur = Instant.now().toEpochMilli() - nu;
+            AppendResultaat(Algoritme1.getNaam(), dozen.size(), tijdsduur);
+            Algoritme1.setEindtijd(tijdsduur);
         }
         jProgressBar1.setIndeterminate(false);
         jProgressBar1.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
-        jlHuidigeSimulatie.setText("");
+        jlHuidigeSimulatie.setText("Voltooid");
         System.out.println(eindResultaat);
+        jbAnnuleren.setEnabled(false);
+        jbOpslaan.setEnabled(true);
+    }
+
+    private int getVolume() {
+        int vol = 0;
+        for (Product product : ArrayPakketten) {
+            vol += product.getLength();
+        }
+        return vol;
     }
 
     @SuppressWarnings("unchecked")
@@ -282,6 +280,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jlEigenFitStatus.setText("Wordt niet uitgevoerd");
 
         jbOpslaan.setText("Sla resultaten op");
+        jbOpslaan.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -418,7 +417,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == jlBruteforceStatus) {
-            BruteForceResult.setVisible(true);
+            if (BruteForceResult != null) {
+                BruteForceResult.setVisible(true);
+            }
         } else if (e.getSource() == jlBestFitStatus) {
             BestFitResult.setVisible(true);
         } else if (e.getSource() == jlNextFitStatus) {
@@ -463,6 +464,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             jProgressBar1.setValue(100);
             jProgressBar1.setIndeterminate(false);
             jlHuidigeSimulatie.setText("Geannuleerd");
+            jbOpslaan.setEnabled(true);
+            setTitle("Bin Packing Problem Simulation - Geannuleerd");
         }
         if (e.getSource() == jbOpslaan) {
             ResultatenOpslaan();

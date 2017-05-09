@@ -20,7 +20,7 @@ public class Bruteforce extends Algoritme {
 
         for (Product p : ArrayPakketten) {
             bins.add(new Bin(DoosInhoud)); // create maximum of needed bins
-            currentBestBins.add(new Bin(DoosInhoud));
+            currentBestBins.add(new Bin(p, DoosInhoud));
         }
         currentBestSolution = ArrayPakketten.size(); // worst case solution: every item one bin
     }
@@ -57,8 +57,12 @@ public class Bruteforce extends Algoritme {
         // iterate over bins
         Product currentItem = in.get(currentPosition);
         for (Bin bin : bins) {
-            if (bin.addProductCheck(currentItem)) { //checks if there's room for an item
-                bruteforce(in, currentPosition + 1); //recurive approach for next item
+            if (bin.addProductCheck(currentItem)) { //checkt als er ruimte is voor een product, zoja
+                try {
+                    bruteforce(in, currentPosition + 1); //recurive approach for next item
+                } catch (StackOverflowError e) {
+                    return;
+                }
                 bin.removeProduct(currentItem);
             } // else: item did not fit in bin, ignore
         }
