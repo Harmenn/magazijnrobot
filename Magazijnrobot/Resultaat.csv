@@ -1,7 +1,7 @@
 Naam Algoritme;Aantal dozen;Tijd (ms)
 
-Nextfit;3;31
-Firstfit;3;15
+Nextfit;3;32
+Firstfit;3;31
 Bestfit;3;0
-Eigenfit;3;16
-Bruteforce;2;31
+Eigenfit;3;15
+Bruteforce;2;32

@@ -1,5 +1,11 @@
 package bpp_simulator;
 
+import bpp_simulator.algoritmes.Nextfit;
+import bpp_simulator.algoritmes.Bestfit;
+import bpp_simulator.algoritmes.EigenAlgoritme;
+import bpp_simulator.algoritmes.Bruteforce;
+import bpp_simulator.algoritmes.Firstfit;
+import bpp_simulator.algoritmes.Algoritme;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;

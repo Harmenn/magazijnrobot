@@ -1,5 +1,6 @@
 package bpp_simulator;
 
+import bpp_simulator.algoritmes.Algoritme;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,7 +22,7 @@ public class TekenPanel extends JPanel {
         this.volume = Volume;
         this.Algoritme = Algrotime;
         this.volumeDozen = VolumeDozen;
-        this.setPreferredSize(new Dimension(700, 800));
+        //this.setPreferredSize(new Dimension(1200, 800));
 
         this.colors = new ArrayList<>(); //add a variety of colors to switch between
         colors.add(Color.red);
@@ -32,11 +33,6 @@ public class TekenPanel extends JPanel {
         this.startY = 50;
         this.startYItem = 50;
 
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(3000, 3000);
     }
 
     @Override

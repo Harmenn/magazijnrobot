@@ -1,4 +1,4 @@
-package bpp_simulator;
+package bpp_simulator.algoritmes;
 
 import java.util.ArrayList;
 

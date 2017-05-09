@@ -1,5 +1,7 @@
-package bpp_simulator;
+package bpp_simulator.algoritmes;
 
+import bpp_simulator.Bin;
+import bpp_simulator.Product;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

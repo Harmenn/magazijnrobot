@@ -1,5 +1,6 @@
 package bpp_simulator;
 
+import bpp_simulator.algoritmes.Algoritme;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -32,23 +33,23 @@ public class Resultaat extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         TekenPanel tp = new TekenPanel(this, Bins, Algoritme, Volume, VolumeDozen);
-        add(tp);
-
         JScrollPane scrollFrame = new JScrollPane(tp);
+
         if (Bins.size() < 30) {
             scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         } else {
-            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         }
         scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
         tp.setAutoscrolls(true);
         scrollFrame.setPreferredSize(new Dimension(1200, 800));
+        scrollFrame.setMinimumSize(new Dimension(1200, 800));
         this.add(scrollFrame);
         setResizable(false);
     }
 
     public void Opslaan(String Locatie) {
+        //
         BufferedImage bi = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         this.paint(g);
