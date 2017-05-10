@@ -10,39 +10,39 @@ import javax.swing.JLabel;
 
 public class StartScherm extends JFrame implements ActionListener {
 
-    private JLabel label;
-    private JButton jbStart, jbResultaat;
+	private JLabel label;
+	private JButton jbStart, jbResultaat;
 
-    public StartScherm() {
-        setSize(500, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public StartScherm() {
+		setSize(500, 200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setTitle("Traveling Salesman Problem Simulation");
-        setLayout(new FlowLayout());
+		setTitle("Traveling Salesman Problem Simulation");
+		setLayout(new FlowLayout());
 
-        label = new JLabel("TSP Simulator");
-        label.setFont(label.getFont().deriveFont(24.0f));
-        setResizable(false);
-        add(label);
-        add(new JLabel("Welkom bij de TSP Simulator."));
-        jbStart = new JButton("Nieuwe simulatie starten");
-        jbStart.addActionListener(this);
-        add(jbStart);
-        jbResultaat = new JButton("Opgeslagen simulaties bekijken");
-        jbResultaat.addActionListener(this);
-        add(jbResultaat);
-        setVisible(true);
-    }
+		label = new JLabel("TSP Simulator");
+		label.setFont(label.getFont().deriveFont(24.0f));
+		setResizable(false);
+		add(label);
+		add(new JLabel("Welkom bij de TSP Simulator."));
+		jbStart = new JButton("Nieuwe simulatie starten");
+		jbStart.addActionListener(this);
+		add(jbStart);
+		jbResultaat = new JButton("Opgeslagen simulaties bekijken");
+		jbResultaat.addActionListener(this);
+		add(jbResultaat);
+		setVisible(true);
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbStart) {
-            SelectieScherm scherm = new SelectieScherm();
-            setVisible(false);
-        }
-        if (e.getSource() == jbResultaat) {
-            System.out.println("resultaat");
-        }
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == jbStart) {
+			SelectieScherm scherm = new SelectieScherm();
+			setVisible(false);
+		}
+		if (e.getSource() == jbResultaat) {
+			System.out.println("resultaat");
+		}
+	}
 
 }
