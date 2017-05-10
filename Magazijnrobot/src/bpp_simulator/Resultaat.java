@@ -10,16 +10,20 @@ import javax.swing.*;
 
 public class Resultaat extends JFrame {
 
-    ArrayList<Bin> Bins = new ArrayList<>();
+    private ArrayList<Bin> Bins = new ArrayList<>();
     private JButton jbSave;
+    private Algoritme Algoritme;
+    private int Volume, VolumeBoxes = 0;
 
     public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int VolumeBoxes) {
         this.Bins = Bins;
+        this.Algoritme = Algoritme;
+        this.Volume = Volume;
+        this.VolumeBoxes = VolumeBoxes;
         setSize(1200, 800);
         setTitle("Resultaat");
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
         TekenPanel drawPanel = new TekenPanel(this, Bins, Algoritme, Volume, VolumeBoxes);
         JScrollPane scrollFrame = new JScrollPane(drawPanel);
 
@@ -46,5 +50,21 @@ public class Resultaat extends JFrame {
             ImageIO.write(bi, "png", new File(Location));
         } catch (Exception er) {
         }
+    }
+
+    public ArrayList<Bin> getBins() {
+        return Bins;
+    }
+
+    public Algoritme getAlgoritme() {
+        return Algoritme;
+    }
+
+    public int getVolume() {
+        return Volume;
+    }
+
+    public int getVolumeBoxes() {
+        return VolumeBoxes;
     }
 }

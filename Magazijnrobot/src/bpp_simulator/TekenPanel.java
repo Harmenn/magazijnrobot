@@ -2,11 +2,9 @@ package bpp_simulator;
 
 import bpp_simulator.algoritmes.Algoritme;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public class TekenPanel extends JPanel {
 

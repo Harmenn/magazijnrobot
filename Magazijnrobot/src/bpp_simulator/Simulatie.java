@@ -8,10 +8,12 @@ import java.io.*;
 import java.time.Instant;
 import java.util.*;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
     private ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private ArrayList<Resultaat> ArrayResults = new ArrayList<>();
     private int BoxSize;
     private StringBuilder endResult = new StringBuilder();
 
@@ -88,20 +90,35 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\" + jfChooser.getSelectedFile().getName();
             try {
                 pwFileWriter = new PrintWriter(new File(locatie + "\\Resultaat.csv"));
-            } catch (FileNotFoundException ex) {
-                System.out.println("Er ging iets mis");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Er ging iets mis tijdens het opslaan", "Foutmelding", JOptionPane.ERROR_MESSAGE);
             }
             pwFileWriter.write(endResult.toString());
             pwFileWriter.close();
             if (BruteForceResult != null) {
                 BruteForceResult.setVisible(true);
-                BruteForceResult.SaveScreen(locatie + "\\bruteforce.png");
+                BruteForceResult.SaveScreen(locatie + "\\Bruteforce.png");
                 BruteForceResult.setVisible(false);
             }
             if (NextFitResult != null) {
                 NextFitResult.setVisible(true);
                 NextFitResult.SaveScreen(locatie + "\\Nextfit.png");
                 NextFitResult.setVisible(false);
+            }
+            if (BestFitResult != null) {
+                BestFitResult.setVisible(true);
+                BestFitResult.SaveScreen(locatie + "\\Bestfit.png");
+                BestFitResult.setVisible(false);
+            }
+            if (FirstFitResult != null) {
+                FirstFitResult.setVisible(true);
+                FirstFitResult.SaveScreen(locatie + "\\Firstfit.png");
+                FirstFitResult.setVisible(false);
+            }
+            if (EigenFitResult != null) {
+                EigenFitResult.setVisible(true);
+                EigenFitResult.SaveScreen(locatie + "\\EigenFit.png");
+                EigenFitResult.setVisible(false);
             }
         }
     }
@@ -139,7 +156,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
                 bins = (NextFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlNextFitStatus.setText("Voltooid");
-                NextFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize);
+                ArrayResults.add(NextFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
                 MakeHyperlink(jlNextFitStatus);
             }
             if (Algoritme1 instanceof Firstfit) {
@@ -148,7 +165,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlCurrentSimulation.setText(Algoritme1.getName());
                 bins = (FirstFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlFirstFitStatus.setText("Voltooid");
-                FirstFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize);
+                ArrayResults.add(FirstFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
                 MakeHyperlink(jlFirstFitStatus);
             }
             if (Algoritme1 instanceof Bestfit) {
@@ -157,7 +174,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlCurrentSimulation.setText(Algoritme1.getName());
                 bins = (BestFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlBestFitStatus.setText("Voltooid");
-                BestFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize);
+                ArrayResults.add(BestFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
                 MakeHyperlink(jlBestFitStatus);
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
@@ -167,7 +184,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlCurrentSimulation.setText(Algoritme1.getName());
                 bins = (EigenAlgoritme.start(ArrayProducts, BoxSize));
                 jlEigenFitStatus.setText("Voltooid");
-                EigenFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize);
+                ArrayResults.add(EigenFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
                 MakeHyperlink(jlEigenFitStatus);
             }
             if (Algoritme1 instanceof Bruteforce) {
@@ -178,14 +195,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 bins = (BruteForceAlgoritme.start());
                 jlBruteforceStatus.setText("Voltooid");
                 MakeHyperlink(jlBruteforceStatus);
-                BruteForceResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize);
+                ArrayResults.add(BruteForceResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
             }
             jpProgress.setIndeterminate(true);
             tijdsduur = Instant.now().toEpochMilli() - nu;
             AppendResultaat(Algoritme1.getName(), bins.size(), tijdsduur);
             Algoritme1.setEndTime(tijdsduur);
         }
-        CalculateAlgorithms();
         jpProgress.setIndeterminate(false);
         jpProgress.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
@@ -193,6 +209,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         System.out.println(endResult);
         jbCancel.setEnabled(false);
         jbSave.setEnabled(true);
+        CalculateAlgorithms();
     }
 
     private int getVolume() {
@@ -217,7 +234,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jlBestAlgorithm = new javax.swing.JLabel();
         jlFastestAlgorithm = new javax.swing.JLabel();
         jlEfficientAlgorithm = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -248,17 +264,16 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
         jpPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel7.setText("Beste algoritme:");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel7.setText("Resultaten:");
 
         jLabel8.setText("Snelste algoritme:");
 
         jLabel9.setText("Efficiëntste algoritme:");
 
-        jlBestAlgorithm.setText("jLabel10");
+        jlFastestAlgorithm.setText("Wordt berekend...");
 
-        jlFastestAlgorithm.setText("jLabel10");
-
-        jlEfficientAlgorithm.setText("jLabel10");
+        jlEfficientAlgorithm.setText("Wordt berekend...");
 
         javax.swing.GroupLayout jpPanelLayout = new javax.swing.GroupLayout(jpPanel);
         jpPanel.setLayout(jpPanelLayout);
@@ -270,24 +285,20 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                     .addGroup(jpPanelLayout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlEfficientAlgorithm))
+                        .addComponent(jlEfficientAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
                     .addGroup(jpPanelLayout.createSequentialGroup()
                         .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(jLabel7))
                         .addGap(32, 32, 32)
-                        .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlBestAlgorithm)
-                            .addComponent(jlFastestAlgorithm))))
-                .addContainerGap(105, Short.MAX_VALUE))
+                        .addComponent(jlFastestAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpPanelLayout.setVerticalGroup(
             jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jlBestAlgorithm))
+                .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -325,7 +336,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -408,7 +419,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton jbCancel;
     private javax.swing.JButton jbSave;
-    private javax.swing.JLabel jlBestAlgorithm;
     private javax.swing.JLabel jlBestFitStatus;
     private javax.swing.JLabel jlBruteforceStatus;
     private javax.swing.JLabel jlCurrentSimulation;
@@ -424,9 +434,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == jlBruteforceStatus) {
-            if (BruteForceResult != null) {
-                BruteForceResult.setVisible(true);
-            }
+            BruteForceResult.setVisible(true);
         } else if (e.getSource() == jlBestFitStatus) {
             BestFitResult.setVisible(true);
         } else if (e.getSource() == jlNextFitStatus) {
@@ -439,19 +447,26 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     }
 
     private void CalculateAlgorithms() {
-        long fastestTime = 0;
-        String fastestAlg = "";
-        for (Algoritme alg : Algoritmes.getAlgoritmes()) {
-            if (fastestTime > alg.getEndTime()) {
-                fastestTime = alg.getEndTime();
-                fastestAlg = alg.getName();
-                System.out.println(alg.getName());
+        long fastestTime = -1;
+        int bins = -1;
+
+        String fastestAlg = "", EfficientAlg = "";
+        for (Resultaat result : ArrayResults) {
+            if (fastestTime == -1 && bins == -1) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                bins = result.getBins().size();
             }
-            alg.getEndTime();
+            if (fastestTime >= result.getAlgoritme().getEndTime()) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                fastestAlg = result.getAlgoritme().getName();
+            }
+            if (bins >= result.getBins().size()) {
+                bins = result.getBins().size();
+                EfficientAlg = result.getAlgoritme().getName();
+            }
         }
-        jlBestAlgorithm.setText("");
-        jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + ")");
-        jlEfficientAlgorithm.setText("");
+        jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
+        jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
     }
 
     @Override
