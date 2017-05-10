@@ -14,7 +14,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     private ArrayList<Product> ArrayProducts = new ArrayList<>();
     private ArrayList<Resultaat> ArrayResults = new ArrayList<>();
-    private int BoxSize;
+    private int BoxSize, vol;
     private StringBuilder endResult = new StringBuilder();
 
     private Thread t;
@@ -29,7 +29,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     public Simulatie(ArrayList<Product> ArrayProducts, int BoxSize, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
         initComponents();
         setResizable(false);
-
         this.ArrayProducts = ArrayProducts;
         this.BoxSize = BoxSize;
         Algoritmes = new Algoritme();
@@ -60,6 +59,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         jbCancel.addActionListener(this);
         jbSave.addActionListener(this);
+        vol = getVolume();
+        jlTotalVolumeProducts.setText("" + vol);
         setVisible(true);
         if (t == null) {
             t = new Thread(this, "StartSimulatie");
@@ -145,7 +146,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     private void StartSimulation() {
         ArrayList<Bin> bins = new ArrayList<>();
-        int vol = getVolume();
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             nu = Instant.now().toEpochMilli();
@@ -236,6 +236,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jLabel9 = new javax.swing.JLabel();
         jlFastestAlgorithm = new javax.swing.JLabel();
         jlEfficientAlgorithm = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jlTotalVolumeProducts = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jlBruteforceStatus = new javax.swing.JLabel();
         jlNextFitStatus = new javax.swing.JLabel();
@@ -275,6 +277,10 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
         jlEfficientAlgorithm.setText("Wordt berekend...");
 
+        jLabel10.setText("Totaal volume producten:");
+
+        jlTotalVolumeProducts.setText("0");
+
         javax.swing.GroupLayout jpPanelLayout = new javax.swing.GroupLayout(jpPanel);
         jpPanel.setLayout(jpPanelLayout);
         jpPanelLayout.setHorizontalGroup(
@@ -282,16 +288,15 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             .addGroup(jpPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlEfficientAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-                    .addGroup(jpPanelLayout.createSequentialGroup()
-                        .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7))
-                        .addGap(32, 32, 32)
-                        .addComponent(jlFastestAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlEfficientAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jlFastestAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlTotalVolumeProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jpPanelLayout.setVerticalGroup(
@@ -307,7 +312,11 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jlEfficientAlgorithm))
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jlTotalVolumeProducts))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         jLabel6.setText("Simulatie met algoritme: ");
@@ -409,6 +418,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -427,6 +437,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private javax.swing.JLabel jlFastestAlgorithm;
     private javax.swing.JLabel jlFirstFitStatus;
     private javax.swing.JLabel jlNextFitStatus;
+    private javax.swing.JLabel jlTotalVolumeProducts;
     private javax.swing.JPanel jpPanel;
     private javax.swing.JProgressBar jpProgress;
     // End of variables declaration//GEN-END:variables
