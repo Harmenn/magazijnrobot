@@ -11,7 +11,7 @@ import bpp_simulator.algoritmes.Algoritme;
 public class TekenPanel extends JPanel {
 
     Resultaat result;
-    private int startX, startY, startYItem, colorcounter = 0, volume, volumeDozen;
+    private int startX = 50, startY = 90, startYItem = 90, colorcounter = 0, volume = 0, volumeDozen = 0;
     ArrayList<Bin> bins = new ArrayList<Bin>();
     private Algoritme Algoritme;
 
@@ -22,9 +22,6 @@ public class TekenPanel extends JPanel {
         this.Algoritme = Algrotime;
         this.volumeDozen = VolumeDozen;
         this.setPreferredSize(new java.awt.Dimension(1200, 800));
-        this.startX = 50;
-        this.startY = 50;
-        this.startYItem = 50;
     }
 
     @Override
