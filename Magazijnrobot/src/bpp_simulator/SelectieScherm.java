@@ -9,8 +9,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class SelectieScherm extends javax.swing.JFrame implements ActionListener {
 
-	@SuppressWarnings("unchecked")
-	// <editor-fold defaultstate="collapsed" desc="Generated
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -187,27 +187,27 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	public SelectieScherm() {
-		initComponents();
-		jbStart.addActionListener(this);
-		jbAdd.addActionListener(this);
-		jbReset.addActionListener(this);
-		setVisible(true);
+    public SelectieScherm() {
+        initComponents();
+        jbStart.addActionListener(this);
+        jbAdd.addActionListener(this);
+        jbReset.addActionListener(this);
+        setVisible(true);
 
-	}
+    }
 
-	public void addArray(int aantal, int grootte) {
-		if (aantal > 0 && grootte > 0) {
-			DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
-			for (int i = 0; i < aantal; i++) {
-				ArrayProducts.add(new Product(grootte));
-			}
-			model.addRow(new Object[] { grootte, aantal });
-		} else {
-			JOptionPane.showMessageDialog(null, "De grootte en het aantal moet groter dan 0 zijn", "Foutmelding",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
+    public void addArray(int aantal, int grootte) {
+        if (aantal > 0 && grootte > 0) {
+            DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
+            for (int i = 0; i < aantal; i++) {
+                ArrayProducts.add(new Product(grootte));
+            }
+            model.addRow(new Object[]{grootte, aantal});
+        } else {
+            JOptionPane.showMessageDialog(null, "De grootte en het aantal moet groter dan 0 zijn", "Foutmelding",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JLabel jLabel1;
@@ -228,82 +228,82 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 	private javax.swing.JTextField jtProductSize;
 	private javax.swing.JTable jtProducts;
 	// End of variables declaration//GEN-END:variables
-	private ArrayList<Product> ArrayProducts = new ArrayList<>();
-	private boolean BruteForceEnabled = false;
-	private boolean NextFitEnabled = false;
-	private boolean FirstFitEnabled = false;
-	private boolean BestFitEnabled = false;
-	private boolean EigenAlgoritmeEnabled = false;
+    private ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private boolean BruteForceEnabled = false;
+    private boolean NextFitEnabled = false;
+    private boolean FirstFitEnabled = false;
+    private boolean BestFitEnabled = false;
+    private boolean EigenAlgoritmeEnabled = false;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jbAdd) {
-			int grootte = tryParse(jtProductSize.getText());
-			int aantal = tryParse(jtProductAmount.getText());
-			addArray(aantal, grootte);
-			jtProductAmount.setText("0");
-			jtProductSize.setText("0");
-		} else if (e.getSource() == jbReset) {
-			ResetScherm();
-		} else if (e.getSource() == jbStart) {
-			int inhoud;
-			inhoud = tryParse(jtBinSize.getText());
-			if (inhoud > 0) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbAdd) {
+            int grootte = tryParse(jtProductSize.getText());
+            int aantal = tryParse(jtProductAmount.getText());
+            addArray(aantal, grootte);
+            jtProductAmount.setText("0");
+            jtProductSize.setText("0");
+        } else if (e.getSource() == jbReset) {
+            ResetScherm();
+        } else if (e.getSource() == jbStart) {
+            int inhoud;
+            inhoud = tryParse(jtBinSize.getText());
+            if (inhoud > 0) {
 
-				if (ArrayProducts.size() > 0) {
-					BruteForceEnabled = jcBruteforce.isSelected();
-					NextFitEnabled = jcNextfit.isSelected();
-					FirstFitEnabled = jcFirstfit.isSelected();
-					BestFitEnabled = jcBestfit.isSelected();
-					EigenAlgoritmeEnabled = jcEigenAlgoritme.isSelected();
-					if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled
-							&& !EigenAlgoritmeEnabled) {
-						JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
-								JOptionPane.ERROR_MESSAGE);
-					} else {
-						Simulatie s1 = new Simulatie(ArrayProducts, inhoud, BruteForceEnabled, NextFitEnabled,
-								FirstFitEnabled, BestFitEnabled, EigenAlgoritmeEnabled);
-						setVisible(false);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
-							"Foutmelding", JOptionPane.ERROR_MESSAGE);
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!",
-						"Foutmelding", JOptionPane.ERROR_MESSAGE);
-			}
+                if (ArrayProducts.size() > 0) {
+                    BruteForceEnabled = jcBruteforce.isSelected();
+                    NextFitEnabled = jcNextfit.isSelected();
+                    FirstFitEnabled = jcFirstfit.isSelected();
+                    BestFitEnabled = jcBestfit.isSelected();
+                    EigenAlgoritmeEnabled = jcEigenAlgoritme.isSelected();
+                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled
+                            && !EigenAlgoritmeEnabled) {
+                        JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Simulatie s1 = new Simulatie(this, ArrayProducts, inhoud, BruteForceEnabled, NextFitEnabled,
+                                FirstFitEnabled, BestFitEnabled, EigenAlgoritmeEnabled);
+                        setVisible(false);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
+                            "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!",
+                        "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            }
 
-		}
-	}
+        }
+    }
 
-	public static Integer tryParse(String text) {
-		try {
-			return Integer.parseInt(text);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
+    public static Integer tryParse(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 
-	private void ResetScherm() {
-		int yesnoDialog = JOptionPane.showConfirmDialog(null,
-				"Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION);
-		if (yesnoDialog == JOptionPane.YES_OPTION) {
-			jcBestfit.setSelected(false);
-			jcBruteforce.setSelected(false);
-			jcFirstfit.setSelected(false);
-			jcNextfit.setSelected(false);
-			jtProductAmount.setText("0");
-			jtProductSize.setText("0");
-			jtBinSize.setText("0");
-			DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
-			while (model.getRowCount() > 0) {
-				model.removeRow(0);
-			}
-			for (Product pakket : ArrayProducts) {
-				pakket = null;
-			}
-			ArrayProducts.removeAll(ArrayProducts);
-		}
-	}
+    private void ResetScherm() {
+        int yesnoDialog = JOptionPane.showConfirmDialog(null,
+                "Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION);
+        if (yesnoDialog == JOptionPane.YES_OPTION) {
+            jcBestfit.setSelected(false);
+            jcBruteforce.setSelected(false);
+            jcFirstfit.setSelected(false);
+            jcNextfit.setSelected(false);
+            jtProductAmount.setText("0");
+            jtProductSize.setText("0");
+            jtBinSize.setText("0");
+            DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
+            while (model.getRowCount() > 0) {
+                model.removeRow(0);
+            }
+            for (Product pakket : ArrayProducts) {
+                pakket = null;
+            }
+            ArrayProducts.removeAll(ArrayProducts);
+        }
+    }
 }
