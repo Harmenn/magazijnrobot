@@ -53,6 +53,20 @@ public class SimulatiePanel extends JPanel {
 		System.out.println(coords);
 	}
 	
+	public void setHeight(int height){
+		this.gridHeight = height;
+	}
+	
+	public void setWidth(int width){
+		this.gridWidth = width;
+		repaint();
+	}
+	
+	public void setCoords(ArrayList<Coordinate> coords){
+		this.coords = coords;
+		repaint();
+	}
+	
 	@Override 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

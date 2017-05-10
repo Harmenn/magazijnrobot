@@ -1,8 +1,9 @@
 package bpp_simulator.algoritmes;
 
+import java.util.ArrayList;
+
 import bpp_simulator.Bin;
 import bpp_simulator.Product;
-import java.util.ArrayList;
 
 public class Firstfit extends Algoritme {
 

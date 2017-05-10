@@ -1,12 +1,18 @@
 package bpp_simulator;
 
-import bpp_simulator.algoritmes.Algoritme;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+
+import bpp_simulator.algoritmes.Algoritme;
 
 public class Resultaat extends JFrame {
 

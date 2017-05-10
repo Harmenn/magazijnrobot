@@ -1,14 +1,29 @@
 package bpp_simulator;
 
-import bpp_simulator.algoritmes.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import bpp_simulator.algoritmes.Algoritme;
+import bpp_simulator.algoritmes.Bestfit;
+import bpp_simulator.algoritmes.Bruteforce;
+import bpp_simulator.algoritmes.EigenAlgoritme;
+import bpp_simulator.algoritmes.Firstfit;
+import bpp_simulator.algoritmes.Nextfit;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 

@@ -4,7 +4,6 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class TSPOptTwo extends TSPAlgorithm {

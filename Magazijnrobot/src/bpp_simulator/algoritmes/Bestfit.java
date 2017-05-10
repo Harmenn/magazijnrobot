@@ -1,10 +1,11 @@
 package bpp_simulator.algoritmes;
 
-import bpp_simulator.Bin;
-import bpp_simulator.Product;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import bpp_simulator.Bin;
+import bpp_simulator.Product;
 
 public class Bestfit extends Algoritme {
 

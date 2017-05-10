@@ -1,10 +1,12 @@
 package bpp_simulator;
 
-import bpp_simulator.algoritmes.Algoritme;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
 import javax.swing.JPanel;
+
+import bpp_simulator.algoritmes.Algoritme;
 
 public class TekenPanel extends JPanel {
 
