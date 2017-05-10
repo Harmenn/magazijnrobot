@@ -67,8 +67,8 @@ public class SimulatiePanel extends JPanel {
 		
 		squareWidth = calcWidth/gridWidth;
 		squareHeight = calcHeight/gridHeight;
-		pointWidth = 20;
-		pointHeight = 20;
+		pointWidth = squareWidth/3;
+		pointHeight = squareHeight/3;
 		
         g.setColor(Color.BLACK);
         for(int i = 0; i <= gridWidth; i++) {
@@ -92,13 +92,14 @@ public class SimulatiePanel extends JPanel {
         		g.setColor(Color.RED);
         		drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i+1));
         	}
-
+        	
+    		drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size()-1));
+    		
         	for(int i = 0; i < sortedCoords.size(); i++){
         		g.setColor(Color.BLACK);
         		g.setFont(new Font("TimesRoman", Font.BOLD, 24));
         		g.drawString(Integer.toString(i+1), sortedCoords.get(i).x*squareHeight - (pointHeight/2) + startX, sortedCoords.get(i).y*squareWidth - (pointWidth/2));
         	}
-    		drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size()-1));
         }
 	}
 	

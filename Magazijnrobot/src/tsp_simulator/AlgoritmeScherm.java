@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class AlgoritmeScherm {
 
@@ -35,10 +36,12 @@ public class AlgoritmeScherm {
 	int gridWidth;
 	int gridHeight;
 	ArrayList<Coordinate> coords;
-	public AlgoritmeScherm(int gridWidth, int gridHeight, ArrayList<Coordinate> coords) {
+	JFrame parent;
+	public AlgoritmeScherm(int gridWidth, int gridHeight, ArrayList<Coordinate> coords, JFrame parent) {
 		this.gridHeight = gridHeight;
 		this.gridWidth = gridWidth;
 		this.coords = coords;
+		this.parent = parent;
 		initialize();
 	}
 
@@ -47,7 +50,7 @@ public class AlgoritmeScherm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 684, 500);
+		frame.setBounds(100, 100, 324, 497);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -56,7 +59,7 @@ public class AlgoritmeScherm {
 		frame.getContentPane().add(panel);
 		
 		JRadioButton rdbtnAlgoritme = new JRadioButton("Brute force");
-		rdbtnAlgoritme.setBounds(6, 328, 109, 23);
+		rdbtnAlgoritme.setBounds(6, 328, 180, 23);
 		frame.getContentPane().add(rdbtnAlgoritme);
 		
 		JRadioButton rdbtnNearestNeighbour = new JRadioButton("Nearest Neighbour");
@@ -65,11 +68,11 @@ public class AlgoritmeScherm {
 		frame.getContentPane().add(rdbtnNearestNeighbour);
 		
 		JRadioButton rdbtnoptTour = new JRadioButton("2-opt tour");
-		rdbtnoptTour.setBounds(6, 380, 109, 23);
+		rdbtnoptTour.setBounds(6, 380, 163, 23);
 		frame.getContentPane().add(rdbtnoptTour);
 		
 		JRadioButton rdbtnEigen = new JRadioButton("Eigen");
-		rdbtnEigen.setBounds(6, 405, 109, 23);
+		rdbtnEigen.setBounds(6, 405, 163, 23);
 		frame.getContentPane().add(rdbtnEigen);
 
 	    ButtonGroup group = new ButtonGroup();
@@ -79,24 +82,31 @@ public class AlgoritmeScherm {
 	    group.add(rdbtnEigen);
 		
 		JButton btnNewButton = new JButton("Start Simulatie");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				long startTime = System.currentTimeMillis();
 				if(rdbtnNearestNeighbour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.NEAREST_NEIGBOUR_ALGORITHM);
+					rdbtnNearestNeighbour.setText("Nearest Neighbour - "+(System.currentTimeMillis()-startTime)+"ms");
 				} else if(rdbtnAlgoritme.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.BRUTE_FORCE_ALGORITHM);
+					rdbtnAlgoritme.setText("Brute Force - "+(System.currentTimeMillis()-startTime)+"ms");
 				} else if(rdbtnoptTour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
+					rdbtnoptTour.setText("Two Opt - "+(System.currentTimeMillis()-startTime)+"ms");
 				} else if(rdbtnEigen.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
+					rdbtnEigen.setText("Eigen - "+(System.currentTimeMillis()-startTime)+"ms");
 				}
 				frame.repaint();
 			}
 		});
-		btnNewButton.setBounds(10, 435, 105, 23);
+		btnNewButton.setBounds(175, 405, 134, 23);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnSlaSimulatieOp = new JButton("Save Simulatie");
+		JButton btnSlaSimulatieOp = new JButton("Simulatie Opslaan");
+		btnSlaSimulatieOp.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnSlaSimulatieOp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
@@ -162,8 +172,18 @@ public class AlgoritmeScherm {
 					  }
 			}
 		});
-		btnSlaSimulatieOp.setBounds(125, 435, 105, 23);
+		btnSlaSimulatieOp.setBounds(175, 435, 131, 23);
 		frame.getContentPane().add(btnSlaSimulatieOp);
+		
+		JButton btnTerug = new JButton("Terug");
+		btnTerug.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				parent.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnTerug.setBounds(6, 435, 71, 23);
+		frame.getContentPane().add(btnTerug);
 		
 		frame.setVisible(true);
 	}

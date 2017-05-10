@@ -149,7 +149,7 @@ public class SelectieScherm {
 		btnVoltooien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmSelecteerTspParameters.setVisible(false);
-				AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()), Integer.parseInt(txtHeight.getText()), punten);
+				AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()), Integer.parseInt(txtHeight.getText()), punten, frmSelecteerTspParameters);
 			}
 		});
 		btnVoltooien.setBounds(159, 281, 95, 23);

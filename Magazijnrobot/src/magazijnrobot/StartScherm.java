@@ -102,6 +102,24 @@ public class StartScherm {
 		tablePanel.setBounds(150, 11, 408, 228);
 		frmMagazijnrobot.getContentPane().add(tablePanel);
 		
+		JButton btnTspSimulatie = new JButton("TSP Simulatie");
+		btnTspSimulatie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tsp_simulator.SelectieScherm tsp = new tsp_simulator.SelectieScherm();
+			}
+		});
+		btnTspSimulatie.setBounds(10, 206, 130, 23);
+		frmMagazijnrobot.getContentPane().add(btnTspSimulatie);
+		
+		JButton btnBppSimulatie = new JButton("BPP Simulatie");
+		btnBppSimulatie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bpp_simulator.SelectieScherm bpp = new bpp_simulator.SelectieScherm();
+			}
+		});
+		btnBppSimulatie.setBounds(10, 236, 130, 23);
+		frmMagazijnrobot.getContentPane().add(btnBppSimulatie);
+		
 		
 		for(Product i : producten) {
 			Object[] product = {i.getId(), i.getOmschrijving(), i.getPrijs(), i.getGrootte(), i.getStatus()};
