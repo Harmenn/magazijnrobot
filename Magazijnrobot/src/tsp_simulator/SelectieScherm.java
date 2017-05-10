@@ -70,7 +70,7 @@ public class SelectieScherm {
 		frmSelecteerTspParameters.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelecteerTspParameters.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Grootte veld:");
+		JLabel lblNewLabel = new JLabel("Grootte veld: ");
 		lblNewLabel.setBounds(10, 21, 139, 14);
 		frmSelecteerTspParameters.getContentPane().add(lblNewLabel);
 		
