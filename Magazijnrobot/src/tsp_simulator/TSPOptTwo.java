@@ -18,10 +18,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 	}
 	
 	public ArrayList<Coordinate> getSortedList() {
-		fixIntersections();
-		//fixIntersections();
-		//fixIntersections();
-		
+		while(fixIntersections()) {};		
 		return coords;
 	}
 	private static ArrayList<Integer> lastFixes = new ArrayList<Integer>();
@@ -33,7 +30,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 			int cor_3_i;
 			int cor_4_i;
 			
-
+			
 			if(i>=coords.size()) {
 				cor_1_i = 0;
 			} else {
@@ -80,13 +77,18 @@ public class TSPOptTwo extends TSPAlgorithm {
 				
 				
 				System.out.println(count + " duplicate points");
+				if(count==1) continue;
 				if(count==2) continue;
-				
 				
 				Coordinate cor_1 = coords.get(cor_1_i);
 				Coordinate cor_2 = coords.get(cor_2_i);
 				Coordinate cor_3 = coords.get(cor_3_i);
 				Coordinate cor_4 = coords.get(cor_4_i);
+				
+				/*Coordinate cor_1 = coords.get(i);
+				Coordinate cor_2 = coords.get((i+1) % (coords.size()-1));
+				Coordinate cor_3 = coords.get(j);
+				Coordinate cor_4 = coords.get((j+1) % (coords.size()-1));*/
 				
 				int tmpX_1 = cor_1.x * 100;
 				int tmpY_1 = cor_1.y * 100;
@@ -143,7 +145,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 					for(int tmpIntWithoutAName : lastFixes) {
 						if(curSum==tmpIntWithoutAName) tmpBooleanWithoutAName=true;
 					}
-					if(lastFixes.size()==0) {
+					/*if(lastFixes.size()==0) {
 						System.out.println("Last fix is zero");
 						lastFixes.add(curSum);
 					} else if (tmpBooleanWithoutAName) {
@@ -159,7 +161,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 					} else {
 						alreadyFixed = false;
 						lastFixes.add(curSum);;
-					}
+					}*/
 					//System.out.println("Last fix now is: "+lastFixes.get(lastFixes.size()-1));
 					
 					System.out.println("Found intersection ("+(cor_1_i+1)+", "+ (cor_2_i+1) +")-("+(cor_3_i+1)+", "+ (cor_4_i+1) +")");
@@ -183,7 +185,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 				
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	private boolean checkDuplicateCoordinates(ArrayList<Coordinate> coordList) { 
