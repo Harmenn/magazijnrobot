@@ -21,6 +21,8 @@ public class StartScherm {
 	private JFrame frmMagazijnrobot;
 	private JTable table;
 
+	SerialEvent event = new SerialEvent();
+
 	/**
 	 * Launch the application.
 	 */
@@ -49,48 +51,49 @@ public class StartScherm {
 	 */
 	private void initialize() {
 		frmMagazijnrobot = new JFrame();
-		try {frmMagazijnrobot.setIconImage(ImageIO.read(new File("img/windesheim_icon.png")));} catch (IOException e1) {}
+		try {
+			frmMagazijnrobot.setIconImage(ImageIO.read(new File("img/windesheim_icon.png")));
+		} catch (IOException e1) {
+		}
 		frmMagazijnrobot.setTitle("Magazijnrobot");
 		frmMagazijnrobot.setBounds(100, 100, 573, 300);
 		frmMagazijnrobot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMagazijnrobot.getContentPane().setLayout(null);
-		
+
 		JLabel lblGekozenOrder = new JLabel("Gekozen order");
 		lblGekozenOrder.setBounds(10, 45, 130, 14);
 		frmMagazijnrobot.getContentPane().add(lblGekozenOrder);
-		
+
 		JButton btnStart = new JButton("Start");
 		btnStart.setBounds(10, 70, 66, 23);
 		frmMagazijnrobot.getContentPane().add(btnStart);
-		
+
 		JButton btnNewButton = new JButton("Stop");
 		btnNewButton.setBounds(81, 70, 59, 23);
 		frmMagazijnrobot.getContentPane().add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+
 			}
 		});
 
-		
+		btnNewButton.setBounds(81, 70, 59, 23);
+		frmMagazijnrobot.getContentPane().add(btnNewButton);
+
 		JButton btnNieuweOrder = new JButton("Nieuwe order");
 		btnNieuweOrder.setBounds(10, 11, 130, 29);
 		frmMagazijnrobot.getContentPane().add(btnNieuweOrder);
-		
+
 		Product p1 = new Product(1, "test", (float) 1.00, 1, "tset");
 		ArrayList<Product> tmpProducten = new ArrayList();
 		tmpProducten.add(p1);
 		Order order = new Order(tmpProducten);
-		
-		
+
 		ArrayList<Product> producten = order.getProducten();
-		Object[][] data = {{}};
-		String[] columnNames = {"#",
-                "Omschrijving",
-                "Prijs",
-                "Grootte",
-                "Status"};
-		
+		Object[][] data = { {} };
+		String[] columnNames = { "#", "Omschrijving", "Prijs", "Grootte", "Status" };
+
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		model.removeRow(0);
 		JPanel tablePanel = new JPanel(new BorderLayout());
@@ -99,10 +102,27 @@ public class StartScherm {
 		tablePanel.add(table.getTableHeader(), BorderLayout.NORTH);
 		tablePanel.setBounds(150, 11, 408, 228);
 		frmMagazijnrobot.getContentPane().add(tablePanel);
-		
-		
-		for(Product i : producten) {
-			Object[] product = {i.getId(), i.getOmschrijving(), i.getPrijs(), i.getGrootte(), i.getStatus()};
+
+		JButton btnTspSimulatie = new JButton("TSP Simulatie");
+		btnTspSimulatie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tsp_simulator.SelectieScherm tsp = new tsp_simulator.SelectieScherm();
+			}
+		});
+		btnTspSimulatie.setBounds(10, 206, 130, 23);
+		frmMagazijnrobot.getContentPane().add(btnTspSimulatie);
+
+		JButton btnBppSimulatie = new JButton("BPP Simulatie");
+		btnBppSimulatie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bpp_simulator.SelectieScherm bpp = new bpp_simulator.SelectieScherm();
+			}
+		});
+		btnBppSimulatie.setBounds(10, 236, 130, 23);
+		frmMagazijnrobot.getContentPane().add(btnBppSimulatie);
+
+		for (Product i : producten) {
+			Object[] product = { i.getId(), i.getOmschrijving(), i.getPrijs(), i.getGrootte(), i.getStatus() };
 			model.addRow(product);
 		}
 	}

@@ -1,14 +1,29 @@
 package bpp_simulator;
 
-import bpp_simulator.algoritmes.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import bpp_simulator.algoritmes.Algoritme;
+import bpp_simulator.algoritmes.Bestfit;
+import bpp_simulator.algoritmes.Bruteforce;
+import bpp_simulator.algoritmes.EigenAlgoritme;
+import bpp_simulator.algoritmes.Firstfit;
+import bpp_simulator.algoritmes.Nextfit;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
@@ -25,10 +40,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private Bestfit BestFitAlgoritme;
     private EigenAlgoritme EigenAlgoritme;
     private Resultaat BruteForceResult, NextFitResult, FirstFitResult, BestFitResult, EigenFitResult;
+    private SelectieScherm selectieScherm;
 
-    public Simulatie(ArrayList<Product> ArrayProducts, int BoxSize, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
+    public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> ArrayProducts, int BoxSize, boolean BruteForceEnabled, boolean NextFitEnabled,
+            boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
         initComponents();
         setResizable(false);
+        this.selectieScherm = selectieScherm;
         this.ArrayProducts = ArrayProducts;
         this.BoxSize = BoxSize;
         Algoritmes = new Algoritme();
@@ -59,6 +77,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         jbCancel.addActionListener(this);
         jbSave.addActionListener(this);
+        jbContinue.addActionListener(this);
         vol = getVolume();
         jlTotalVolumeProducts.setText("" + vol);
         setVisible(true);
@@ -88,11 +107,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jfChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         jfChooser.setAcceptAllFileFilterUsed(false);
         if (jfChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\" + jfChooser.getSelectedFile().getName();
+            String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\"
+                    + jfChooser.getSelectedFile().getName();
             try {
                 pwFileWriter = new PrintWriter(new File(locatie + "\\Resultaat.csv"));
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Er ging iets mis tijdens het opslaan", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Er ging iets mis tijdens het opslaan", "Foutmelding",
+                        JOptionPane.ERROR_MESSAGE);
             }
             pwFileWriter.write(endResult.toString());
             pwFileWriter.close();
@@ -153,7 +174,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 Algoritme1.setName("Nextfit");
                 jlNextFitStatus.setText("Uitvoeren...");
                 jlCurrentSimulation.setText(Algoritme1.getName());
-
                 bins = (NextFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlNextFitStatus.setText("Voltooid");
                 ArrayResults.add(NextFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
@@ -209,6 +229,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         System.out.println(endResult);
         jbCancel.setEnabled(false);
         jbSave.setEnabled(true);
+        jbContinue.setEnabled(true);
         CalculateAlgorithms();
     }
 
@@ -221,6 +242,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -247,6 +269,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jLabel4 = new javax.swing.JLabel();
         jlEigenFitStatus = new javax.swing.JLabel();
         jbSave = new javax.swing.JButton();
+        jbContinue = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
@@ -338,14 +361,22 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jbSave.setText("Resultaten opslaan");
         jbSave.setEnabled(false);
 
+        jbContinue.setText("Doorgaan");
+        jbContinue.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbContinue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -369,9 +400,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jlCurrentSimulation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jbCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -408,7 +437,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                     .addComponent(jpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbCancel)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbCancel)
+                        .addComponent(jbContinue))
                     .addComponent(jpProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -428,6 +459,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton jbCancel;
+    private javax.swing.JButton jbContinue;
     private javax.swing.JButton jbSave;
     private javax.swing.JLabel jlBestFitStatus;
     private javax.swing.JLabel jlBruteforceStatus;
@@ -515,9 +547,21 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             jlCurrentSimulation.setText("Geannuleerd");
             jbSave.setEnabled(true);
             setTitle("Bin Packing Problem Simulation - Geannuleerd");
-        }
-        if (e.getSource() == jbSave) {
+            jbContinue.setEnabled(true);
+        } else if (e.getSource() == jbSave) {
             SaveResults();
+        } else if (e.getSource() == jbContinue) {
+            this.setVisible(false);
+            ArrayResults.removeAll(ArrayResults);
+            BruteForceResult = null;
+            NextFitResult = null;
+            BestFitResult = null;
+            EigenFitResult = null;
+            FirstFitResult = null;
+            ArrayProducts = null;
+            endResult = null;
+            selectieScherm.setVisible(true);
+            dispose();
         }
     }
 }
