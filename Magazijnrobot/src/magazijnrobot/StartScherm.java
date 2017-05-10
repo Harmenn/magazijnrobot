@@ -21,6 +21,7 @@ public class StartScherm {
 	private JFrame frmMagazijnrobot;
 	private JTable table;
 
+	SerialEvent event = new SerialEvent();
 	/**
 	 * Launch the application.
 	 */
@@ -66,6 +67,9 @@ public class StartScherm {
 		JButton btnNewButton = new JButton("Stop");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					event.sendMessage("test");
+				}catch(Exception ee) {}
 			}
 		});
 		btnNewButton.setBounds(81, 70, 59, 23);

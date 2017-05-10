@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.concurrent.TimeUnit;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -14,7 +15,7 @@ public class SerialEvent implements SerialPortEventListener  {
 	public boolean connected = false;
     private SerialPort serialPort = null;
     private CommPortIdentifier portId = null;
-    private String portName = "COM1";
+    private String portName = "COM3";
     
     
 	public SerialEvent() {
@@ -28,10 +29,11 @@ public class SerialEvent implements SerialPortEventListener  {
 	        	System.out.println(currPortId.getName());
 	            if ( currPortId.getName().equals(portName) || currPortId.getName().startsWith(portName)) 
 	            {
-	            	//System.out.println("Found port");
+	            	System.out.println("Found port");
 	                serialPort = (SerialPort) currPortId.open("fastDel", 1000);
 	                portId = currPortId;
 	                connected = true;
+					System.out.println(connected);
 	                break;
 	            }
 		        
@@ -44,6 +46,7 @@ public class SerialEvent implements SerialPortEventListener  {
 	    	
 	    	serialPort.addEventListener(this);
 	    	serialPort.notifyOnDataAvailable(true);
+			TimeUnit.SECONDS.sleep(2);
 	    	
 	    } catch(Exception e) {
 			System.out.println("Finished With an error");
@@ -83,6 +86,7 @@ public class SerialEvent implements SerialPortEventListener  {
 	}
 
 	public void sendMessage(String message) throws IOException {
+
     	OutputStream output = serialPort.getOutputStream();
     	output.write( message.getBytes() );
 	}
