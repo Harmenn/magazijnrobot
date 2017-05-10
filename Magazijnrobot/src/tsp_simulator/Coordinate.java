@@ -18,7 +18,24 @@ public class Coordinate {
 	  
   }
   
-  public String toString() {
-	  return "x: " + this.x + ", y: " + this.y;
-  }
+	public String toString() {
+		return "x: " + this.x + ", y: " + this.y;
+	}
+  
+	public int distanceBetween(Coordinate c) {
+		int distanceX;
+		int distanceY;
+		if(this.x > c.x) {
+			distanceX = this.x - c.x;
+		} else {
+			distanceX = c.x - this.x;
+		}
+
+		if(this.y > c.y) {
+			distanceY = this.y - c.y;
+		} else {
+			distanceY = c.y - this.y;
+		}
+		return distanceX + distanceY;
+	}
 }
