@@ -80,14 +80,15 @@ public class StartScherm {
 		frmMagazijnrobot.getContentPane().add(btnStart);
 
 		JButton btnNewButton = new JButton("Stop");
+		btnNewButton.setBounds(81, 70, 59, 23);
+		frmMagazijnrobot.getContentPane().add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					event.sendMessage("test");
-				} catch (Exception ee) {
-				}
+
+
 			}
 		});
+
 		btnNewButton.setBounds(81, 70, 59, 23);
 		frmMagazijnrobot.getContentPane().add(btnNewButton);
 
