@@ -41,17 +41,17 @@ public class TekenPanel extends JPanel {
         startX = 50;
         startY = 90;
         startYItem = 90;
-        g.drawString("Algoritme: " + Algoritme.getNaam() + "    Tijdsduur: " + Algoritme.getEindtijd() + "ms", startX, 20);
+        g.drawString("Algoritme: " + Algoritme.getName() + "    Tijdsduur: " + Algoritme.getEndTime() + "ms", startX, 20);
         g.drawString("Aantal dozen: " + bins.size(), startX, 40);
         g.drawString("Totaal volume producten: " + volume + "     Totaal volume dozen: " + volumeDozen, startX, 60);
 
         for (Bin bin : bins) {
             g.setColor(Color.BLACK);
-            g.drawString("Grootte: " + bin.getHuidigeGrootte(), startX, startY - 10);
-            g.drawRect(startX, startY, 50, bin.getMaxGrootte() * 10);
+            g.drawString("Grootte: " + bin.getCurrentSize(), startX, startY - 10);
+            g.drawRect(startX, startY, 50, bin.getMaxSize() * 10);
 
             startYItem = startY;
-            for (Product product : bin.getProducten()) {
+            for (Product product : bin.getProducts()) {
                 if (index == 3) {
                     index = 0;
                 }

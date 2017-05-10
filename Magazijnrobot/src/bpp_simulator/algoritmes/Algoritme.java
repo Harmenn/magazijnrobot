@@ -5,23 +5,23 @@ import java.util.ArrayList;
 public class Algoritme {
 
     protected ArrayList<Algoritme> Algoritmes = new ArrayList<>();
-    private String naam;
-    private long eindtijd;
+    private String name;
+    private long EndTime;
 
-    public String getNaam() {
-        return naam;
+    public String getName() {
+        return name;
     }
 
-    public long getEindtijd() {
-        return eindtijd;
+    public long getEndTime() {
+        return EndTime;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setName(String naam) {
+        this.name = naam;
     }
 
-    public void setEindtijd(long eindtijd) {
-        this.eindtijd = eindtijd;
+    public void setEndTime(long eindtijd) {
+        this.EndTime = eindtijd;
     }
 
     public ArrayList<Algoritme> getAlgoritmes() {

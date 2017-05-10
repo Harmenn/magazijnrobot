@@ -1,39 +1,27 @@
 package bpp_simulator;
 
 import bpp_simulator.algoritmes.Algoritme;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-/**
- *
- * @author leroy
- */
 public class Resultaat extends JFrame {
 
     ArrayList<Bin> Bins = new ArrayList<>();
-    private JButton jbOpslaan;
+    private JButton jbSave;
 
-    public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int VolumeDozen) {
+    public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int VolumeBoxes) {
         this.Bins = Bins;
         setSize(1200, 800);
         setTitle("Resultaat");
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-        TekenPanel tp = new TekenPanel(this, Bins, Algoritme, Volume, VolumeDozen);
-        JScrollPane scrollFrame = new JScrollPane(tp);
+        TekenPanel drawPanel = new TekenPanel(this, Bins, Algoritme, Volume, VolumeBoxes);
+        JScrollPane scrollFrame = new JScrollPane(drawPanel);
 
         if (Bins.size() < 30) {
             scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -41,21 +29,21 @@ public class Resultaat extends JFrame {
             scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         }
         scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        tp.setAutoscrolls(true);
+        drawPanel.setAutoscrolls(true);
         scrollFrame.setPreferredSize(new Dimension(1200, 800));
         scrollFrame.setMinimumSize(new Dimension(1200, 800));
         this.add(scrollFrame);
         setResizable(false);
     }
 
-    public void Opslaan(String Locatie) {
-        //
+    public void SaveScreen(String Location) {
+        // http://stackoverflow.com/questions/5655908/export-jpanel-graphics-to-png-or-gif-or-jpg
         BufferedImage bi = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         this.paint(g);
         g.dispose();
         try {
-            ImageIO.write(bi, "png", new File(Locatie));
+            ImageIO.write(bi, "png", new File(Location));
         } catch (Exception er) {
         }
     }

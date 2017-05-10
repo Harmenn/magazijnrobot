@@ -16,7 +16,7 @@ public class Firstfit extends Algoritme {
                 Dozen.add(new Bin());
             }
             for (Bin doos : Dozen) {
-                berekening = doos.getHuidigeGrootte() + product.getLength();
+                berekening = doos.getCurrentSize() + product.getLength();
                 if (berekening <= grootte) {
                     doos.addProduct(product);
                     continue producttenloop;
