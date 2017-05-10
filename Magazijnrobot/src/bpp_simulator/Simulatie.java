@@ -1,25 +1,21 @@
 package bpp_simulator;
 
-import bpp_simulator.algoritmes.Nextfit;
-import bpp_simulator.algoritmes.Bestfit;
-import bpp_simulator.algoritmes.EigenAlgoritme;
-import bpp_simulator.algoritmes.Bruteforce;
-import bpp_simulator.algoritmes.Firstfit;
-import bpp_simulator.algoritmes.Algoritme;
+import bpp_simulator.algoritmes.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.io.*;
 import java.time.Instant;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
-    private ArrayList<Product> ArrayPakketten = new ArrayList<>();
-    private int DoosInhoud;
-    private StringBuilder eindResultaat = new StringBuilder();
+    private ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private ArrayList<Resultaat> ArrayResults = new ArrayList<>();
+    private int BoxSize;
+    private StringBuilder endResult = new StringBuilder();
 
     private Thread t;
     private Algoritme Algoritmes;
@@ -30,12 +26,12 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private EigenAlgoritme EigenAlgoritme;
     private Resultaat BruteForceResult, NextFitResult, FirstFitResult, BestFitResult, EigenFitResult;
 
-    public Simulatie(ArrayList<Product> ArrayPakketten, int DoosInhoud, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
+    public Simulatie(ArrayList<Product> ArrayProducts, int BoxSize, boolean BruteForceEnabled, boolean NextFitEnabled, boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
         initComponents();
         setResizable(false);
 
-        this.ArrayPakketten = ArrayPakketten;
-        this.DoosInhoud = DoosInhoud;
+        this.ArrayProducts = ArrayProducts;
+        this.BoxSize = BoxSize;
         Algoritmes = new Algoritme();
         if (NextFitEnabled) {
             jlNextFitStatus.setText("In wachtrij");
@@ -59,59 +55,84 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         if (BruteForceEnabled) {
             jlBruteforceStatus.setText("In wachtrij");
-            BruteForceAlgoritme = new Bruteforce(ArrayPakketten, DoosInhoud);
+            BruteForceAlgoritme = new Bruteforce(ArrayProducts, BoxSize);
             Algoritmes.addAlgoritme(BruteForceAlgoritme);
         }
-        jbAnnuleren.addActionListener(this);
-        jbOpslaan.addActionListener(this);
+        jbCancel.addActionListener(this);
+        jbSave.addActionListener(this);
         setVisible(true);
         if (t == null) {
             t = new Thread(this, "StartSimulatie");
             t.start();
         }
-        eindResultaat.append("Naam Algoritme");
-        eindResultaat.append(';');
-        eindResultaat.append("Aantal dozen");
-        eindResultaat.append(';');
-        eindResultaat.append("Tijd (ms)");
-        eindResultaat.append('\n');
-        eindResultaat.append('\n');
+        endResult.append("Naam Algoritme");
+        endResult.append(';');
+        endResult.append("Aantal dozen");
+        endResult.append(';');
+        endResult.append("Tijd (ms)");
+        endResult.append('\n');
+        endResult.append('\n');
     }
 
-    public int getDoosInhoud() {
-        return DoosInhoud;
+    public int getBoxSize() {
+        return BoxSize;
     }
 
-    private void ResultatenOpslaan() {
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(new File("Resultaat.csv"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Simulatie.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        pw.write(eindResultaat.toString());
-        pw.close();
-        System.out.println("done!");
-        if (BruteForceResult != null) {
-            BruteForceResult.Opslaan("bruteforce.png");
-        }
-        if (NextFitResult != null) {
-            NextFitResult.setVisible(true);
-            NextFitResult.Opslaan("nextfit.png");
-            NextFitResult.setVisible(false);
+    private void SaveResults() {
+        PrintWriter pwFileWriter = null;
+        JFileChooser jfChooser;
+        jfChooser = new JFileChooser();
+        jfChooser.setCurrentDirectory(new java.io.File("."));
+        jfChooser.setDialogTitle("Selecteer map");
+        jfChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jfChooser.setAcceptAllFileFilterUsed(false);
+        if (jfChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\" + jfChooser.getSelectedFile().getName();
+            try {
+                pwFileWriter = new PrintWriter(new File(locatie + "\\Resultaat.csv"));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Er ging iets mis tijdens het opslaan", "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            }
+            pwFileWriter.write(endResult.toString());
+            pwFileWriter.close();
+            if (BruteForceResult != null) {
+                BruteForceResult.setVisible(true);
+                BruteForceResult.SaveScreen(locatie + "\\Bruteforce.png");
+                BruteForceResult.setVisible(false);
+            }
+            if (NextFitResult != null) {
+                NextFitResult.setVisible(true);
+                NextFitResult.SaveScreen(locatie + "\\Nextfit.png");
+                NextFitResult.setVisible(false);
+            }
+            if (BestFitResult != null) {
+                BestFitResult.setVisible(true);
+                BestFitResult.SaveScreen(locatie + "\\Bestfit.png");
+                BestFitResult.setVisible(false);
+            }
+            if (FirstFitResult != null) {
+                FirstFitResult.setVisible(true);
+                FirstFitResult.SaveScreen(locatie + "\\Firstfit.png");
+                FirstFitResult.setVisible(false);
+            }
+            if (EigenFitResult != null) {
+                EigenFitResult.setVisible(true);
+                EigenFitResult.SaveScreen(locatie + "\\EigenFit.png");
+                EigenFitResult.setVisible(false);
+            }
         }
     }
 
     private void AppendResultaat(String naam, int grootte, long tijdsduur) {
-        eindResultaat.append(naam);
-        eindResultaat.append(';');
-        eindResultaat.append(grootte);
-        eindResultaat.append(';');
-        eindResultaat.append(tijdsduur);
-        eindResultaat.append('\n');
+        endResult.append(naam);
+        endResult.append(';');
+        endResult.append(grootte);
+        endResult.append(';');
+        endResult.append(tijdsduur);
+        endResult.append('\n');
     }
 
-    private void MaakHyperlink(javax.swing.JLabel label) {
+    private void MakeHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
         Font font = label.getFont();
@@ -122,77 +143,78 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    private void StartSimulatie() {
-        ArrayList<Bin> dozen = new ArrayList<>();
+    private void StartSimulation() {
+        ArrayList<Bin> bins = new ArrayList<>();
         int vol = getVolume();
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             nu = Instant.now().toEpochMilli();
             if (Algoritme1 instanceof Nextfit) {
-                Algoritme1.setNaam("Nextfit");
+                Algoritme1.setName("Nextfit");
                 jlNextFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
+                jlCurrentSimulation.setText(Algoritme1.getName());
 
-                dozen = (NextFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                bins = (NextFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlNextFitStatus.setText("Voltooid");
-                NextFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
-                MaakHyperlink(jlNextFitStatus);
+                ArrayResults.add(NextFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
+                MakeHyperlink(jlNextFitStatus);
             }
             if (Algoritme1 instanceof Firstfit) {
-                Algoritme1.setNaam("Firstfit");
+                Algoritme1.setName("Firstfit");
                 jlFirstFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
-                dozen = (FirstFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                jlCurrentSimulation.setText(Algoritme1.getName());
+                bins = (FirstFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlFirstFitStatus.setText("Voltooid");
-                FirstFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
-                MaakHyperlink(jlFirstFitStatus);
+                ArrayResults.add(FirstFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
+                MakeHyperlink(jlFirstFitStatus);
             }
             if (Algoritme1 instanceof Bestfit) {
-                Algoritme1.setNaam("Bestfit");
+                Algoritme1.setName("Bestfit");
                 jlBestFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
-                dozen = (BestFitAlgoritme.start(ArrayPakketten, DoosInhoud));
+                jlCurrentSimulation.setText(Algoritme1.getName());
+                bins = (BestFitAlgoritme.start(ArrayProducts, BoxSize));
                 jlBestFitStatus.setText("Voltooid");
-                BestFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
-                MaakHyperlink(jlBestFitStatus);
+                ArrayResults.add(BestFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
+                MakeHyperlink(jlBestFitStatus);
             }
             if (Algoritme1 instanceof EigenAlgoritme) {
-                Algoritme1.setNaam("Eigenfit");
+                Algoritme1.setName("Eigenfit");
                 nu = Instant.now().toEpochMilli();
                 jlEigenFitStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
-                dozen = (EigenAlgoritme.start(ArrayPakketten, DoosInhoud));
+                jlCurrentSimulation.setText(Algoritme1.getName());
+                bins = (EigenAlgoritme.start(ArrayProducts, BoxSize));
                 jlEigenFitStatus.setText("Voltooid");
-                EigenFitResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
-                MaakHyperlink(jlEigenFitStatus);
+                ArrayResults.add(EigenFitResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
+                MakeHyperlink(jlEigenFitStatus);
             }
             if (Algoritme1 instanceof Bruteforce) {
-                Algoritme1.setNaam("Bruteforce");
+                Algoritme1.setName("Bruteforce");
                 nu = Instant.now().toEpochMilli();
                 jlBruteforceStatus.setText("Uitvoeren...");
-                jlHuidigeSimulatie.setText(Algoritme1.getNaam());
-                dozen = (BruteForceAlgoritme.starten());
+                jlCurrentSimulation.setText(Algoritme1.getName());
+                bins = (BruteForceAlgoritme.start());
                 jlBruteforceStatus.setText("Voltooid");
-                MaakHyperlink(jlBruteforceStatus);
-                BruteForceResult = new Resultaat(dozen, Algoritme1, vol, dozen.size() * DoosInhoud);
+                MakeHyperlink(jlBruteforceStatus);
+                ArrayResults.add(BruteForceResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
             }
-            jProgressBar1.setIndeterminate(true);
+            jpProgress.setIndeterminate(true);
             tijdsduur = Instant.now().toEpochMilli() - nu;
-            AppendResultaat(Algoritme1.getNaam(), dozen.size(), tijdsduur);
-            Algoritme1.setEindtijd(tijdsduur);
+            AppendResultaat(Algoritme1.getName(), bins.size(), tijdsduur);
+            Algoritme1.setEndTime(tijdsduur);
         }
-        jProgressBar1.setIndeterminate(false);
-        jProgressBar1.setValue(100);
+        jpProgress.setIndeterminate(false);
+        jpProgress.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
-        jlHuidigeSimulatie.setText("Voltooid");
-        System.out.println(eindResultaat);
-        jbAnnuleren.setEnabled(false);
-        jbOpslaan.setEnabled(true);
+        jlCurrentSimulation.setText("Voltooid");
+        System.out.println(endResult);
+        jbCancel.setEnabled(false);
+        jbSave.setEnabled(true);
+        CalculateAlgorithms();
     }
 
     private int getVolume() {
         int vol = 0;
-        for (Product product : ArrayPakketten) {
+        for (Product product : ArrayProducts) {
             vol += product.getLength();
         }
         return vol;
@@ -202,74 +224,93 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jlGrootte = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jlAantal = new javax.swing.JLabel();
-        jlBruteForce = new javax.swing.JLabel();
-        jlNextFit = new javax.swing.JLabel();
-        jlFirstFit = new javax.swing.JLabel();
-        jlBestFit = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jbAnnuleren = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jlProgressie = new javax.swing.JLabel();
+        jpProgress = new javax.swing.JProgressBar();
+        jbCancel = new javax.swing.JButton();
+        jpPanel = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jlFastestAlgorithm = new javax.swing.JLabel();
+        jlEfficientAlgorithm = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jlBruteforceStatus = new javax.swing.JLabel();
         jlNextFitStatus = new javax.swing.JLabel();
         jlFirstFitStatus = new javax.swing.JLabel();
         jlBestFitStatus = new javax.swing.JLabel();
-        jlHuidigeSimulatie = new javax.swing.JLabel();
-        jlEigenFit = new javax.swing.JLabel();
+        jlCurrentSimulation = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jlEigenFitStatus = new javax.swing.JLabel();
-        jbOpslaan = new javax.swing.JButton();
+        jbSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
 
-        jLabel1.setText("Huidig product:");
+        jLabel5.setText("Brute force");
 
-        jLabel2.setText("Grootte:");
+        jLabel1.setText("Next fit");
 
-        jlGrootte.setText("x");
+        jLabel2.setText("First fit");
 
-        jLabel3.setText("Aantal:");
+        jLabel3.setText("Best fit");
 
-        jlAantal.setText("x");
+        jpProgress.setForeground(new java.awt.Color(0, 204, 0));
+        jpProgress.setValue(50);
 
-        jlBruteForce.setText("Brute force");
+        jbCancel.setText("Annuleren");
 
-        jlNextFit.setText("Next fit");
+        jpPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jlFirstFit.setText("First fit");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel7.setText("Resultaten:");
 
-        jlBestFit.setText("Best fit");
+        jLabel8.setText("Snelste algoritme:");
 
-        jLabel4.setText("Product ");
+        jLabel9.setText("Efficiëntste algoritme:");
 
-        jProgressBar1.setForeground(new java.awt.Color(0, 204, 0));
-        jProgressBar1.setValue(50);
+        jlFastestAlgorithm.setText("Wordt berekend...");
 
-        jbAnnuleren.setText("Annuleren");
+        jlEfficientAlgorithm.setText("Wordt berekend...");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+        javax.swing.GroupLayout jpPanelLayout = new javax.swing.GroupLayout(jpPanel);
+        jpPanel.setLayout(jpPanelLayout);
+        jpPanelLayout.setHorizontalGroup(
+            jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jlEfficientAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
+                    .addGroup(jpPanelLayout.createSequentialGroup()
+                        .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addGap(32, 32, 32)
+                        .addComponent(jlFastestAlgorithm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+        jpPanelLayout.setVerticalGroup(
+            jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jlFastestAlgorithm))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jlEfficientAlgorithm))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
-        jLabel5.setText("Simulatie met algoritme: ");
-
-        jlProgressie.setText("0 van 0");
+        jLabel6.setText("Simulatie met algoritme: ");
 
         jlBruteforceStatus.setText("Wordt niet uitgevoerd");
 
@@ -279,14 +320,14 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
         jlBestFitStatus.setText("Wordt niet uitgevoerd");
 
-        jlHuidigeSimulatie.setText("x");
+        jlCurrentSimulation.setText("x");
 
-        jlEigenFit.setText("Best fit");
+        jLabel4.setText("Eigen fit");
 
         jlEigenFitStatus.setText("Wordt niet uitgevoerd");
 
-        jbOpslaan.setText("Sla resultaten op");
-        jbOpslaan.setEnabled(false);
+        jbSave.setText("Resultaten opslaan");
+        jbSave.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -294,100 +335,72 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
                                     .addComponent(jLabel1)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jlGrootte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jlAantal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addComponent(jlBruteForce)
-                                    .addComponent(jlNextFit)
-                                    .addComponent(jlFirstFit)
-                                    .addComponent(jlBestFit)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jlEigenFit))
-                                .addGap(14, 14, 14)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jlEigenFitStatus)
-                                    .addComponent(jlProgressie)
                                     .addComponent(jlBruteforceStatus)
                                     .addComponent(jlNextFitStatus)
                                     .addComponent(jlFirstFitStatus)
                                     .addComponent(jlBestFitStatus)))
-                            .addComponent(jbOpslaan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(86, 86, 86)
+                            .addComponent(jbSave, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jlHuidigeSimulatie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbAnnuleren, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(32, 32, 32))
+                                .addComponent(jlCurrentSimulation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jbCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jlCurrentSimulation))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel5)
-                            .addComponent(jlHuidigeSimulatie))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jlGrootte))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jlAantal))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlNextFit)
                             .addComponent(jlNextFitStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlFirstFit)
+                            .addComponent(jLabel2)
                             .addComponent(jlFirstFitStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlBestFit)
+                            .addComponent(jLabel3)
                             .addComponent(jlBestFitStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlEigenFit)
+                            .addComponent(jLabel4)
                             .addComponent(jlEigenFitStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlBruteForce)
+                            .addComponent(jLabel5)
                             .addComponent(jlBruteforceStatus))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbOpslaan)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jlProgressie))
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)))
+                        .addGap(153, 153, 153)
+                        .addComponent(jbSave))
+                    .addComponent(jpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jbAnnuleren)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jbCancel)
+                    .addComponent(jpProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -400,32 +413,28 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JButton jbAnnuleren;
-    private javax.swing.JButton jbOpslaan;
-    private javax.swing.JLabel jlAantal;
-    private javax.swing.JLabel jlBestFit;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JButton jbCancel;
+    private javax.swing.JButton jbSave;
     private javax.swing.JLabel jlBestFitStatus;
-    private javax.swing.JLabel jlBruteForce;
     private javax.swing.JLabel jlBruteforceStatus;
-    private javax.swing.JLabel jlEigenFit;
+    private javax.swing.JLabel jlCurrentSimulation;
+    private javax.swing.JLabel jlEfficientAlgorithm;
     private javax.swing.JLabel jlEigenFitStatus;
-    private javax.swing.JLabel jlFirstFit;
+    private javax.swing.JLabel jlFastestAlgorithm;
     private javax.swing.JLabel jlFirstFitStatus;
-    private javax.swing.JLabel jlGrootte;
-    private javax.swing.JLabel jlHuidigeSimulatie;
-    private javax.swing.JLabel jlNextFit;
     private javax.swing.JLabel jlNextFitStatus;
-    private javax.swing.JLabel jlProgressie;
+    private javax.swing.JPanel jpPanel;
+    private javax.swing.JProgressBar jpProgress;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == jlBruteforceStatus) {
-            if (BruteForceResult != null) {
-                BruteForceResult.setVisible(true);
-            }
+            BruteForceResult.setVisible(true);
         } else if (e.getSource() == jlBestFitStatus) {
             BestFitResult.setVisible(true);
         } else if (e.getSource() == jlNextFitStatus) {
@@ -435,6 +444,29 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         } else if (e.getSource() == jlFirstFitStatus) {
             FirstFitResult.setVisible(true);
         }
+    }
+
+    private void CalculateAlgorithms() {
+        long fastestTime = -1;
+        int bins = -1;
+
+        String fastestAlg = "", EfficientAlg = "";
+        for (Resultaat result : ArrayResults) {
+            if (fastestTime == -1 && bins == -1) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                bins = result.getBins().size();
+            }
+            if (fastestTime >= result.getAlgoritme().getEndTime()) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                fastestAlg = result.getAlgoritme().getName();
+            }
+            if (bins >= result.getBins().size()) {
+                bins = result.getBins().size();
+                EfficientAlg = result.getAlgoritme().getName();
+            }
+        }
+        jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
+        jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
     }
 
     @Override
@@ -459,23 +491,22 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     @Override
     public void run() {
-        StartSimulatie();
+        StartSimulation();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbAnnuleren) {
+        if (e.getSource() == jbCancel) {
             t.stop();
-            jProgressBar1.setForeground(Color.red);
-            jProgressBar1.setValue(100);
-            jProgressBar1.setIndeterminate(false);
-            jlHuidigeSimulatie.setText("Geannuleerd");
-            jbOpslaan.setEnabled(true);
+            jpProgress.setForeground(Color.red);
+            jpProgress.setValue(100);
+            jpProgress.setIndeterminate(false);
+            jlCurrentSimulation.setText("Geannuleerd");
+            jbSave.setEnabled(true);
             setTitle("Bin Packing Problem Simulation - Geannuleerd");
         }
-        if (e.getSource() == jbOpslaan) {
-            ResultatenOpslaan();
+        if (e.getSource() == jbSave) {
+            SaveResults();
         }
     }
-
 }

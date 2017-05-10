@@ -5,9 +5,23 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -69,21 +83,87 @@ public class AlgoritmeScherm {
 			public void actionPerformed(ActionEvent arg0) {
 				if(rdbtnNearestNeighbour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.NEAREST_NEIGBOUR_ALGORITHM);
-					frame.repaint();
 				} else if(rdbtnAlgoritme.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.BRUTE_FORCE_ALGORITHM);
-					frame.repaint();
 				} else if(rdbtnoptTour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
-					frame.repaint();
 				} else if(rdbtnEigen.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
-					frame.repaint();
 				}
+				frame.repaint();
 			}
 		});
 		btnNewButton.setBounds(10, 435, 105, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnSlaSimulatieOp = new JButton("Save Simulatie");
+		btnSlaSimulatieOp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 try {
+
+						DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+						DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+						Document doc = docBuilder.newDocument();
+						Element rootElement = doc.createElement("Simulation");
+						doc.appendChild(rootElement);
+
+						Element eleGridHeight = doc.createElement("gridHeight");
+						eleGridHeight.appendChild(doc.createTextNode(Integer.toString(gridHeight)));
+						rootElement.appendChild(eleGridHeight);
+
+						Element eleGridWidth = doc.createElement("gridWidth");
+						eleGridWidth.appendChild(doc.createTextNode(Integer.toString(gridWidth)));
+						rootElement.appendChild(eleGridWidth);
+
+						Element points = doc.createElement("points");
+						rootElement.appendChild(points);
+						
+						int count = 0;
+						for(Coordinate c : coords) {
+							Element point = doc.createElement("point");
+							point.setAttribute("id", Integer.toString(count));
+							
+							Element pointX = doc.createElement("x");
+							pointX.appendChild(doc.createTextNode(Integer.toString(c.x)));
+							point.appendChild(pointX);
+							
+
+							Element pointY = doc.createElement("y");
+							pointY.appendChild(doc.createTextNode(Integer.toString(c.y)));
+							point.appendChild(pointY);
+							
+							points.appendChild(point);
+							count++;
+						}
+
+						TransformerFactory transformerFactory = TransformerFactory.newInstance();
+						Transformer transformer = transformerFactory.newTransformer();
+						DOMSource source = new DOMSource(doc);
+						
+						JFileChooser chooser = new JFileChooser(); 
+					    chooser.setCurrentDirectory(new java.io.File("."));
+					    chooser.setDialogTitle("Simulatie opslaan");
+					    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					    
+					    chooser.setAcceptAllFileFilterUsed(false);
+					    if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) { 
+					    	System.out.println("getCurrentDirectory(): " +  chooser.getCurrentDirectory());
+					    	System.out.println("getSelectedFile() : " +  chooser.getSelectedFile());
+						    StreamResult result = new StreamResult(new File(chooser.getSelectedFile().getAbsolutePath() + ".xml"));
+							transformer.transform(source, result);
+							System.out.println("File saved!");
+					    } else {
+					      System.out.println("No Selection ");
+					    }
+
+					  } catch (Exception pce) {
+						  pce.printStackTrace();
+					  }
+			}
+		});
+		btnSlaSimulatieOp.setBounds(125, 435, 105, 23);
+		frame.getContentPane().add(btnSlaSimulatieOp);
 		
 		frame.setVisible(true);
 	}

@@ -1,9 +1,5 @@
 package bpp_simulator;
 
-/**
- *
- * @author leroy
- */
 public class Product {
 
     private int length;

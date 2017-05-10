@@ -29,13 +29,13 @@ public class EigenAlgoritme extends Algoritme {
             } else {
                 Collections.sort(Dozen, new Comparator<Bin>() {
                     public int compare(Bin a, Bin b) {
-                        return ((Integer) (grootte - a.getHuidigeGrootte()))
-                                .compareTo(grootte - b.getHuidigeGrootte());
+                        return ((Integer) (grootte - a.getCurrentSize()))
+                                .compareTo(grootte - b.getCurrentSize());
                     }
                 });
             }
             for (Bin doos : Dozen) {
-                berekening = doos.getHuidigeGrootte() + product.getLength();
+                berekening = doos.getCurrentSize() + product.getLength();
                 if (berekening <= grootte) {
                     doos.addProduct(product);
                     continue producttenloop;

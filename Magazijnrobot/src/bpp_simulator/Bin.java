@@ -2,89 +2,89 @@ package bpp_simulator;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author leroy
- */
 public class Bin {
 
-    private int HuidigeGrootte = 0;
-    private int MaxGrootte;
-    private ArrayList<Product> Producten = new ArrayList<Product>();
+    private int CurrentSize = 0;
+    private int MaxSize;
+    private ArrayList<Product> Products = new ArrayList<Product>();
 
     public Bin() {
     }
 
-    public int getMaxGrootte() {
-        return MaxGrootte;
+    public int getMaxSize() {
+        return MaxSize;
     }
 
-    public ArrayList<Product> getProducten() {
-        return Producten;
+    public ArrayList<Product> getProducts() {
+        return Products;
     }
 
     public Bin(Product Product, int MaxGrootte) {
-        Producten.add(Product);
-        this.MaxGrootte = MaxGrootte;
-        HuidigeGrootte += Product.getLength();
+        Products.add(Product);
+        this.MaxSize = MaxGrootte;
+        CurrentSize += Product.getLength();
     }
 
     public Bin(Product Product) {
-        Producten.add(Product);
+        Products.add(Product);
     }
 
     public int getVolume() {
         int volume = 0;
-        for (Product product : Producten) {
+        for (Product product : Products) {
             volume += product.getLength();
         }
         return volume;
     }
 
     public Bin(int MaxGrootte) {
-        this.MaxGrootte = MaxGrootte;
+        this.MaxSize = MaxGrootte;
     }
 
     public void addProduct(Product Product) {
-        Producten.add(Product);
-        HuidigeGrootte += Product.getLength();
+        Products.add(Product);
+        CurrentSize += Product.getLength();
     }
 
-    public boolean addProductCheck(Product Product) {
-        if (HuidigeGrootte + Product.getLength() <= MaxGrootte) {
-            addProduct(Product);
-            return true;
+    public boolean addProduct(Product Product, boolean Check) {
+        if (Check) {
+            if (CurrentSize + Product.getLength() <= MaxSize) {
+                addProduct(Product);
+                return true; // past wel
+            } else {
+                return false; // past niet
+            }
         } else {
-            return false; // item didn't fit
+            return false;
         }
     }
 
     public void removeProduct(Product Product) {
-        HuidigeGrootte -= Product.getLength();
-        Producten.remove(Product);
+        CurrentSize -= Product.getLength();
+        Products.remove(Product);
     }
 
-    public int getHuidigeGrootte() {
-        return HuidigeGrootte;
+    public int getCurrentSize() {
+        return CurrentSize;
     }
 
-    public void setHuidigeGrootte(int HuidigeGrootte) {
-        this.HuidigeGrootte = HuidigeGrootte;
+    public void setCurrentSize(int CurrentSize) {
+        this.CurrentSize = CurrentSize;
     }
 
     public void addHuidigeGrootte(int HuidigeGrootte) {
-        this.HuidigeGrootte = Integer.sum(this.HuidigeGrootte, HuidigeGrootte);
+        this.CurrentSize = Integer.sum(this.CurrentSize, HuidigeGrootte);
     }
 
-    public int getAantalProducten() {
-        return Producten.size();
+    public int getProductAmount() {
+        return Products.size();
     }
 
     public Bin deepCopy() {
         Bin copy = new Bin();
-        copy.Producten = new ArrayList<>(Producten);
-        copy.HuidigeGrootte = HuidigeGrootte;
-        copy.MaxGrootte = MaxGrootte;
+        copy.Products = new ArrayList<>(Products);
+        copy.CurrentSize = CurrentSize;
+        copy.MaxSize = MaxSize;
         return copy;
     }
 

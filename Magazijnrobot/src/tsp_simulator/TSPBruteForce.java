@@ -88,8 +88,8 @@ public class TSPBruteForce extends TSPAlgorithm{
 					newLeftCoords.add(c);
 				}
 				
-				System.out.println("THE OLD FUCKING ARRAY HAS: "+leftCoords.size());
-				System.out.println("THE NEW FUCKING ARRAY HAS: "+newLeftCoords.size());
+				System.out.println("THE OLD ARRAY HAS: "+leftCoords.size());
+				System.out.println("THE NEW ARRAY HAS: "+newLeftCoords.size());
 				
 				newCurrentCoords.add(leftCoords.get(i));
 				newLeftCoords.remove(i);
