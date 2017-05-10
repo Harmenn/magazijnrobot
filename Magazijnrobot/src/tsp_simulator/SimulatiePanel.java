@@ -34,6 +34,7 @@ public class SimulatiePanel extends JPanel {
 	
 	
 	ArrayList<Coordinate> coords;// = new ArrayList<Coordinate>();
+	ArrayList<Coordinate> sortedCoords = new ArrayList<Coordinate>();
 	public SimulatiePanel(int gridWidth, int gridHeight, ArrayList<Coordinate> coords) {
 		setPreferredSize(new Dimension(400, 400));		
 		
@@ -55,6 +56,8 @@ public class SimulatiePanel extends JPanel {
 	@Override 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
+		//if(coords.size()==0) return;
 		if(gridWidth==0) gridWidth = 5;
 		if(gridHeight==0) gridHeight = 5;
 		startX = 9;
@@ -83,18 +86,19 @@ public class SimulatiePanel extends JPanel {
         	g.fillOval(c.x*squareHeight - (pointHeight/2) + startX, c.y*squareWidth - (pointWidth/2), pointWidth, pointHeight);
         }
         
+        //if(sortedCoords.size()==0) return;
         if(currentAlgorithm != null) {
-        	for(int i = 0; i < coords.size()-1; i++){
+        	for(int i = 0; i < sortedCoords.size()-1; i++){
         		g.setColor(Color.RED);
-        		drawLineBetween(g, coords.get(i), coords.get(i+1));
+        		drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i+1));
         	}
 
-        	for(int i = 0; i < coords.size(); i++){
+        	for(int i = 0; i < sortedCoords.size(); i++){
         		g.setColor(Color.BLACK);
         		g.setFont(new Font("TimesRoman", Font.BOLD, 24));
-        		g.drawString(Integer.toString(i+1), coords.get(i).x*squareHeight - (pointHeight/2) + startX, coords.get(i).y*squareWidth - (pointWidth/2));
+        		g.drawString(Integer.toString(i+1), sortedCoords.get(i).x*squareHeight - (pointHeight/2) + startX, sortedCoords.get(i).y*squareWidth - (pointWidth/2));
         	}
-    		drawLineBetween(g, coords.get(0), coords.get(coords.size()-1));
+    		drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size()-1));
         }
 	}
 	
@@ -111,19 +115,19 @@ public class SimulatiePanel extends JPanel {
 		System.out.println("Set algorithm: " + algorithm);
 		switch(algorithm){
 			case BRUTE_FORCE_ALGORITHM:
-				currentAlgorithm =  new TSPBruteForce(coords);
+				currentAlgorithm =  new TSPBruteForce((ArrayList<Coordinate>) coords.clone());
 				break;
 			case NEAREST_NEIGBOUR_ALGORITHM:
-				currentAlgorithm =  new TSPNearestNeighbour(coords);
+				currentAlgorithm =  new TSPNearestNeighbour((ArrayList<Coordinate>) coords.clone());
 				break;
 			case TWO_OPT_ALGORITHM:
-				currentAlgorithm =  new TSPOptTwo(coords);
+				currentAlgorithm =  new TSPOptTwo((ArrayList<Coordinate>) coords.clone());
 				break;
 			case OWN_ALGORITHM:
-				currentAlgorithm =  new TSPOwnAlgorithm(coords);
+				currentAlgorithm =  new TSPOwnAlgorithm((ArrayList<Coordinate>) coords.clone());
 				break;
 		}
-		this.coords = currentAlgorithm.getSortedList();
+		this.sortedCoords = currentAlgorithm.getSortedList();
 		repaint();
 	}
 }
