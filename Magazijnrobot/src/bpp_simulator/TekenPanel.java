@@ -9,9 +9,8 @@ import javax.swing.JPanel;
 public class TekenPanel extends JPanel {
 
     Resultaat result;
-    private int startX, startY, startYItem, index = 0, volume, volumeDozen;
+    private int startX, startY, startYItem, colorcounter = 0, volume, volumeDozen;
     ArrayList<Bin> bins = new ArrayList<Bin>();
-    private ArrayList<Color> colors;
     private Algoritme Algoritme;
 
     public TekenPanel(Resultaat result, ArrayList<Bin> bins, Algoritme Algrotime, int Volume, int VolumeDozen) {
@@ -20,17 +19,10 @@ public class TekenPanel extends JPanel {
         this.volume = Volume;
         this.Algoritme = Algrotime;
         this.volumeDozen = VolumeDozen;
-        //this.setPreferredSize(new Dimension(1200, 800));
-
-        this.colors = new ArrayList<>(); //add a variety of colors to switch between
-        colors.add(Color.red);
-        colors.add(Color.BLUE);
-        colors.add(Color.PINK);
-        colors.add(Color.GREEN);
+        this.setPreferredSize(new java.awt.Dimension(1200, 800));
         this.startX = 50;
         this.startY = 50;
         this.startYItem = 50;
-
     }
 
     @Override
@@ -50,11 +42,25 @@ public class TekenPanel extends JPanel {
 
             startYItem = startY;
             for (Product product : bin.getProducts()) {
-                if (index == 3) {
-                    index = 0;
+                switch (colorcounter) {
+                    case 0:
+                        g.setColor(Color.yellow);
+                        break;
+                    case 1:
+                        g.setColor(Color.red);
+                        break;
+                    case 2:
+                        g.setColor(Color.blue);
+                        break;
+                    case 3:
+                        g.setColor(Color.cyan);
+                        break;
+                    case 4:
+                        g.setColor(Color.yellow);
+                        colorcounter = 0;
+                        break;
                 }
-                g.setColor(colors.get(index));
-                index++;
+                colorcounter++;
                 g.fillRect(startX, startYItem, 50, product.getLength() * 10);
                 startYItem += product.getLength() * 10;
                 g.setColor(Color.black);
