@@ -10,11 +10,22 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import tsp_simulator.Coordinate;
 
 public class StartScherm {
 
@@ -81,6 +92,43 @@ public class StartScherm {
 		frmMagazijnrobot.getContentPane().add(btnNewButton);
 
 		JButton btnNieuweOrder = new JButton("Nieuwe order");
+		btnNieuweOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Create a file chooser
+				final JFileChooser fc = new JFileChooser();
+				FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
+				fc.setFileFilter(xmlfilter);
+				fc.setDialogTitle("Open simulatie");
+				// In response to a button click:
+				int returnVal = fc.showOpenDialog(frmMagazijnrobot);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						File file = fc.getSelectedFile();
+						DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+						DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+						Document doc = dBuilder.parse(file);
+						System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+						NodeList nList = doc.getElementsByTagName("artikelnr");
+
+						System.out.println("ordernummer: " + doc.getElementsByTagName("ordernummer").item(0).getTextContent());
+						System.out.println("voornaam: " + doc.getElementsByTagName("voornaam").item(0).getTextContent());
+						
+						for (int temp = 0; temp < nList.getLength(); temp++) {
+							Node nNode = nList.item(temp);
+							if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+								Element eElement = (Element) nNode;
+
+								System.out.println("ordernummer: " + eElement.getTextContent());
+							}
+						}
+					} catch (Exception error) {
+						error.printStackTrace();
+					}
+
+				}
+			}
+		});
 		btnNieuweOrder.setBounds(10, 11, 130, 29);
 		frmMagazijnrobot.getContentPane().add(btnNieuweOrder);
 
