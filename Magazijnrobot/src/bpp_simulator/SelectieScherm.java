@@ -3,6 +3,7 @@ package bpp_simulator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +22,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jLabel4 = new javax.swing.JLabel();
         jtProductSize = new javax.swing.JTextField();
         jtProductAmount = new javax.swing.JTextField();
-        jbAdd = new javax.swing.JButton();
+        jbAddProduct = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtProducts = new javax.swing.JTable();
         jcBruteforce = new javax.swing.JCheckBox();
@@ -30,7 +31,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         jcBestfit = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jbReset = new javax.swing.JButton();
-        jcEigenAlgoritme = new javax.swing.JCheckBox();
+        jcOwnFit = new javax.swing.JCheckBox();
+        jbRemoveProduct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bin Packing Problem Simulator");
@@ -50,7 +52,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jtProductAmount.setText("10");
 
-        jbAdd.setText("Toevoegen");
+        jbAddProduct.setText("Toevoegen");
 
         jtProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,6 +77,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 return canEdit [columnIndex];
             }
         });
+        jtProducts.setRowSelectionAllowed(false);
         jtProducts.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jtProducts);
         if (jtProducts.getColumnModel().getColumnCount() > 0) {
@@ -94,21 +97,40 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jbReset.setText("Resetten");
 
-        jcEigenAlgoritme.setText("Eigen algoritme");
+        jcOwnFit.setText("Eigen algoritme");
+
+        jbRemoveProduct.setText("Verwijder");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtBinSize, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtBinSize, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbRemoveProduct)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbReset)
                         .addGap(18, 18, 18)
+                        .addComponent(jbStart))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtProductSize, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jtProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jbAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -117,29 +139,14 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                                     .addComponent(jcNextfit)
                                     .addComponent(jcFirstfit)
                                     .addComponent(jcBestfit)
-                                    .addComponent(jcEigenAlgoritme)
-                                    .addComponent(jcBruteforce)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jbAdd)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel3))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jtProductSize, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jtProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbReset)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbStart)))
+                                    .addComponent(jcOwnFit)
+                                    .addComponent(jcBruteforce))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -147,36 +154,41 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jtBinSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(100, 100, 100))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(jbAdd)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtProductAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbAddProduct))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jcNextfit)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jcFirstfit)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jcBestfit)
+                            .addGap(1, 1, 1)
+                            .addComponent(jcOwnFit)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jcBruteforce)
+                            .addGap(11, 11, 11))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jtBinSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcNextfit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jcFirstfit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jcBestfit)
-                        .addGap(1, 1, 1)
-                        .addComponent(jcEigenAlgoritme)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcBruteforce)
-                        .addGap(11, 11, 11))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbStart)
-                    .addComponent(jbReset))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbStart)
+                            .addComponent(jbReset))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbRemoveProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -185,13 +197,14 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     public SelectieScherm() {
         initComponents();
         jbStart.addActionListener(this);
-        jbAdd.addActionListener(this);
+        jbAddProduct.addActionListener(this);
         jbReset.addActionListener(this);
+        jbRemoveProduct.addActionListener(this);
         setVisible(true);
 
     }
 
-    public void addArray(int aantal, int grootte) {
+    public void addRow(int aantal, int grootte) {
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             for (int i = 0; i < aantal; i++) {
@@ -203,21 +216,28 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    public void removeRow(int row) {
+        if(jtProducts.getRowCount() > 0 && jtProducts.getSelectedRow() >= 0){
+            DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
+            model.removeRow(row);
+            ArrayProducts.remove(row);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbAdd;
+    private javax.swing.JButton jbAddProduct;
+    private javax.swing.JButton jbRemoveProduct;
     private javax.swing.JButton jbReset;
     private javax.swing.JButton jbStart;
     private javax.swing.JCheckBox jcBestfit;
     private javax.swing.JCheckBox jcBruteforce;
-    private javax.swing.JCheckBox jcEigenAlgoritme;
     private javax.swing.JCheckBox jcFirstfit;
     private javax.swing.JCheckBox jcNextfit;
+    private javax.swing.JCheckBox jcOwnFit;
     private javax.swing.JTextField jtBinSize;
     private javax.swing.JTextField jtProductAmount;
     private javax.swing.JTextField jtProductSize;
@@ -240,10 +260,10 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbAdd) {
+        if (e.getSource() == jbAddProduct) {
             int grootte = tryParse(jtProductSize.getText());
             int aantal = tryParse(jtProductAmount.getText());
-            addArray(aantal, grootte);
+            addRow(aantal, grootte);
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
         } else if (e.getSource() == jbReset) {
@@ -254,18 +274,20 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             if (inhoud > 0) {
 
                 if (ArrayProducts.size() > 0) {
-                    BruteForceEnabled = jcBruteforce.isSelected();
-                    NextFitEnabled = jcNextfit.isSelected();
-                    FirstFitEnabled = jcFirstfit.isSelected();
-                    BestFitEnabled = jcBestfit.isSelected();
-                    EigenAlgoritmeEnabled = jcEigenAlgoritme.isSelected();
-                    if (!BruteForceEnabled && !NextFitEnabled && !FirstFitEnabled && !BestFitEnabled
-                            && !EigenAlgoritmeEnabled) {
+                    boolean[] Algorithms = new boolean[5];
+                    
+                    Algorithms[0] = jcNextfit.isSelected();
+                    Algorithms[1] = jcFirstfit.isSelected();
+                    Algorithms[2] = jcBestfit.isSelected();
+                    Algorithms[3] = jcOwnFit.isSelected();
+                    Algorithms[4] = jcBruteforce.isSelected();
+                    
+                    if (Algorithms[0] == false && Algorithms[1] == false && Algorithms[2] == false && Algorithms[3] == false && Algorithms[4]) {
+                       
                         JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
                                 JOptionPane.ERROR_MESSAGE);
                     } else {
-                        Simulatie s1 = new Simulatie(this, ArrayProducts, inhoud, BruteForceEnabled, NextFitEnabled,
-                                FirstFitEnabled, BestFitEnabled, EigenAlgoritmeEnabled);
+                        Simulatie s1 = new Simulatie(this, ArrayProducts, inhoud, Algorithms);
                         setVisible(false);
                     }
                 } else {
@@ -276,7 +298,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!",
                         "Foutmelding", JOptionPane.ERROR_MESSAGE);
             }
-
+        } else if(e.getSource() == jbRemoveProduct){
+            System.out.println(jtProducts.getSelectedRow());
+            removeRow(jtProducts.getSelectedRow());
         }
     }
 

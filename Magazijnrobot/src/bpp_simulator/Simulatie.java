@@ -31,7 +31,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private ArrayList<Resultaat> ArrayResults = new ArrayList<>();
     private int BoxSize, vol;
     private StringBuilder endResult = new StringBuilder();
-
     private Thread t;
     private Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
@@ -40,37 +39,36 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private Bestfit BestFitAlgoritme;
     private EigenAlgoritme EigenAlgoritme;
     private Resultaat BruteForceResult, NextFitResult, FirstFitResult, BestFitResult, EigenFitResult;
-    private SelectieScherm selectieScherm;
+    private final SelectieScherm selectieScherm;
 
-    public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> ArrayProducts, int BoxSize, boolean BruteForceEnabled, boolean NextFitEnabled,
-            boolean FirstFitEnabled, boolean BestFitEnabled, boolean EigenAlgoritmeEnabled) {
+    public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> ArrayProducts, int BoxSize, boolean[] Algorithms) {
         initComponents();
         setResizable(false);
         this.selectieScherm = selectieScherm;
         this.ArrayProducts = ArrayProducts;
         this.BoxSize = BoxSize;
         Algoritmes = new Algoritme();
-        if (NextFitEnabled) {
+        if (Algorithms[0]) {
             jlNextFitStatus.setText("In wachtrij");
             NextFitAlgoritme = new Nextfit();
             Algoritmes.addAlgoritme(NextFitAlgoritme);
         }
-        if (FirstFitEnabled) {
+        if (Algorithms[1]) {
             jlFirstFitStatus.setText("In wachtrij");
             FirstFitAlgoritme = new Firstfit();
             Algoritmes.addAlgoritme(FirstFitAlgoritme);
         }
-        if (BestFitEnabled) {
+        if (Algorithms[2]) {
             jlBestFitStatus.setText("In wachtrij");
             BestFitAlgoritme = new Bestfit();
             Algoritmes.addAlgoritme(BestFitAlgoritme);
         }
-        if (EigenAlgoritmeEnabled) {
+        if (Algorithms[3]) {
             jlEigenFitStatus.setText("In wachtrij");
             EigenAlgoritme = new EigenAlgoritme();
             Algoritmes.addAlgoritme(EigenAlgoritme);
         }
-        if (BruteForceEnabled) {
+        if (Algorithms[4]) {
             jlBruteforceStatus.setText("In wachtrij");
             BruteForceAlgoritme = new Bruteforce(ArrayProducts, BoxSize);
             Algoritmes.addAlgoritme(BruteForceAlgoritme);
