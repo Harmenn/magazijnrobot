@@ -164,6 +164,7 @@ public class StartScherm {
 		btnBppSimulatie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bpp_simulator.SelectieScherm bpp = new bpp_simulator.SelectieScherm();
+                                bpp.ExitButton(false);
 			}
 		});
 		btnBppSimulatie.setBounds(10, 236, 130, 23);

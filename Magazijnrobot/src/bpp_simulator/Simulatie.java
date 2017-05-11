@@ -271,7 +271,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jbSave = new javax.swing.JButton();
         jbContinue = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
 
         jLabel5.setText("Brute force");
