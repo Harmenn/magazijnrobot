@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,9 +25,7 @@ import bpp_simulator.algoritmes.Bruteforce;
 import bpp_simulator.algoritmes.EigenAlgoritme;
 import bpp_simulator.algoritmes.Firstfit;
 import bpp_simulator.algoritmes.Nextfit;
-import java.awt.Desktop;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
