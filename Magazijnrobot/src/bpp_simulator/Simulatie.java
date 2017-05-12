@@ -26,7 +26,6 @@ import bpp_simulator.algoritmes.EigenAlgoritme;
 import bpp_simulator.algoritmes.Firstfit;
 import bpp_simulator.algoritmes.Nextfit;
 
-
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
     private ArrayList<Product> ArrayProducts = new ArrayList<>();
@@ -140,22 +139,13 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     // Append the results for the CSV writer
     private void AppendResultaat(String naam, int grootte, long tijdsduur) {
-        endResult.append(naam);
-        endResult.append(';');
-        endResult.append(grootte);
-        endResult.append(';');
-        endResult.append(tijdsduur);
-        endResult.append('\n');
+        endResult.append(naam).append(";").append(grootte).append(";").append(tijdsduur).append("\n");
     }
 
     // Append the results for the CSV writer
     private void AppendResultaat(String tekst, String naam, String result) {
-        endResult.append(tekst);
-        endResult.append(';');
-        endResult.append(naam);
-        endResult.append(';');
-        endResult.append(result);
-        endResult.append('\n');
+        endResult.append(tekst).append(";").append(naam).append(";").append(result).append("\n");
+
     }
 
     // Function to make a hyperlink of a label
@@ -274,7 +264,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
         endResult.append("\nSnelste algoritme:\n");
-        AppendResultaat(fastestAlg, Integer.toString(fbins), "Tijd: " + Long.toString(fastestTime) + "ms");
+        AppendResultaat(fastestAlg, Integer.toString(fbins), Long.toString(fastestTime));
         endResult.append("\nEfficientste algoritme:\n");
         jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
         AppendResultaat(EfficientAlg, bins, eft);
