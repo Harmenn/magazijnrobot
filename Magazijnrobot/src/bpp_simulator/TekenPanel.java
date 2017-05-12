@@ -15,19 +15,14 @@ public class TekenPanel extends JPanel {
     ArrayList<Bin> bins = new ArrayList<>();
     private final Algoritme Algoritme;
 
-    public TekenPanel(Resultaat result, ArrayList<Bin> Bins, Algoritme Algrotime, int Volume, int VolumeDozen) {
+    public TekenPanel(Resultaat result, ArrayList<Bin> Bins, Algoritme Algrotime, int Volume, int BinSize) {
         this.result = result;
         this.bins = Bins;
         this.volume = Volume;
         this.Algoritme = Algrotime;
-        this.volumeDozen = VolumeDozen;
-        BinSize = Bins.get(0).getMaxSize();
-        int prefsize = (Bins.size() / 10) * (BinSize * 10);
-        System.out.println(prefsize);
-        for (int i = 0; i < Bins.size() / 10; i++) {
-            prefsize += 50;
-        }
-        System.out.println(prefsize);
+        this.volumeDozen = BinSize * Bins.size();
+        this.BinSize = BinSize;
+        int prefsize = (Bins.size() / 10) * (BinSize * 10) + (Bins.size() / 10 * 50);
         this.setIgnoreRepaint(true);
         this.setPreferredSize(new java.awt.Dimension(1200, prefsize + 100 ));
     }

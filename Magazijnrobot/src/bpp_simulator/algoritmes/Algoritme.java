@@ -4,31 +4,40 @@ import java.util.ArrayList;
 
 public class Algoritme {
 
-	protected ArrayList<Algoritme> Algoritmes = new ArrayList<>();
-	private String name;
-	private long EndTime;
+    protected ArrayList<Algoritme> Algoritmes = new ArrayList<>();
+    private String name;
+    private long EndTime;
+    private int bins;
 
-	public String getName() {
-		return name;
-	}
+    public int getBins() {
+        return bins;
+    }
 
-	public long getEndTime() {
-		return EndTime;
-	}
+    public void setBins(int bins) {
+        this.bins = bins;
+    }
 
-	public void setName(String naam) {
-		this.name = naam;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setEndTime(long eindtijd) {
-		this.EndTime = eindtijd;
-	}
+    public long getEndTime() {
+        return EndTime;
+    }
 
-	public ArrayList<Algoritme> getAlgoritmes() {
-		return Algoritmes;
-	}
+    public void setName(String naam) {
+        this.name = naam;
+    }
 
-	public void addAlgoritme(Algoritme Algoritme) {
-		this.Algoritmes.add(Algoritme);
-	}
+    public void setEndTime(long eindtijd) {
+        this.EndTime = eindtijd;
+    }
+
+    public ArrayList<Algoritme> getAlgoritmes() {
+        return Algoritmes;
+    }
+
+    public void addAlgoritme(Algoritme Algoritme) {
+        this.Algoritmes.add(Algoritme);
+    }
 }

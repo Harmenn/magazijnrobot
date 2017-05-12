@@ -320,6 +320,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             jcBruteforce.setSelected(false);
             jcFirstfit.setSelected(false);
             jcNextfit.setSelected(false);
+            jcOwnFit.setSelected(false);
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
             jtBinSize.setText("10");
