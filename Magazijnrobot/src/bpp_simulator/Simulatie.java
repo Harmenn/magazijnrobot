@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,9 +25,6 @@ import bpp_simulator.algoritmes.Bruteforce;
 import bpp_simulator.algoritmes.EigenAlgoritme;
 import bpp_simulator.algoritmes.Firstfit;
 import bpp_simulator.algoritmes.Nextfit;
-import java.awt.Desktop;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
@@ -134,32 +132,24 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             try {
                 Desktop.getDesktop().open(new File(locatie));
             } catch (IOException ex) {
-                return;
+
             }
         }
     }
 
     // Append the results for the CSV writer
     private void AppendResultaat(String naam, int grootte, long tijdsduur) {
-        endResult.append(naam);
-        endResult.append(';');
-        endResult.append(grootte);
-        endResult.append(';');
-        endResult.append(tijdsduur);
-        endResult.append('\n');
+        endResult.append(naam).append(";").append(grootte).append(";").append(tijdsduur).append("\n");
     }
 
     // Append the results for the CSV writer
     private void AppendResultaat(String tekst, String naam, String result) {
-        endResult.append(tekst);
-        endResult.append(';');
-        endResult.append(naam);
-        endResult.append(';');
-        endResult.append(result);
-        endResult.append('\n');
+        endResult.append(tekst).append(";").append(naam).append(";").append(result).append("\n");
+
     }
 
     // Function to make a hyperlink of a label
+    // http://stackoverflow.com/questions/15892844/underlined-jlabel
     private void MakeHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
@@ -274,7 +264,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
         jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
         endResult.append("\nSnelste algoritme:\n");
-        AppendResultaat(fastestAlg, Integer.toString(fbins), "Tijd: " + Long.toString(fastestTime) + "ms");
+        AppendResultaat(fastestAlg, Integer.toString(fbins), Long.toString(fastestTime));
         endResult.append("\nEfficientste algoritme:\n");
         jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
         AppendResultaat(EfficientAlg, bins, eft);
@@ -564,8 +554,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             jpProgress.setIndeterminate(false);
             jlCurrentSimulation.setText("Geannuleerd");
             jbSave.setEnabled(true);
-            setTitle("Bin Packing Problem Simulation - Geannuleerd");
             jbContinue.setEnabled(true);
+            jbCancel.setEnabled(false);
+            setTitle("Bin Packing Problem Simulation - Geannuleerd");
         } else if (e.getSource() == jbSave) {
             SaveResults();
         } else if (e.getSource() == jbContinue) {
