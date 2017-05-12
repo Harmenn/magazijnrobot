@@ -45,7 +45,7 @@ public class SerialEvent implements SerialPortEventListener {
 
 		} catch (Exception e) {
 			System.out.println("Finished With an error");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

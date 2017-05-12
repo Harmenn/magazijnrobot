@@ -7,16 +7,25 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.PlainDocument;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -24,6 +33,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import magazijnrobot.Product;
 
 public class SelectieScherm {
 
@@ -60,6 +71,10 @@ public class SelectieScherm {
 		initialize();
 	}
 
+	public void dontExit() {
+		frmSelecteerTspParameters.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -82,20 +97,22 @@ public class SelectieScherm {
 		lblBreedte.setBounds(10, 71, 64, 14);
 		frmSelecteerTspParameters.getContentPane().add(lblBreedte);
 
-		txtHeight = new JTextField();
+		NumberFormat amountFormat = NumberFormat.getNumberInstance();
+		txtHeight = new JFormattedTextField(amountFormat);
 		txtHeight.setText("5");
 		txtHeight.setBounds(77, 46, 72, 20);
 		frmSelecteerTspParameters.getContentPane().add(txtHeight);
 		txtHeight.setColumns(3);
+		
 
 		txtHeight.addKeyListener(new KeyListener() {
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent k) {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
+			public void keyReleased(KeyEvent k) {
 				int height = Integer.parseInt(txtHeight.getText());
 				if (height < 4)
 					height = 4;
@@ -104,7 +121,7 @@ public class SelectieScherm {
 			}
 
 			@Override
-			public void keyTyped(KeyEvent arg0) {
+			public void keyTyped(KeyEvent k) {
 			}
 
 		});
@@ -139,16 +156,22 @@ public class SelectieScherm {
 		JLabel lblPunten = new JLabel("Punten:");
 		lblPunten.setBounds(159, 21, 139, 14);
 		frmSelecteerTspParameters.getContentPane().add(lblPunten);
-		list.setBounds(159, 45, 95, 112);
-		frmSelecteerTspParameters.getContentPane().add(list);
-
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(159, 45, 95, 112);
+		scrollPane.setViewportView(list);
+		//list.setBounds(159, 45, 95, 112);
+		//frmSelecteerTspParameters.getContentPane().add(list);
+		frmSelecteerTspParameters.add(scrollPane);
+		
 		JButton btnNewButton = new JButton("Verwijderen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int selectedIndex = list.getSelectedIndex();
+				System.out.println(selectedIndex);
 				if (selectedIndex != -1) {
-					model.remove(selectedIndex);
+					punten.remove(selectedIndex);
 				}
+				loadPunten();
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -218,18 +241,73 @@ public class SelectieScherm {
 						DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 						Document doc = dBuilder.parse(file);
 						System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-						NodeList nList = doc.getElementsByTagName("point");
-						txtHeight.setText(doc.getElementsByTagName("gridHeight").item(0).getTextContent());
-						txtWidth.setText(doc.getElementsByTagName("gridWidth").item(0).getTextContent());
-						punten.clear();
-						for (int temp = 0; temp < nList.getLength(); temp++) {
-							Node nNode = nList.item(temp);
-							if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-								Element eElement = (Element) nNode;
-								punten.add(new Coordinate(
-										Integer.parseInt(eElement.getElementsByTagName("x").item(0).getTextContent()),
-										Integer.parseInt(eElement.getElementsByTagName("y").item(0).getTextContent())));
-								loadPunten();
+						if(doc.getDocumentElement().getNodeName()=="Simulation")
+						{
+							punten.clear();
+							NodeList nList = doc.getElementsByTagName("point"); 
+							
+							String gridHeight = doc.getElementsByTagName("gridHeight").item(0).getTextContent();
+							String gridWidth = doc.getElementsByTagName("gridWidth").item(0).getTextContent();
+							
+							txtHeight.setText(gridHeight);
+							txtWidth.setText(gridWidth);
+							panel.setHeight(Integer.parseInt(gridHeight));
+							panel.setWidth(Integer.parseInt(gridWidth));
+							
+							for (int temp = 0; temp < nList.getLength(); temp++) {
+								Node nNode = nList.item(temp);
+								if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+									Element eElement = (Element) nNode;
+									punten.add(new Coordinate(
+											Integer.parseInt(eElement.getElementsByTagName("x").item(0).getTextContent()),
+											Integer.parseInt(eElement.getElementsByTagName("y").item(0).getTextContent())));
+								}
+							}
+						} else if (doc.getDocumentElement().getNodeName()=="bestelling") {
+							punten.clear();
+							try {
+								DriverManager.registerDriver(new com.mysql.jdbc.Driver ());
+								Connection conn = DriverManager.getConnection("jdbc:mysql://lmaokai.nl/?" +"user=pat&password=pat");
+								String ids = "";
+								NodeList nList = doc.getElementsByTagName("artikelnr");
+								for (int temp = 0; temp < nList.getLength(); temp++) {
+									Node nNode = nList.item(temp);
+									if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+										Element eElement = (Element) nNode;
+
+										System.out.println("ordernummer: " + eElement.getTextContent());
+										
+										ids += "id="+eElement.getTextContent() + " OR ";
+									}
+								}
+								if(ids.length()==0) {
+									ids = "0=1";
+								} else {
+									ids = ids.substring(0, ids.length()-4);
+								}
+								
+								Statement statement = conn.createStatement();
+					            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM magazijnrobot.product WHERE "+ids);
+					            ResultSet resultSet = preparedStatement.executeQuery();
+					            
+					            int highestX = 4;
+					            int highestY = 4;
+					            
+					            while (resultSet.next()) {
+					                int x = resultSet.getInt("positionX");
+					                int y = resultSet.getInt("positionY");
+					                punten.add(new Coordinate(x,y));
+					                
+					                if(x > highestX) highestX = x;
+					                if(y > highestY) highestY = y;
+					            }
+
+								txtHeight.setText(Integer.toString(highestY+1));
+								txtWidth.setText(Integer.toString(highestX+1));
+								panel.setHeight(highestY+1);
+								panel.setWidth(highestX+1);
+							} catch(Exception ee) {
+								ee.printStackTrace();
 							}
 						}
 						doc.getDocumentElement().normalize();
@@ -238,6 +316,9 @@ public class SelectieScherm {
 					}
 
 				}
+
+				loadPunten();
+				frmSelecteerTspParameters.repaint();
 			}
 		});
 
@@ -255,5 +336,6 @@ public class SelectieScherm {
 		for (Coordinate c : punten) {
 			model.addElement(c.x + ", " + c.y);
 		}
+		frmSelecteerTspParameters.repaint();
 	}
 }

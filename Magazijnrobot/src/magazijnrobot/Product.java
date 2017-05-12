@@ -3,33 +3,39 @@ package magazijnrobot;
 public class Product {
 
 	private int id;
-	private String omschrijving;
-	private float prijs;
-	private int grootte;
+	private String name;
+	private int volume;
+	private int x;
+	private int y;
 	private String status;
 
-	public Product(int id, String omschrijving, float prijs, int grootte, String status) {
+	public Product(int id, String name, int volume, int x, int y, String status) {
 		this.id = id;
-		this.omschrijving = omschrijving;
-		this.prijs = prijs;
-		this.grootte = grootte;
+		this.name = name;
+		this.volume = volume;
+		this.x = x;
+		this.y = y;
 		this.status = status;
 	}
 
 	public int getId() {
 		return this.id;
 	}
-
-	public String getOmschrijving() {
-		return this.omschrijving;
+	
+	public String getName() {
+		return this.name;
 	}
 
-	public float getPrijs() {
-		return this.prijs;
+	public int getVolume() {
+		return volume;
 	}
-
-	public int getGrootte() {
-		return grootte;
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 
 	public String getStatus() {

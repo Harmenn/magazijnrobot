@@ -1,4 +1,4 @@
-package magazijnrobot;
+/*package magazijnrobot;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -75,3 +75,4 @@ public class StartFxScherm extends Application {
 		launch(args);
 	}
 }
+*/

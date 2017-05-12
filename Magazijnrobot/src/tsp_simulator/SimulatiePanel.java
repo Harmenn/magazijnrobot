@@ -40,14 +40,14 @@ public class SimulatiePanel extends JPanel {
 		this.gridHeight = gridHeight;
 		this.gridWidth = gridWidth;
 		this.coords = coords;
-		this.coords.add(new Coordinate(5, 1));
+		/*this.coords.add(new Coordinate(5, 1));
 		this.coords.add(new Coordinate(4, 2));
 		this.coords.add(new Coordinate(2, 1));
 
 		this.coords.add(new Coordinate(1, 1));
 		this.coords.add(new Coordinate(3, 1));
 		this.coords.add(new Coordinate(1, 3));
-		this.coords.add(new Coordinate(3, 3));
+		this.coords.add(new Coordinate(3, 3));*/
 
 		System.out.println(coords);
 	}
@@ -102,8 +102,7 @@ public class SimulatiePanel extends JPanel {
 					pointWidth, pointHeight);
 		}
 
-		// if(sortedCoords.size()==0) return;
-		if (currentAlgorithm != null) {
+		if (currentAlgorithm != null && sortedCoords.size()!=0) {
 			for (int i = 0; i < sortedCoords.size() - 1; i++) {
 				g.setColor(Color.RED);
 				drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i + 1));
