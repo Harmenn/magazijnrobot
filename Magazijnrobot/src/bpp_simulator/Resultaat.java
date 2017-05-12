@@ -30,6 +30,7 @@ public class Resultaat extends JFrame {
 		setTitle("Resultaat");
 		setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                
 		TekenPanel drawPanel = new TekenPanel(this, Bins, Algoritme, Volume, VolumeBoxes);
 		JScrollPane scrollFrame = new JScrollPane(drawPanel);
 
