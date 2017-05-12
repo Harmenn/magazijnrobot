@@ -133,7 +133,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             try {
                 Desktop.getDesktop().open(new File(locatie));
             } catch (IOException ex) {
-                return;
+
             }
         }
     }
@@ -563,8 +563,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             jpProgress.setIndeterminate(false);
             jlCurrentSimulation.setText("Geannuleerd");
             jbSave.setEnabled(true);
-            setTitle("Bin Packing Problem Simulation - Geannuleerd");
             jbContinue.setEnabled(true);
+            jbCancel.setEnabled(false);
+            setTitle("Bin Packing Problem Simulation - Geannuleerd");
         } else if (e.getSource() == jbSave) {
             SaveResults();
         } else if (e.getSource() == jbContinue) {
