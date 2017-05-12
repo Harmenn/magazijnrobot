@@ -3,8 +3,6 @@ package bpp_simulator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,6 +13,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jProgressBar1 = new javax.swing.JProgressBar();
         jbStart = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jtBinSize = new javax.swing.JTextField();
@@ -48,9 +47,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
         jLabel4.setText("Aantal met dit formaat:");
 
-        jtProductSize.setText("10");
+        jtProductSize.setText("0");
 
-        jtProductAmount.setText("10");
+        jtProductAmount.setText("0");
 
         jbAddProduct.setText("Toevoegen");
 
@@ -184,15 +183,38 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbStart)
-                            .addComponent(jbReset))
-                        .addContainerGap())
+                            .addComponent(jbReset)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbRemoveProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbAddProduct;
+    private javax.swing.JButton jbRemoveProduct;
+    private javax.swing.JButton jbReset;
+    private javax.swing.JButton jbStart;
+    private javax.swing.JCheckBox jcBestfit;
+    private javax.swing.JCheckBox jcBruteforce;
+    private javax.swing.JCheckBox jcFirstfit;
+    private javax.swing.JCheckBox jcNextfit;
+    private javax.swing.JCheckBox jcOwnFit;
+    private javax.swing.JTextField jtBinSize;
+    private javax.swing.JTextField jtProductAmount;
+    private javax.swing.JTextField jtProductSize;
+    private javax.swing.JTable jtProducts;
+    // End of variables declaration//GEN-END:variables
+    private ArrayList<Product> ArrayProducts = new ArrayList<>();
 
     public SelectieScherm() {
         initComponents();
@@ -216,39 +238,14 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public void removeRow(int row) {
-        if(jtProducts.getRowCount() > 0 && jtProducts.getSelectedRow() >= 0){
+        if (jtProducts.getRowCount() > 0 && jtProducts.getSelectedRow() >= 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             model.removeRow(row);
             ArrayProducts.remove(row);
         }
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbAddProduct;
-    private javax.swing.JButton jbRemoveProduct;
-    private javax.swing.JButton jbReset;
-    private javax.swing.JButton jbStart;
-    private javax.swing.JCheckBox jcBestfit;
-    private javax.swing.JCheckBox jcBruteforce;
-    private javax.swing.JCheckBox jcFirstfit;
-    private javax.swing.JCheckBox jcNextfit;
-    private javax.swing.JCheckBox jcOwnFit;
-    private javax.swing.JTextField jtBinSize;
-    private javax.swing.JTextField jtProductAmount;
-    private javax.swing.JTextField jtProductSize;
-    private javax.swing.JTable jtProducts;
-    // End of variables declaration//GEN-END:variables
-    private ArrayList<Product> ArrayProducts = new ArrayList<>();
-    private boolean BruteForceEnabled = false;
-    private boolean NextFitEnabled = false;
-    private boolean FirstFitEnabled = false;
-    private boolean BestFitEnabled = false;
-    private boolean EigenAlgoritmeEnabled = false;
 
     public void ExitButton(boolean Shutdown) {
         if (Shutdown) {
@@ -258,48 +255,52 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
+    private void StartSim() {
+        int binSize;
+        binSize = tryParse(jtBinSize.getText());
+        if (binSize > 0) {
+            if (ArrayProducts.size() > 0) {
+                for (Product ArrayProduct : ArrayProducts) {
+                    if (ArrayProduct.getLength() > binSize) {
+                        JOptionPane.showMessageDialog(null, "Één of meerdere producten is groter dan de inhoud van de doos", "Foutmelding",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                boolean[] Algorithms = new boolean[5];
+                Algorithms[0] = jcNextfit.isSelected();
+                Algorithms[1] = jcFirstfit.isSelected();
+                Algorithms[2] = jcBestfit.isSelected();
+                Algorithms[3] = jcOwnFit.isSelected();
+                Algorithms[4] = jcBruteforce.isSelected();
+                if (Algorithms[0] == false && Algorithms[1] == false && Algorithms[2] == false && Algorithms[3] == false && Algorithms[4]) {
+                    JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Simulatie s1 = new Simulatie(this, ArrayProducts, binSize, Algorithms);
+                    setVisible(false);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
+                        "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Er is geen inhoud van de doos ingesteld!",
+                    "Foutmelding", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbAddProduct) {
-            int grootte = tryParse(jtProductSize.getText());
-            int aantal = tryParse(jtProductAmount.getText());
-            addRow(aantal, grootte);
+            addRow(tryParse(jtProductAmount.getText()), tryParse(jtProductSize.getText()));
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
         } else if (e.getSource() == jbReset) {
             ResetScherm();
         } else if (e.getSource() == jbStart) {
-            int inhoud;
-            inhoud = tryParse(jtBinSize.getText());
-            if (inhoud > 0) {
-
-                if (ArrayProducts.size() > 0) {
-                    boolean[] Algorithms = new boolean[5];
-                    
-                    Algorithms[0] = jcNextfit.isSelected();
-                    Algorithms[1] = jcFirstfit.isSelected();
-                    Algorithms[2] = jcBestfit.isSelected();
-                    Algorithms[3] = jcOwnFit.isSelected();
-                    Algorithms[4] = jcBruteforce.isSelected();
-                    
-                    if (Algorithms[0] == false && Algorithms[1] == false && Algorithms[2] == false && Algorithms[3] == false && Algorithms[4]) {
-                       
-                        JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
-                                JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        Simulatie s1 = new Simulatie(this, ArrayProducts, inhoud, Algorithms);
-                        setVisible(false);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
-                            "Foutmelding", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Er is geen grootte van de doos / aantal dozen ingesteld!",
-                        "Foutmelding", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if(e.getSource() == jbRemoveProduct){
-            System.out.println(jtProducts.getSelectedRow());
+            StartSim();
+        } else if (e.getSource() == jbRemoveProduct) {
             removeRow(jtProducts.getSelectedRow());
         }
     }
@@ -313,16 +314,15 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     }
 
     private void ResetScherm() {
-        int yesnoDialog = JOptionPane.showConfirmDialog(null,
-                "Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION);
-        if (yesnoDialog == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(null,
+                "Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             jcBestfit.setSelected(false);
             jcBruteforce.setSelected(false);
             jcFirstfit.setSelected(false);
             jcNextfit.setSelected(false);
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
-            jtBinSize.setText("0");
+            jtBinSize.setText("10");
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             while (model.getRowCount() > 0) {
                 model.removeRow(0);

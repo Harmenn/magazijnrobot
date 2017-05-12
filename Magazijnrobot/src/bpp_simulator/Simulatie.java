@@ -28,11 +28,11 @@ import bpp_simulator.algoritmes.Nextfit;
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
     private ArrayList<Product> ArrayProducts = new ArrayList<>();
-    private ArrayList<Resultaat> ArrayResults = new ArrayList<>();
-    private int BoxSize, vol;
+    private final ArrayList<Resultaat> ArrayResults = new ArrayList<>();
+    private final int BoxSize, vol;
     private StringBuilder endResult = new StringBuilder();
     private Thread t;
-    private Algoritme Algoritmes;
+    private final Algoritme Algoritmes;
     private Bruteforce BruteForceAlgoritme;
     private Nextfit NextFitAlgoritme;
     private Firstfit FirstFitAlgoritme;
@@ -43,7 +43,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> ArrayProducts, int BoxSize, boolean[] Algorithms) {
         initComponents();
-        setResizable(false);
         this.selectieScherm = selectieScherm;
         this.ArrayProducts = ArrayProducts;
         this.BoxSize = BoxSize;
@@ -77,12 +76,9 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jbSave.addActionListener(this);
         jbContinue.addActionListener(this);
         vol = getVolume();
-        jlTotalVolumeProducts.setText("" + vol);
+        jlTotalVolumeProducts.setText(Integer.toString(vol));
         setVisible(true);
-        if (t == null) {
-            t = new Thread(this, "StartSimulatie");
-            t.start();
-        }
+        StartThread();
         endResult.append("Naam Algoritme");
         endResult.append(';');
         endResult.append("Aantal dozen");
@@ -91,22 +87,21 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         endResult.append('\n');
         endResult.append('\n');
     }
-
-    public int getBoxSize() {
-        return BoxSize;
+    private void StartThread(){
+        if (t == null) {
+            t = new Thread(this, "StartSimulatie");
+            t.start();
+        }
     }
-
+    // Save results with folder location chooser
     private void SaveResults() {
         PrintWriter pwFileWriter = null;
         JFileChooser jfChooser;
         jfChooser = new JFileChooser();
-        jfChooser.setCurrentDirectory(new java.io.File("."));
-        jfChooser.setDialogTitle("Selecteer map");
         jfChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        jfChooser.setAcceptAllFileFilterUsed(false);
-        if (jfChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\"
-                    + jfChooser.getSelectedFile().getName();
+        jfChooser.setDialogTitle("Selecteer map");
+        if (jfChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            String locatie = jfChooser.getCurrentDirectory().getAbsolutePath() + "\\" + jfChooser.getSelectedFile().getName();
             try {
                 pwFileWriter = new PrintWriter(new File(locatie + "\\Resultaat.csv"));
             } catch (IOException ex) {
@@ -143,6 +138,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         }
     }
 
+    // Append the results for the CSV writer
     private void AppendResultaat(String naam, int grootte, long tijdsduur) {
         endResult.append(naam);
         endResult.append(';');
@@ -152,6 +148,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         endResult.append('\n');
     }
 
+    // Function to make a hyperlink of a label
     private void MakeHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
@@ -162,12 +159,14 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         label.addMouseListener(this);
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-
+    
+    // Function to start simulation
     private void StartSimulation() {
         ArrayList<Bin> bins = new ArrayList<>();
         long nu, tijdsduur;
         for (Algoritme Algoritme1 : Algoritmes.getAlgoritmes()) {
             nu = Instant.now().toEpochMilli();
+            jpProgress.setIndeterminate(true);
             if (Algoritme1 instanceof Nextfit) {
                 Algoritme1.setName("Nextfit");
                 jlNextFitStatus.setText("Uitvoeren...");
@@ -215,7 +214,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 MakeHyperlink(jlBruteforceStatus);
                 ArrayResults.add(BruteForceResult = new Resultaat(bins, Algoritme1, vol, bins.size() * BoxSize));
             }
-            jpProgress.setIndeterminate(true);
             tijdsduur = Instant.now().toEpochMilli() - nu;
             AppendResultaat(Algoritme1.getName(), bins.size(), tijdsduur);
             Algoritme1.setEndTime(tijdsduur);
@@ -224,19 +222,38 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jpProgress.setValue(100);
         setTitle("Bin Packing Problem Simulation - Voltooid");
         jlCurrentSimulation.setText("Voltooid");
-        System.out.println(endResult);
         jbCancel.setEnabled(false);
         jbSave.setEnabled(true);
         jbContinue.setEnabled(true);
         CalculateAlgorithms();
     }
-
+    // Get total volume of products
     private int getVolume() {
-        int vol = 0;
-        for (Product product : ArrayProducts) {
-            vol += product.getLength();
+        int v = 0;
+        v = ArrayProducts.stream().map((product) -> product.getLength()).reduce(v, Integer::sum);
+        return v;
+    }
+    // Function to calculate algorithms
+    private void CalculateAlgorithms() {
+        long fastestTime = -1;
+        int bins = -1;
+        String fastestAlg = "", EfficientAlg = "";
+        for (Resultaat result : ArrayResults) {
+            if (fastestTime == -1 && bins == -1) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                bins = result.getBins().size();
+            }
+            if (fastestTime >= result.getAlgoritme().getEndTime()) {
+                fastestTime = result.getAlgoritme().getEndTime();
+                fastestAlg = result.getAlgoritme().getName();
+            }
+            if (bins >= result.getBins().size()) {
+                bins = result.getBins().size();
+                EfficientAlg = result.getAlgoritme().getName();
+            }
         }
-        return vol;
+        jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
+        jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
     }
 
     @SuppressWarnings("unchecked")
@@ -271,6 +288,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
+        setResizable(false);
 
         jLabel5.setText("Brute force");
 
@@ -472,6 +490,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private javax.swing.JProgressBar jpProgress;
     // End of variables declaration//GEN-END:variables
 
+    // Required overrides
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == jlBruteforceStatus) {
@@ -485,29 +504,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         } else if (e.getSource() == jlFirstFitStatus) {
             FirstFitResult.setVisible(true);
         }
-    }
-
-    private void CalculateAlgorithms() {
-        long fastestTime = -1;
-        int bins = -1;
-
-        String fastestAlg = "", EfficientAlg = "";
-        for (Resultaat result : ArrayResults) {
-            if (fastestTime == -1 && bins == -1) {
-                fastestTime = result.getAlgoritme().getEndTime();
-                bins = result.getBins().size();
-            }
-            if (fastestTime >= result.getAlgoritme().getEndTime()) {
-                fastestTime = result.getAlgoritme().getEndTime();
-                fastestAlg = result.getAlgoritme().getName();
-            }
-            if (bins >= result.getBins().size()) {
-                bins = result.getBins().size();
-                EfficientAlg = result.getAlgoritme().getName();
-            }
-        }
-        jlFastestAlgorithm.setText(fastestAlg + " (" + fastestTime + "ms)");
-        jlEfficientAlgorithm.setText(EfficientAlg + " (" + bins + " dozen)");
     }
 
     @Override

@@ -41,7 +41,6 @@ public class Resultaat extends JFrame {
 		scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		drawPanel.setAutoscrolls(true);
 		scrollFrame.setPreferredSize(new Dimension(1200, 800));
-		scrollFrame.setMinimumSize(new Dimension(1200, 800));
 
 		this.add(scrollFrame);
 		setResizable(false);

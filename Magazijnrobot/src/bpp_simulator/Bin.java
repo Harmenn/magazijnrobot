@@ -6,7 +6,7 @@ public class Bin {
 
 	private int CurrentSize = 0;
 	private int MaxSize;
-	private ArrayList<Product> Products = new ArrayList<Product>();
+	private ArrayList<Product> Products = new ArrayList<>();
 
 	public Bin() {
 	}
