@@ -102,7 +102,8 @@ public class StartScherm {
 		frmMagazijnrobot.setBounds(100, 100, 614, 300);
 		frmMagazijnrobot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMagazijnrobot.getContentPane().setLayout(null);
-
+		frmMagazijnrobot.setResizable(false);
+		
 		lblGekozenOrder = new JLabel("Gekozen order");
 		lblGekozenOrder.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblGekozenOrder.setBounds(10, 45, 198, 14);

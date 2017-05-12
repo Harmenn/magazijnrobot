@@ -49,7 +49,7 @@ public class AlgoritmeScherm {
 		frame.setBounds(100, 100, 324, 497);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		frame.setResizable(false);
 		SimulatiePanel panel = new SimulatiePanel(gridWidth, gridHeight, coords);
 		panel.setBounds(6, 11, 310, 310);
 		frame.getContentPane().add(panel);

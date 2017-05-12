@@ -33,7 +33,6 @@ public class StartScherm extends JFrame implements ActionListener {
 		add(jbResultaat);
 		setVisible(true);
 	}
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
