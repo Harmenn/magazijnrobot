@@ -159,6 +159,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     }
 
     // Function to make a hyperlink of a label
+    // http://stackoverflow.com/questions/15892844/underlined-jlabel
     private void MakeHyperlink(javax.swing.JLabel label) {
         label.setText("Bekijk resultaat");
         label.setForeground(Color.blue);
