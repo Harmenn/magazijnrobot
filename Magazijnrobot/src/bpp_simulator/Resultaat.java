@@ -43,6 +43,7 @@ public class Resultaat extends JFrame {
     public void SaveScreen(String Location) {
         // Functie gekopieerd van:
         // http://stackoverflow.com/questions/5655908/export-jpanel-graphics-to-png-or-gif-or-jpg
+        // Deze functie wordt gebruikt voor het opslaan van het drawpanel, zodat resultaten als een plaatje worden opgeslagen
         BufferedImage bi = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         drawPanel.paint(g);
