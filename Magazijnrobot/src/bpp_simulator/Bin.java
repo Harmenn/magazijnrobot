@@ -18,34 +18,29 @@ public class Bin {
 	public ArrayList<Product> getProducts() {
 		return Products;
 	}
-
+        // Constructor, gebruik Bin(Product, 10); of Bin(10); of Bin(Product);
 	public Bin(Product Product, int MaxGrootte) {
 		Products.add(Product);
 		this.MaxSize = MaxGrootte;
 		CurrentSize += Product.getLength();
 	}
 
+        
 	public Bin(Product Product) {
 		Products.add(Product);
 	}
-
-	public int getVolume() {
-		int volume = 0;
-		for (Product product : Products) {
-			volume += product.getLength();
-		}
-		return volume;
+        
+	public Bin(int MaxSize) {
+		this.MaxSize = MaxSize;
 	}
 
-	public Bin(int MaxGrootte) {
-		this.MaxSize = MaxGrootte;
-	}
-
+        // addProduct functie om een product toe te voegen aan de huidige bin
 	public void addProduct(Product Product) {
 		Products.add(Product);
 		CurrentSize += Product.getLength();
 	}
 
+        // addProduct overloading met check om te kijken of het product wel in de doos past
 	public boolean addProduct(Product Product, boolean Check) {
 		if (Check) {
 			if (CurrentSize + Product.getLength() <= MaxSize) {
@@ -68,24 +63,15 @@ public class Bin {
 		return CurrentSize;
 	}
 
-	public void setCurrentSize(int CurrentSize) {
-		this.CurrentSize = CurrentSize;
-	}
-
-	public void addHuidigeGrootte(int HuidigeGrootte) {
-		this.CurrentSize = Integer.sum(this.CurrentSize, HuidigeGrootte);
-	}
-
 	public int getProductAmount() {
 		return Products.size();
 	}
 
+        // Kopieeer huidige bin naar een nieuwe bin en die returnen
 	public Bin deepCopy() {
-		Bin copy = new Bin();
+		Bin copy = new Bin(MaxSize);
 		copy.Products = new ArrayList<>(Products);
 		copy.CurrentSize = CurrentSize;
-		copy.MaxSize = MaxSize;
 		return copy;
 	}
-
 }

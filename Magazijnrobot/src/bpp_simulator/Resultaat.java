@@ -1,7 +1,6 @@
 package bpp_simulator;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,37 +17,31 @@ public class Resultaat extends JFrame {
 
     private ArrayList<Bin> Bins = new ArrayList<>();
     private JButton jbSave;
-    private Algoritme Algoritme;
-    private int Volume, VolumeBoxes = 0;
-    private TekenPanel drawPanel;
+    private final Algoritme Algoritme;
+    private final int Volume;
+    private final TekenPanel drawPanel;
+    
     public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int BoxSize) {
         this.Bins = Bins;
         this.Algoritme = Algoritme;
         this.Volume = Volume;
-        this.VolumeBoxes = VolumeBoxes;
-//		setSize(1300, 803);
         setTitle("Resultaat");
-        setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
+        // Maak een nieuw tekenpaneel aan die wordt verpakt aan een scrollframe
         drawPanel = new TekenPanel(this, Bins, Algoritme, Volume, BoxSize);
         JScrollPane scrollFrame = new JScrollPane(drawPanel);
-
-        if (Bins.size() < 30) {
-            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        } else {
-            scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        }
+        scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         drawPanel.setAutoscrolls(true);
-        scrollFrame.setPreferredSize(new Dimension(1200, 800));
-
-        this.add(scrollFrame);
+        scrollFrame.setPreferredSize(new Dimension(1050, 800));
+        add(scrollFrame);
         pack();
         setResizable(false);
     }
 
     public void SaveScreen(String Location) {
+        // Functie gekopieerd van:
         // http://stackoverflow.com/questions/5655908/export-jpanel-graphics-to-png-or-gif-or-jpg
         BufferedImage bi = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
