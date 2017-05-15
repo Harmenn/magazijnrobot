@@ -14,6 +14,7 @@ public class Bruteforce extends Algoritme {
 	private int currentBestSolution;
 
 	public Bruteforce(ArrayList<Product> ArrayPakketten, int DoosInhoud) {
+                super("Bruteforce");
 		this.ArrayProducts = ArrayPakketten;
 
 		this.bins = new ArrayList<>();

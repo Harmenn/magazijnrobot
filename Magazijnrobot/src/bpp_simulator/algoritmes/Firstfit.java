@@ -7,7 +7,11 @@ import bpp_simulator.Product;
 
 public class Firstfit extends Algoritme {
 
-	private ArrayList<Bin> Dozen = new ArrayList<Bin>();
+	private final ArrayList<Bin> Dozen = new ArrayList<>();
+
+    public Firstfit() {
+        super("Firstfit");
+    }
 
 	public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
 		int berekening = 0;
