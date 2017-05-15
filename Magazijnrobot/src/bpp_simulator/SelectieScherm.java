@@ -214,8 +214,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField jtProductSize;
     private javax.swing.JTable jtProducts;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private final ArrayList<Product> ArrayProducts = new ArrayList<>();
 
+    // Constructor van het selectiescherm
     public SelectieScherm() {
         initComponents();
         jbStart.addActionListener(this);
@@ -226,7 +227,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
     }
 
-    public void addRow(int aantal, int grootte) {
+    // Deze functie voegt een product toe aan de tabel en de producten array
+    private void addRow(int aantal, int grootte) {
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             for (int i = 0; i < aantal; i++) {
@@ -239,7 +241,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
-    public void removeRow(int row) {
+    // Verwijder een geselecteerde row uit de tabel
+    private void removeRow(int row) {
         if (jtProducts.getRowCount() > 0 && jtProducts.getSelectedRow() >= 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             model.removeRow(row);
@@ -247,6 +250,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
+    // ExitButton, zodat je kan aangeven als het venster sluit instant afsluiten
     public void ExitButton(boolean Shutdown) {
         if (Shutdown) {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -255,49 +259,54 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
+    // Start de simulatie vanuit de knop
     private void StartSim() {
-        int binSize;
-        binSize = tryParse(jtBinSize.getText());
-        if (binSize > 0) {
-            if (ArrayProducts.size() > 0) {
-                for (Product ArrayProduct : ArrayProducts) {
-                    if (ArrayProduct.getLength() > binSize) {
-                        JOptionPane.showMessageDialog(null, "Één of meerdere producten is groter dan de inhoud van de doos", "Foutmelding",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                }
-                boolean[] Algorithms = new boolean[5];
-                Algorithms[0] = jcNextfit.isSelected();
-                Algorithms[1] = jcFirstfit.isSelected();
-                Algorithms[2] = jcBestfit.isSelected();
-                Algorithms[3] = jcOwnFit.isSelected();
-                Algorithms[4] = jcBruteforce.isSelected();
-                if (Algorithms[0] == false && Algorithms[1] == false && Algorithms[2] == false && Algorithms[3] == false && Algorithms[4]) {
-                    JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
-                            JOptionPane.ERROR_MESSAGE);
-                } else {
-                    Simulatie s1 = new Simulatie(this, ArrayProducts, binSize, Algorithms);
-                    setVisible(false);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
-                        "Foutmelding", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
+        int binSize = tryParseInt(jtBinSize.getText());
+        if (binSize < 1) {
             JOptionPane.showMessageDialog(null, "Er is geen inhoud van de doos ingesteld!",
                     "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (ArrayProducts.size() < 1) {
+            JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
+                    "Foutmelding", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        for (Product ArrayProduct : ArrayProducts) {
+            if (ArrayProduct.getLength() > binSize) {
+                JOptionPane.showMessageDialog(null, "Één of meerdere producten is groter dan de inhoud van de doos", "Foutmelding",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        // Maak een array aan om te kijken welk algoritme enabled is
+        boolean[] Algorithms = new boolean[5];
+        Algorithms[0] = jcNextfit.isSelected();
+        Algorithms[1] = jcFirstfit.isSelected();
+        Algorithms[2] = jcBestfit.isSelected();
+        Algorithms[3] = jcOwnFit.isSelected();
+        Algorithms[4] = jcBruteforce.isSelected();
+
+        // Als er geen algo geselecteerd is dan komt er een foutmelding
+        if (!Algorithms[0] && !Algorithms[1] && !Algorithms[2] && !Algorithms[3] && !Algorithms[4]) {
+            JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            Simulatie s1 = new Simulatie(this, ArrayProducts, binSize, Algorithms);
+            setVisible(false);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbAddProduct) {
-            addRow(tryParse(jtProductAmount.getText()), tryParse(jtProductSize.getText()));
+            addRow(tryParseInt(jtProductAmount.getText()), tryParseInt(jtProductSize.getText()));
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
         } else if (e.getSource() == jbReset) {
-            ResetScherm();
+            ResetForm();
         } else if (e.getSource() == jbStart) {
             StartSim();
         } else if (e.getSource() == jbRemoveProduct) {
@@ -305,7 +314,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
-    public static Integer tryParse(String text) {
+    private Integer tryParseInt(String text) {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
@@ -313,7 +322,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
     }
 
-    private void ResetScherm() {
+    // Function om het formulier te resetten en de tabel en de array
+    private void ResetForm() {
         if (JOptionPane.showConfirmDialog(null,
                 "Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             jcBestfit.setSelected(false);
