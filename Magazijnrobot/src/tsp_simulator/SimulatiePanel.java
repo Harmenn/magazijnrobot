@@ -6,7 +6,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.swing.JPanel;
 
@@ -70,7 +73,6 @@ public class SimulatiePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		// if(coords.size()==0) return;
 		if (gridWidth == 0)
 			gridWidth = 5;
 		if (gridHeight == 0)
@@ -103,6 +105,9 @@ public class SimulatiePanel extends JPanel {
 					pointWidth, pointHeight);
 		}
 
+		if(sortedCoords==null) return;
+		if(sortedCoords.size()==0) return;
+
 		if (currentAlgorithm != null && sortedCoords.size() != 0) {
 			for (int i = 0; i < sortedCoords.size() - 1; i++) {
 				g.setColor(Color.RED);
@@ -133,6 +138,7 @@ public class SimulatiePanel extends JPanel {
 		switch (algorithm) {
 		case BRUTE_FORCE_ALGORITHM:
 			currentAlgorithm = new TSPBruteForce((ArrayList<Coordinate>) coords.clone());
+			
 			break;
 		case NEAREST_NEIGBOUR_ALGORITHM:
 			currentAlgorithm = new TSPNearestNeighbour((ArrayList<Coordinate>) coords.clone());
@@ -147,4 +153,5 @@ public class SimulatiePanel extends JPanel {
 		this.sortedCoords = currentAlgorithm.getSortedList();
 		repaint();
 	}
+	
 }

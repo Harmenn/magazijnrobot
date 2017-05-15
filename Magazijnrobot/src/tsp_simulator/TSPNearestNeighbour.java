@@ -1,6 +1,7 @@
 package tsp_simulator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TSPNearestNeighbour extends TSPAlgorithm {
 	ArrayList<Coordinate> coords;
@@ -28,78 +29,42 @@ public class TSPNearestNeighbour extends TSPAlgorithm {
 		}
 		sortedCoords.add(mostLeft);
 		coords.remove(mostLeft);
-
-		while (coords.size() != 0) {
+		int startSize = coords.size();
+		for(int i = 0; i<startSize; i++){
+			//1 voor 1 het dichtsbijzijnde coordinaat vinden
 			Coordinate nearestCoord = findNearestCoord(sortedCoords.get(sortedCoords.size() - 1), coords);
 			coords.remove(nearestCoord);
 			sortedCoords.add(nearestCoord);
 		}
-
 		return sortedCoords;
 	}
 
 	public Coordinate findNearestCoord(Coordinate coord, ArrayList<Coordinate> coords) {
-
+		System.out.println("FindCoord for "+coord);
 		// add next coords
 		Coordinate nearestCoord = null;
 		Coordinate lastCoord = sortedCoords.get(sortedCoords.size() - 1);
+		System.out.println("last coord was "+lastCoord);
+		// Zoek de kleinste coordinaat op
 		for (Coordinate c : coords) {
 			if (nearestCoord == null) {
 				nearestCoord = c;
 				continue;
 			}
-			/*
-			 * int biggestX = coords.get(0).x - coord.x; int biggestY =
-			 * coords.get(0).y - coord.y;
-			 * 
-			 * 
-			 * 
-			 * if((c.x - coords.get(coords.size()-1).x) + ((c.y -
-			 * coords.get(coords.size()-1).y)) < biggestX + biggestY) {
-			 * nearestCoord = c; }
-			 */
-
-			int distanceCurX;
-			int distanceCurY;
-			if (nearestCoord.x > lastCoord.x) {
-				distanceCurX = nearestCoord.x - lastCoord.x;
-			} else {
-				distanceCurX = lastCoord.x - nearestCoord.x;
-			}
-
-			if (nearestCoord.y > lastCoord.y) {
-				distanceCurY = nearestCoord.y - lastCoord.y;
-			} else {
-				distanceCurY = lastCoord.y - nearestCoord.y;
-			}
-
-			System.out.println("Current coordinate is: " + nearestCoord);
-			System.out.println("Last coordinate is: " + lastCoord);
-			System.out.println("Current distance is: " + (distanceCurY + distanceCurX));
-
-			int distanceThisX;
-			int distanceThisY;
-			if (nearestCoord.x > c.x) {
-				distanceThisX = nearestCoord.x - c.x;
-			} else {
-				distanceThisX = c.x - nearestCoord.x;
-			}
-
-			if (nearestCoord.y > c.y) {
-				distanceThisY = nearestCoord.y - c.y;
-			} else {
-				distanceThisY = c.y - nearestCoord.y;
-			}
-			System.out.println("This distance is: " + (distanceThisX + distanceThisY));
-
-			if (distanceThisX + distanceThisY < distanceCurY + distanceCurX) {
-				System.out.println((distanceThisX + distanceThisY) + " < " + (distanceCurY + distanceCurX));
+			System.out.println("Current smallest is "+nearestCoord+" with distance "+nearestCoord.distanceBetween(lastCoord));
+			System.out.println("Checking for "+c);
+			
+			if (c.distanceBetween(lastCoord) < nearestCoord.distanceBetween(lastCoord)) {
+				//De afstand is kleiner
+				System.out.println("New smallest: "+c.distanceBetween(lastCoord) + " < " + c.distanceBetween(nearestCoord));
 				nearestCoord = c;
+			} else {
+				//De afstand is groter
+				System.out.println("New smallest: "+c.distanceBetween(lastCoord) + " > " + c.distanceBetween(nearestCoord));
 			}
-
 		}
-		System.out.println("Returned: " + nearestCoord.x + ", " + nearestCoord.y);
-		System.out.println("______");
+		System.out.println("Found "+nearestCoord);
+			
 		return nearestCoord;
 	}
 }

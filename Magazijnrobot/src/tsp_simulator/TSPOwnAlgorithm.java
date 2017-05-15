@@ -13,8 +13,11 @@ public class TSPOwnAlgorithm extends TSPAlgorithm {
 	}
 
 	public ArrayList<Coordinate> getSortedList() {
+		//Eerst voeren we nearest neighbour uit
 		coords = new TSPNearestNeighbour(coords).getSortedList();
+		//Hier halen we de intersecties uit d.m.v. OptTwo
 		coords = new TSPOptTwo(coords).getSortedList();
+		//Deze Route returnen we
 		return coords;
 	}
 }

@@ -23,20 +23,14 @@ public class Coordinate {
 		return "x: " + this.x + ", y: " + this.y;
 	}
 
-	public int distanceBetween(Coordinate c) {
-		int distanceX;
-		int distanceY;
-		if (this.x > c.x) {
-			distanceX = this.x - c.x;
-		} else {
-			distanceX = c.x - this.x;
-		}
-
-		if (this.y > c.y) {
-			distanceY = this.y - c.y;
-		} else {
-			distanceY = c.y - this.y;
-		}
-		return distanceX + distanceY;
+	public float distanceBetween(Coordinate c) {
+		int x1 = this.x;
+		int x2 = c.x;
+		int y1 = this.y;
+		int y2 = c.y;
+		//Pythagoras
+		float distance = (float) Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+		//System.out.println("Distance between "+this+" and "+c+" is "+distance);
+		return distance;
 	}
 }

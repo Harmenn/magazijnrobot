@@ -43,23 +43,25 @@ public class TSPBruteForce extends TSPAlgorithm {
 
 		getNextSteps(null, coords);
 
-		int leastSteps = -1;
+		float leastSteps = -1;
 		ArrayList<Coordinate> selectedList = null;
+		
+		//Van alle routes bepalen welke nou het kortst is
 		for (Route r : routes) {
 			if (leastSteps == -1) {
-				leastSteps = r.getSteps();
-			}
-			if (leastSteps > r.getSteps()) {
+				leastSteps = r.getDistance();
 				selectedList = r.getRouteAsArray();
-				System.out.println("Shortest route is: " + r.getSteps());
+			}
+			if (leastSteps > r.getDistance()) {
+				leastSteps = r.getDistance();
+				selectedList = r.getRouteAsArray();
 			}
 		}
-		System.out.println("I found " + routes.size() + " different routes");
 		return selectedList;
 	}
 
 	private void getNextSteps(ArrayList<Coordinate> currentCoords, ArrayList<Coordinate> leftCoords) {
-
+		//Functie welke zichzelf opnieuw aan blijft roepen
 		if (currentCoords == null) {
 			currentCoords = new ArrayList<Coordinate>();
 			currentCoords.add(mostLeft);
@@ -68,6 +70,7 @@ public class TSPBruteForce extends TSPAlgorithm {
 		System.out.println("My current coords: " + currentCoords.size());
 		System.out.println("My left coords: " + leftCoords.size());
 
+		//Beginnen bij het meest linker coordinaat
 		if (leftCoords.size() == 0) {
 			Route route = new Route(currentCoords);
 			routes.add(route);
