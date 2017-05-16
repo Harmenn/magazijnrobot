@@ -561,10 +561,6 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 res = null;
             }
             ArrayResults.removeAll(ArrayResults);
-            for (Product product : ArrayProducts) {
-                product = null;
-            }
-            ArrayProducts.removeAll(ArrayProducts);
             endResult = null;
             selectieScherm.setVisible(true);
             dispose();
