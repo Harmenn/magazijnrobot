@@ -229,9 +229,15 @@ public class SelectieScherm {
 		btnVoltooien.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnVoltooien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmSelecteerTspParameters.setVisible(false);
-				AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()),
-						Integer.parseInt(txtHeight.getText()), punten, frmSelecteerTspParameters);
+                            //Open the simulation window if enough points have been added
+                            if(model.getSize() > 3) {
+                                    frmSelecteerTspParameters.setVisible(false);
+                                    AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()),
+                                    Integer.parseInt(txtHeight.getText()), punten, frmSelecteerTspParameters);
+                            } else {
+                                    String error = "Er moeten minimaal 4 punten zijn toegevoegd";
+                                    JOptionPane.showMessageDialog(list, error);
+                            }
 			}
 		});
 		btnVoltooien.setBounds(77, 281, 64, 23);
