@@ -76,18 +76,33 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jbCancel.addActionListener(this);
         jbSave.addActionListener(this);
         jbContinue.addActionListener(this);
-        
+
         // Totaal volume verkrijgen
         vol = getVolume();
         jlTotalVolumeProducts.setText(Integer.toString(vol));
         setVisible(true);
-        
+
         // Thread starten
         StartThread();
-        
+
         // Eind resultaat instellen voor het opslaan
         endResult.append("Naam Algoritme;Aantal dozen;Tijd (ms)\n\n");
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (t.isAlive()) {
+                    if (JOptionPane.showConfirmDialog(null,
+                            "Weet je zeker dat je de simulatie wilt stoppen?", "Simulatie stoppen",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                        ExitWindow();
 
+                    }
+                } else {
+                    ExitWindow();
+                }
+            }
+        });
     }
 
     private void StartThread() {
@@ -296,7 +311,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         jbSave = new javax.swing.JButton();
         jbContinue = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Bin Packing Problem Simulation - Bezig");
         setResizable(false);
 
@@ -556,14 +571,18 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         } else if (e.getSource() == jbSave) {
             SaveResults();
         } else if (e.getSource() == jbContinue) {
-            this.setVisible(false);
-            for (Resultaat res : ArrayResults) {
-                res = null;
-            }
-            ArrayResults.removeAll(ArrayResults);
-            endResult = null;
-            selectieScherm.setVisible(true);
-            dispose();
+            ExitWindow();
         }
+    }
+
+    public void ExitWindow() {
+        this.setVisible(false);
+        for (Resultaat res : ArrayResults) {
+            res = null;
+        }
+        ArrayResults.removeAll(ArrayResults);
+        endResult = null;
+        selectieScherm.setVisible(true);
+        dispose();
     }
 }
