@@ -209,9 +209,19 @@ public class SelectieScherm {
                             int panelHeight = panel.getGridHeight();
                             //only add points which fit within the grid
                             if(puntx >= 0 && punty >= 0 && puntx <= panelWidth && punty <= panelHeight) {
-				punten.add(new Coordinate(puntx, punty));
-				panel.setCoords(punten);
-				loadPunten();
+                                Coordinate nieuwpunt = new Coordinate(puntx, punty);
+                                boolean isnieuwpunt = true;
+                                for (Coordinate huidigpunt : punten) {
+                                   if(nieuwpunt.equals(huidigpunt)) {
+                                       isnieuwpunt = false;
+                                       break;
+                                    }
+                                }
+                                if(isnieuwpunt) {
+                                    punten.add(nieuwpunt);
+                                    panel.setCoords(punten);
+                                    loadPunten();
+                                }
                             } else {
                                 //show an error if the point is outside the grid
                                 String error = "Het opgegeven punt moet binnen het grid vallen.";
