@@ -64,11 +64,11 @@ public class SimulatiePanel extends JPanel {
 		repaint();
 	}
 
-        public int getWidth() {
+        public int getGridWidth() {
             return gridWidth;
         }
 
-        public int getHeight() {
+        public int getGridHeight() {
             return gridHeight;
         }
 

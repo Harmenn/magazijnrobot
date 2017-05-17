@@ -201,8 +201,8 @@ public class SelectieScherm {
 			public void actionPerformed(ActionEvent arg0) {
                             int puntx = Integer.parseInt(txtX.getText());
                             int punty = Integer.parseInt(txtY.getText());
-                            int panelWidth = panel.getWidth();
-                            int panelHeight = panel.getHeight();
+                            int panelWidth = panel.getGridWidth();
+                            int panelHeight = panel.getGridHeight();
                             //only add points which fit within the grid
                             if(puntx >= 0 && punty >= 0 && puntx <= panelWidth && punty <= panelHeight) {
 				punten.add(new Coordinate(puntx, punty));
