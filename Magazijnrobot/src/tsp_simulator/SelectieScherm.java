@@ -22,6 +22,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -111,8 +112,8 @@ public class SelectieScherm {
 			@Override
 			public void keyReleased(KeyEvent k) {
 				int height = Integer.parseInt(txtHeight.getText());
-				if (height < 4)
-					height = 4;
+				if (height < 5)
+					height = 5;
 				panel.setHeight(height);
 				frmSelecteerTspParameters.repaint();
 			}
@@ -137,8 +138,8 @@ public class SelectieScherm {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				int width = Integer.parseInt(txtWidth.getText());
-				if (width < 4)
-					width = 4;
+				if (width < 5)
+					width = 5;
 				panel.setWidth(width);
 				frmSelecteerTspParameters.repaint();
 			}
@@ -198,9 +199,22 @@ public class SelectieScherm {
 		JButton btnToevoegen = new JButton("Toevoegen");
 		btnToevoegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				punten.add(new Coordinate(Integer.parseInt(txtX.getText()), Integer.parseInt(txtY.getText())));
+                            int puntx = Integer.parseInt(txtX.getText());
+                            int punty = Integer.parseInt(txtY.getText());
+                            int panelWidth = panel.getWidth();
+                            int panelHeight = panel.getHeight();
+                            //only add points which fit within the grid
+                            if(puntx >= 0 && punty >= 0 && puntx <= panelWidth && punty <= panelHeight) {
+				punten.add(new Coordinate(puntx, punty));
 				panel.setCoords(punten);
 				loadPunten();
+                            } else {
+                                //show an error if the point is outside the grid
+                                String error = "Het opgegeven punt moet binnen het grid vallen.";
+                                JOptionPane.showMessageDialog(list, error);
+                                txtX.setText("0");
+                                txtY.setText("0");
+                            }
 			}
 		});
 		btnToevoegen.setFont(new Font("Tahoma", Font.PLAIN, 9));

@@ -64,6 +64,14 @@ public class SimulatiePanel extends JPanel {
 		repaint();
 	}
 
+        public int getWidth() {
+            return gridWidth;
+        }
+
+        public int getHeight() {
+            return gridHeight;
+        }
+
 	public void setCoords(ArrayList<Coordinate> coords) {
 		this.coords = coords;
 		repaint();
