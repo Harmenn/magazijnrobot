@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -164,11 +165,14 @@ public class SelectieScherm {
 		JButton btnNewButton = new JButton("Verwijderen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int selectedIndex = list.getSelectedIndex();
-				System.out.println(selectedIndex);
-				if (selectedIndex != -1) {
-					punten.remove(selectedIndex);
-				}
+                                int [] selectedItems = list.getSelectedIndices();
+                                Arrays.sort(selectedItems);
+                                for(int i = selectedItems.length-1; i >= 0; i-- ) {
+                                        System.out.println(i);
+                                        if (selectedItems[i] != -1) {
+                                            punten.remove(selectedItems[i]);
+                                        }
+                                }
 				loadPunten();
 			}
 		});
