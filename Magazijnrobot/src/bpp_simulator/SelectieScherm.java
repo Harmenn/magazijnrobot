@@ -244,9 +244,23 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     // Verwijder een geselecteerde row uit de tabel
     private void removeRow(int row) {
         if (jtProducts.getRowCount() > 0 && jtProducts.getSelectedRow() >= 0) {
+            ArrayList<Product> tmpList = new ArrayList<Product>();
+            int count = 0;
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
+            System.out.println(model.getValueAt(row, 0));
+            for (Product p : ArrayProducts) {
+                if ((int) model.getValueAt(row, 0) == p.getLength()) {
+                    tmpList.add(p);
+                    count++;
+                }
+                if (count == (int) model.getValueAt(row, 1)) {
+                    break;
+                }
+            }
+            for (Product p : tmpList) {
+                ArrayProducts.remove(p);
+            }
             model.removeRow(row);
-            ArrayProducts.remove(row);
         }
     }
 
@@ -280,7 +294,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 return;
             }
         }
-        
+
         // Maak een array aan om te kijken welk algoritme enabled is
         boolean[] Algorithms = new boolean[5];
         Algorithms[0] = jcNextfit.isSelected();

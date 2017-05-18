@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -150,7 +151,9 @@ public class AlgoritmeScherm {
 					JFileChooser chooser = new JFileChooser();
 					chooser.setCurrentDirectory(new java.io.File("."));
 					chooser.setDialogTitle("Simulatie opslaan");
-					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					//chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
+                                        chooser.setFileFilter(xmlfilter);
 
 					chooser.setAcceptAllFileFilterUsed(false);
 					if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {

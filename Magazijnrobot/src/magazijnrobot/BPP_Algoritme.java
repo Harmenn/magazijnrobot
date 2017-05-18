@@ -1,45 +1,48 @@
-package bpp_simulator.algoritmes;
+package magazijnrobot;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import bpp_simulator.Bin;
-import bpp_simulator.Product;
+import magazijnrobot.Product;
 
-public class Bestfit extends Algoritme {
+public class BPP_Algoritme {
 
-    private final ArrayList<Bin> Dozen = new ArrayList<>();
+    private ArrayList<Bin> Bins = new ArrayList<>();
 
-    public Bestfit() {
-        super("Bestfit");
+    public BPP_Algoritme() {
+        
     }
 
     public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
-
         int berekening = 0;
+        Collections.sort(pk, new Comparator<Product>() {
+            public int compare(Product a, Product b) {
+                return ((Integer) (grootte - a.getVolume())).compareTo(grootte - b.getVolume());
+            }
+        });
         producttenloop:
         for (Product product : pk) {
-            if (Dozen.isEmpty()) {
-                Dozen.add(new Bin());
+            if (Bins.isEmpty()) {
+                Bins.add(new Bin());
             } else {
-                Collections.sort(Dozen, new Comparator<Bin>() {
+                Collections.sort(Bins, new Comparator<Bin>() {
                     public int compare(Bin a, Bin b) {
                         return ((Integer) (grootte - a.getCurrentSize())).compareTo(grootte - b.getCurrentSize());
                     }
                 });
             }
-            for (Bin doos : Dozen) {
-                berekening = doos.getCurrentSize() + product.getLength();
+            for (Bin doos : Bins) {
+                berekening = doos.getCurrentSize() + product.getVolume();
                 if (berekening <= grootte) {
                     doos.addProduct(product);
                     continue producttenloop;
                 }
             }
             if (berekening >= grootte) {
-                Dozen.add(new Bin(product, grootte));
+                Bins.add(new Bin(product, grootte));
             }
         }
-        return Dozen;
+        return Bins;
     }
 }

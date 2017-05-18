@@ -1,4 +1,4 @@
-package bpp_simulator;
+package magazijnrobot;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,20 +6,18 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import bpp_simulator.algoritmes.Algoritme;
+import magazijnrobot.*;
 
-public class TekenPanel extends JPanel {
+public class BPP_DrawPanel extends JPanel {
     
-    Resultaat result;
+    BPP_Result result;
     private int x = 50, y = 90, yProduct = 90, volume = 0, volumeDozen = 0, BinSize = 0;
     ArrayList<Bin> bins = new ArrayList<>();
-    private final Algoritme Algoritme;
-    
-    public TekenPanel(Resultaat result, ArrayList<Bin> Bins, Algoritme Algrotime, int Volume, int BinSize) {
+
+    public BPP_DrawPanel(BPP_Result result, ArrayList<Bin> Bins, int Volume, int BinSize) {
         this.result = result;
         this.bins = Bins;
         this.volume = Volume;
-        this.Algoritme = Algrotime;
         this.volumeDozen = BinSize * Bins.size();
         this.BinSize = BinSize;
         int prefsize = (Bins.size() / 10) * (BinSize * 10) + (Bins.size() / 10 * 50);
@@ -33,8 +31,6 @@ public class TekenPanel extends JPanel {
         x = 50;
         y = 90;
         yProduct = 90;
-        g.drawString("Algoritme: " + Algoritme.getName() + "    Tijdsduur: " + Algoritme.getEndTime() + "ms", x,
-                20);
         g.drawString("Aantal dozen: " + bins.size(), x, 40);
         g.drawString("Totaal volume producten: " + volume + "     Totaal volume dozen: " + volumeDozen, x, 60);
         
@@ -49,10 +45,10 @@ public class TekenPanel extends JPanel {
                 rgb = Color.HSBtoRGB((float) hue, 0.8f, 0.8f);
                 Color color = new Color(rgb);
                 g.setColor(color);
-                g.fillRect(x, yProduct, 50, product.getLength() * 10);
-                yProduct += product.getLength() * 10;
+                g.fillRect(x, yProduct, 50, product.getVolume() * 10);
+                yProduct += product.getVolume() * 10;
                 g.setColor(Color.black);
-                g.drawString(Integer.toString(product.getLength()), x + 55, yProduct);
+                g.drawString(Integer.toString(product.getVolume()), x + 55, yProduct);
             }
             x += 100;
             if (x > 1000) {

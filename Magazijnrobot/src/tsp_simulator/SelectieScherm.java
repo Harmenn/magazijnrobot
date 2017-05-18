@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -110,9 +112,14 @@ public class SelectieScherm {
 
 			@Override
 			public void keyReleased(KeyEvent k) {
-				int height = Integer.parseInt(txtHeight.getText());
-				if (height < 4)
-					height = 4;
+                            int height;
+                            try {
+				height = Integer.parseInt(txtHeight.getText());
+                            } catch(NumberFormatException ex) {
+                                height = 5;
+                            }
+                                if (height < 5)
+					height = 5;
 				panel.setHeight(height);
 				frmSelecteerTspParameters.repaint();
 			}
@@ -136,9 +143,15 @@ public class SelectieScherm {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				int width = Integer.parseInt(txtWidth.getText());
-				if (width < 4)
-					width = 4;
+                            int width;
+                            try {
+				width = Integer.parseInt(txtWidth.getText());
+                            } catch(NumberFormatException ex) {
+                                width = 5;
+                            }
+
+				if (width < 5)
+					width = 5;
 				panel.setWidth(width);
 				frmSelecteerTspParameters.repaint();
 			}
@@ -163,11 +176,14 @@ public class SelectieScherm {
 		JButton btnNewButton = new JButton("Verwijderen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int selectedIndex = list.getSelectedIndex();
-				System.out.println(selectedIndex);
-				if (selectedIndex != -1) {
-					punten.remove(selectedIndex);
-				}
+                                int [] selectedItems = list.getSelectedIndices();
+                                Arrays.sort(selectedItems);
+                                for(int i = selectedItems.length-1; i >= 0; i-- ) {
+                                        System.out.println(i);
+                                        if (selectedItems[i] != -1) {
+                                            punten.remove(selectedItems[i]);
+                                        }
+                                }
 				loadPunten();
 			}
 		});
@@ -198,9 +214,40 @@ public class SelectieScherm {
 		JButton btnToevoegen = new JButton("Toevoegen");
 		btnToevoegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				punten.add(new Coordinate(Integer.parseInt(txtX.getText()), Integer.parseInt(txtY.getText())));
-				panel.setCoords(punten);
-				loadPunten();
+                            try{
+                            int puntx = Integer.parseInt(txtX.getText());
+                            int punty = Integer.parseInt(txtY.getText());
+                            int panelWidth = panel.getGridWidth();
+                            int panelHeight = panel.getGridHeight();
+                            //only add points which fit within the grid
+                            if(puntx >= 0 && punty >= 0 && puntx <= panelWidth && punty <= panelHeight) {
+                                Coordinate nieuwpunt = new Coordinate(puntx, punty);
+                                boolean isnieuwpunt = true;
+                                for (Coordinate huidigpunt : punten) {
+                                   if(nieuwpunt.equals(huidigpunt)) {
+                                       isnieuwpunt = false;
+                                       break;
+                                    }
+                                }
+                                if(isnieuwpunt) {
+                                    punten.add(nieuwpunt);
+                                    panel.setCoords(punten);
+                                    loadPunten();
+                                }
+                            } else {
+                                //show an error if the point is outside the grid
+                                String error = "Het opgegeven punt moet binnen het grid vallen.";
+                                JOptionPane.showMessageDialog(list, error);
+                            }
+                            } catch(NumberFormatException ex) {
+                                //show an error if the point is outside the grid
+                                String error = "De opgegeven coördinaten moeten uit cijfers bestaan";
+                                JOptionPane.showMessageDialog(list, error);
+                            }
+                            
+                            //reset values
+                            txtX.setText("0");
+                            txtY.setText("0");
 			}
 		});
 		btnToevoegen.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -211,9 +258,15 @@ public class SelectieScherm {
 		btnVoltooien.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnVoltooien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmSelecteerTspParameters.setVisible(false);
-				AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()),
-						Integer.parseInt(txtHeight.getText()), punten, frmSelecteerTspParameters);
+                            //Open the simulation window if enough points have been added
+                            if(model.getSize() > 3) {
+                                    frmSelecteerTspParameters.setVisible(false);
+                                    AlgoritmeScherm as = new AlgoritmeScherm(Integer.parseInt(txtWidth.getText()),
+                                    Integer.parseInt(txtHeight.getText()), punten, frmSelecteerTspParameters);
+                            } else {
+                                    String error = "Er moeten minimaal 4 punten zijn toegevoegd";
+                                    JOptionPane.showMessageDialog(list, error);
+                            }
 			}
 		});
 		btnVoltooien.setBounds(77, 281, 64, 23);

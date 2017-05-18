@@ -1,13 +1,14 @@
 package bpp_simulator.algoritmes;
 
-import java.util.ArrayList;
+public abstract class Algoritme {
 
-public class Algoritme {
-
-    protected ArrayList<Algoritme> Algoritmes = new ArrayList<>();
     private String name;
     private long EndTime;
     private int bins;
+
+    public Algoritme(String name) {
+        this.name = name;
+    }
 
     public int getBins() {
         return bins;
@@ -25,19 +26,7 @@ public class Algoritme {
         return EndTime;
     }
 
-    public void setName(String naam) {
-        this.name = naam;
-    }
-
     public void setEndTime(long eindtijd) {
         this.EndTime = eindtijd;
-    }
-
-    public ArrayList<Algoritme> getAlgoritmes() {
-        return Algoritmes;
-    }
-
-    public void addAlgoritme(Algoritme Algoritme) {
-        this.Algoritmes.add(Algoritme);
     }
 }
