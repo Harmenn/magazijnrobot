@@ -78,10 +78,13 @@ public class SerialEvent implements SerialPortEventListener {
 		}
 	}
 
-	public void sendMessage(String message) throws IOException {
-
-		OutputStream output = serialPort.getOutputStream();
-		output.write(message.getBytes());
+	public void sendMessage(String message) {
+		try {
+			OutputStream output = serialPort.getOutputStream();
+			output.write(message.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void disconnect() {
