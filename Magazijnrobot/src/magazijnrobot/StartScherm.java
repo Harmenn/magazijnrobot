@@ -337,6 +337,15 @@ public class StartScherm {
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
+                                int doosvol = 0;
+                                for (Product product : producten) {
+                                    if(doosvol < 3){
+                                    resultaat.addProduct(product);
+                                    } else{
+                                        break;
+                                    }
+                                    doosvol++;
+                                }
 			}
 		});
 

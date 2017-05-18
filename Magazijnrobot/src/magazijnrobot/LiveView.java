@@ -45,7 +45,7 @@ public class LiveView extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         // Maak een nieuw tekenpaneel aan die wordt verpakt aan een scrollframe
-        bpp_panel = new BPP_DrawPanel(this, Bins, BinSize);
+        bpp_panel = new BPP_DrawPanel(Bins, BinSize);
 	    tsp_panel = new SimulatiePanel(5,5,coords);
 	    tsp_panel.setAlgorithm(tsp_panel.OWN_ALGORITHM);
         JScrollPane scrollFrame = new JScrollPane(bpp_panel);
@@ -63,7 +63,9 @@ public class LiveView extends JFrame {
     public void setCurrentCoord(Coordinate currentCoord) {
     	tsp_panel.setCurrentCoord(currentCoord);
     }
-
+    public void addProduct(Product currentProduct) {
+    	bpp_panel.setCurrentProduct(currentProduct);
+    }
     public ArrayList<Bin> getBins() {
         return Bins;
     }

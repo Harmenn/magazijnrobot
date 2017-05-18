@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import magazijnrobot.Product;
 public class Bin {
 
-	private int CurrentSize = 0;
+	private int CurrentSize = 0, realSize = 0;
 	private int MaxSize;
 	private ArrayList<Product> Products = new ArrayList<>();
 
@@ -14,6 +14,14 @@ public class Bin {
 	public int getMaxSize() {
 		return MaxSize;
 	}
+
+        public int getRealSize() {
+            return realSize;
+        }
+
+        public void setRealSize(int realSize) {
+            this.realSize = realSize;
+        }
 
 	public ArrayList<Product> getProducts() {
 		return Products;
