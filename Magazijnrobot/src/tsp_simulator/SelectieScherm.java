@@ -177,14 +177,20 @@ public class SelectieScherm {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
                                 int [] selectedItems = list.getSelectedIndices();
-                                Arrays.sort(selectedItems);
-                                for(int i = selectedItems.length-1; i >= 0; i-- ) {
+                                if (selectedItems.length == 0) {
+                                    //show an error no points have been selected
+                                    String error = "Selecteer een of meer punten om te verwijderen.";
+                                    JOptionPane.showMessageDialog(list, error);
+                                } else {
+                                    Arrays.sort(selectedItems);
+                                    for(int i = selectedItems.length-1; i >= 0; i-- ) {
                                         System.out.println(i);
                                         if (selectedItems[i] != -1) {
                                             punten.remove(selectedItems[i]);
                                         }
+                                    }
+                                    loadPunten();
                                 }
-				loadPunten();
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 9));
