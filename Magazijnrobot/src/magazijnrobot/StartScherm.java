@@ -44,6 +44,8 @@ import java.awt.Color;
 public class StartScherm {
 
 	Order order = new Order();
+	
+	public int currentPackages = 0;
 
 	private Connection conn;
 	private Statement statement = null;
@@ -323,6 +325,7 @@ public class StartScherm {
 					lblBpp.setText("BPP connected");
 					lblBpp.setForeground(Color.GREEN);
 				}
+				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
 				LiveView resultaat = new LiveView(producten);
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
