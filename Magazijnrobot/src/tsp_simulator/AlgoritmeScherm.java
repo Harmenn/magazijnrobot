@@ -92,7 +92,7 @@ public class AlgoritmeScherm {
 					rdbtnAlgoritme.setText("Brute Force - " + (System.currentTimeMillis() - startTime) + "ms");
 				} else if (rdbtnoptTour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
-					rdbtnoptTour.setText("Two Opt - " + (System.currentTimeMillis() - startTime) + "ms");
+					rdbtnoptTour.setText("2-opt tour - " + (System.currentTimeMillis() - startTime) + "ms");
 				} else if (rdbtnEigen.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
 					rdbtnEigen.setText("Eigen - " + (System.currentTimeMillis() - startTime) + "ms");
