@@ -1,4 +1,4 @@
-package magazijnrobot.bpp;
+package magazijnrobot;
 
 import java.util.ArrayList;
 import magazijnrobot.Product;

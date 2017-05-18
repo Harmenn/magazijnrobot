@@ -1,17 +1,16 @@
-package magazijnrobot.bpp;
+package magazijnrobot;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import bpp_simulator.Bin;
-import bpp_simulator.Product;
+import magazijnrobot.Product;
 
-public class Algoritme {
+public class BPP_Algoritme {
 
     private ArrayList<Bin> Bins = new ArrayList<>();
 
-    public Algoritme() {
+    public BPP_Algoritme() {
         
     }
 
@@ -19,7 +18,7 @@ public class Algoritme {
         int berekening = 0;
         Collections.sort(pk, new Comparator<Product>() {
             public int compare(Product a, Product b) {
-                return ((Integer) (grootte - a.getLength())).compareTo(grootte - b.getLength());
+                return ((Integer) (grootte - a.getVolume())).compareTo(grootte - b.getVolume());
             }
         });
         producttenloop:
@@ -34,7 +33,7 @@ public class Algoritme {
                 });
             }
             for (Bin doos : Bins) {
-                berekening = doos.getCurrentSize() + product.getLength();
+                berekening = doos.getCurrentSize() + product.getVolume();
                 if (berekening <= grootte) {
                     doos.addProduct(product);
                     continue producttenloop;
