@@ -12,11 +12,11 @@ public class Route {
 	public float getDistance() {
 		//De afstand tussen alle punten bijelkaar op tellen
 		float steps = 0;
-		for (int i = 0; i < coords.size() - 1; i++) {
+		for (int i = 0; i < coords.size(); i++) {
 			int i1 = i;
-			int i2 = i - 1;
-			if (i2 == -1)
-				i2 = coords.size() - 1;
+			int i2 = i + 1;
+			if (i2 == coords.size())
+				i2 = 0;
 			int x1 = coords.get(i1).x;
 			int x2 = coords.get(i2).x;
 			int y1 = coords.get(i1).y;
