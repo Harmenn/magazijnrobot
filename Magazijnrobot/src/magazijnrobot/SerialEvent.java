@@ -16,9 +16,9 @@ public class SerialEvent implements SerialPortEventListener {
 	public boolean connected = false;
 	private SerialPort serialPort = null;
 	private CommPortIdentifier portId = null;
-	private String portName = "COM3";
+	//private String portName = "COM3";
 
-	public SerialEvent() {
+	public SerialEvent(String portName) {
 		@SuppressWarnings("rawtypes")
 		Enumeration enumComm = CommPortIdentifier.getPortIdentifiers();
 

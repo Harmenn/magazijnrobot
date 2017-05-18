@@ -58,7 +58,7 @@ public class StartScherm {
 	private JLabel lblAdres;
 	private JLabel lblWoonplaats;
 	private JLabel lblPostcode;
-	SerialEvent event = new SerialEvent();
+	SerialEvent event = new SerialEvent("COM3");
 
 	/**
 	 * Launch the application.
@@ -110,13 +110,6 @@ public class StartScherm {
 		frmMagazijnrobot.getContentPane().add(lblGekozenOrder);
 
 		JButton btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				btnStart.setEnabled(false);
-				btnStop.setEnabled(true);
-			}
-		});
 		btnStart.setEnabled(false);
 		btnStart.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnStart.setBounds(11, 70, 66, 23);
@@ -263,6 +256,17 @@ public class StartScherm {
 						btnStop.setEnabled(false);
 					}
 				});
+ 		btnStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+                                 BPP_Algoritme alg = new BPP_Algoritme();
+                                 ArrayList<Bin> binlist = alg.start(producten, 10); 
+                                
+                            BPP_Result resultaat = new BPP_Result(binlist, 10, 10 );
+                                         resultaat.setVisible(true);
+				btnStart.setEnabled(false);
+				btnStop.setEnabled(true);
+			}
+		});
 
 	}
 	
