@@ -310,6 +310,16 @@ public class StartScherm {
 			public void actionPerformed(ActionEvent e) {
 				btnStart.setEnabled(true);
 				btnStop.setEnabled(false);
+                                if(tsp_connectie.connected){
+                                    tsp_connectie.disconnect();
+  					lblTsp.setText("TSP not connected");
+					lblTsp.setForeground(Color.RED);                                  
+                                }
+                                if(bpp_connectie.connected){
+                                    bpp_connectie.disconnect();
+                                    	lblBpp.setText("BPP not connected");
+					lblBpp.setForeground(Color.RED);
+                                }
 			}
 		});
 		btnStart.addActionListener(new ActionListener() {
