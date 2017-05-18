@@ -86,16 +86,16 @@ public class AlgoritmeScherm {
 				if (rdbtnNearestNeighbour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.NEAREST_NEIGBOUR_ALGORITHM);
 					rdbtnNearestNeighbour
-							.setText("Nearest Neighbour - " + (System.currentTimeMillis() - startTime) + "ms");
+							.setText("Nearest Neighbour - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				} else if (rdbtnAlgoritme.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.BRUTE_FORCE_ALGORITHM);
-					rdbtnAlgoritme.setText("Brute Force - " + (System.currentTimeMillis() - startTime) + "ms");
+					rdbtnAlgoritme.setText("Brute Force - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				} else if (rdbtnoptTour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
-					rdbtnoptTour.setText("2-opt tour - " + (System.currentTimeMillis() - startTime) + "ms");
+					rdbtnoptTour.setText("2-opt tour - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				} else if (rdbtnEigen.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
-					rdbtnEigen.setText("Eigen - " + (System.currentTimeMillis() - startTime) + "ms");
+					rdbtnEigen.setText("Eigen - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				}
 				frame.repaint();
 			}
