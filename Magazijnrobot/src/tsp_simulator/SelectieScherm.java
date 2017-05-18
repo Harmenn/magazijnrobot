@@ -112,8 +112,13 @@ public class SelectieScherm {
 
 			@Override
 			public void keyReleased(KeyEvent k) {
-				int height = Integer.parseInt(txtHeight.getText());
-				if (height < 5)
+                            int height;
+                            try {
+				height = Integer.parseInt(txtHeight.getText());
+                            } catch(NumberFormatException ex) {
+                                height = 5;
+                            }
+                                if (height < 5)
 					height = 5;
 				panel.setHeight(height);
 				frmSelecteerTspParameters.repaint();
@@ -138,7 +143,13 @@ public class SelectieScherm {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				int width = Integer.parseInt(txtWidth.getText());
+                            int width;
+                            try {
+				width = Integer.parseInt(txtWidth.getText());
+                            } catch(NumberFormatException ex) {
+                                width = 5;
+                            }
+
 				if (width < 5)
 					width = 5;
 				panel.setWidth(width);
