@@ -34,7 +34,7 @@ public class SimulatiePanel extends JPanel {
 	int pointWidth = 20;
 	int pointHeight = 20;
 
-	ArrayList<Coordinate> coords;// = new ArrayList<Coordinate>();
+	ArrayList<Coordinate> coords;
 	ArrayList<Coordinate> sortedCoords = new ArrayList<Coordinate>();
 
 	public SimulatiePanel(int gridWidth, int gridHeight, ArrayList<Coordinate> coords) {
@@ -88,6 +88,7 @@ public class SimulatiePanel extends JPanel {
 		pointWidth = squareWidth / 3;
 		pointHeight = squareHeight / 3;
 
+		//Het Grid tekenen
 		g.setColor(Color.BLACK);
 		for (int i = 0; i <= gridWidth; i++) {
 
@@ -99,15 +100,17 @@ public class SimulatiePanel extends JPanel {
 			g.drawLine(i * squareHeight + startX, 0, i * squareHeight + startX, calcHeight);
 		}
 
+		//De coordinaten tekenen
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
 			g.fillOval(c.x * squareHeight - (pointHeight / 2) + startX, c.y * squareWidth - (pointWidth / 2),
 					pointWidth, pointHeight);
 		}
 
-		if(sortedCoords==null) return;
-		if(sortedCoords.size()==0) return;
+		//Er is nog geen algoritme uitgevoerd?
+		if(sortedCoords==null||sortedCoords.size()==0) return;
 
+		//Als er een algoritme uitgevoerd is, laat de route zien
 		if (currentAlgorithm != null && sortedCoords.size() != 0) {
 			for (int i = 0; i < sortedCoords.size() - 1; i++) {
 				g.setColor(Color.RED);
