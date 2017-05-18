@@ -58,7 +58,7 @@ public class StartScherm {
 	private JLabel lblAdres;
 	private JLabel lblWoonplaats;
 	private JLabel lblPostcode;
-	SerialEvent event = new SerialEvent();
+	SerialEvent event = new SerialEvent("COM3");
 
 	/**
 	 * Launch the application.
