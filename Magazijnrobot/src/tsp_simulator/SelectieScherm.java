@@ -239,6 +239,9 @@ public class SelectieScherm {
                                     punten.add(nieuwpunt);
                                     panel.setCoords(punten);
                                     loadPunten();
+                                } else {
+                                    String error = "Het opgegeven punt bestaat al.";
+                                    JOptionPane.showMessageDialog(list, error);
                                 }
                             } else {
                                 //show an error if the point is outside the grid
