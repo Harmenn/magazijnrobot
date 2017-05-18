@@ -176,5 +176,12 @@ public class SimulatiePanel extends JPanel {
 		this.sortedCoords = currentAlgorithm.getSortedList();
 		repaint();
 	}
+        
+        public float getAlgorithmDistance() {
+            //Do not execute this function before calculating the algorithm!
+            //It returns the distance of the current algorithm result
+            Route calculatedRoute = new Route(sortedCoords);
+            return calculatedRoute.getDistance();
+        }
 	
 }
