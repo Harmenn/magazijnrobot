@@ -258,11 +258,8 @@ public class StartScherm {
 				});
  		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-                                 BPP_Algoritme alg = new BPP_Algoritme();
-                                 ArrayList<Bin> binlist = alg.start(producten, 10); 
-                                
-                            BPP_Result resultaat = new BPP_Result(binlist, 10, 10 );
-                                         resultaat.setVisible(true);
+				LiveView resultaat = new LiveView(producten);
+                resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
 			}

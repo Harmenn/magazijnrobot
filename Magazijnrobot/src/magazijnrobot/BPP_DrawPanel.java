@@ -10,11 +10,11 @@ import magazijnrobot.*;
 
 public class BPP_DrawPanel extends JPanel {
     
-    BPP_Result result;
+    LiveView result;
     private int x = 50, y = 90, yProduct = 90, volume = 0, volumeDozen = 0, BinSize = 0;
     ArrayList<Bin> bins = new ArrayList<>();
 
-    public BPP_DrawPanel(BPP_Result result, ArrayList<Bin> Bins, int Volume, int BinSize) {
+    public BPP_DrawPanel(LiveView result, ArrayList<Bin> Bins, int Volume, int BinSize) {
         this.result = result;
         this.bins = Bins;
         this.volume = Volume;

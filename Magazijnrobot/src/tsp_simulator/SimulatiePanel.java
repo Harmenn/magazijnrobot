@@ -18,7 +18,7 @@ public class SimulatiePanel extends JPanel {
 	public static final int NEAREST_NEIGBOUR_ALGORITHM = 1;
 	public static final int TWO_OPT_ALGORITHM = 2;
 	public static final int OWN_ALGORITHM = 3;
-
+	
 	private TSPAlgorithm currentAlgorithm;
 
 	int gridWidth = 5;
@@ -33,6 +33,8 @@ public class SimulatiePanel extends JPanel {
 	int squareHeight = calcHeight / gridHeight;
 	int pointWidth = 20;
 	int pointHeight = 20;
+	
+	private Coordinate currentCoord = null;
 
 	ArrayList<Coordinate> coords;
 	ArrayList<Coordinate> sortedCoords = new ArrayList<Coordinate>();
@@ -76,6 +78,14 @@ public class SimulatiePanel extends JPanel {
 		this.coords = coords;
 		repaint();
 	}
+	
+	public ArrayList<Coordinate> getSortedCoords() {
+		return this.sortedCoords;
+	}
+	
+	public void setCurrentCoord(Coordinate currentCoord) {
+		this.currentCoord = currentCoord;
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -108,31 +118,33 @@ public class SimulatiePanel extends JPanel {
 			g.drawLine(i * squareHeight + startX, 0, i * squareHeight + startX, calcHeight);
 		}
 
+		
+
+		//Er is nog geen algoritme uitgevoerd?
+		if(sortedCoords!=null||sortedCoords.size()!=0) {
+			//Als er een algoritme uitgevoerd is, laat de route zien
+			if (currentAlgorithm != null && sortedCoords.size() != 0) {
+				for (int i = 0; i < sortedCoords.size() - 1; i++) {
+					g.setColor(Color.RED);
+					drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i + 1));
+				}
+	
+				drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size() - 1));
+	
+				for (int i = 0; i < sortedCoords.size(); i++) {
+					g.setColor(Color.BLACK);
+					g.setFont(new Font("TimesRoman", Font.BOLD, 24));
+					g.drawString(Integer.toString(i + 1), sortedCoords.get(i).x * squareHeight - (pointHeight / 2) + startX,
+							sortedCoords.get(i).y * squareWidth - (pointWidth / 2));
+				}
+			}
+		}
 		//De coordinaten tekenen
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
+			if(c==currentCoord) g.setColor(Color.BLUE);
 			g.fillOval(c.x * squareHeight - (pointHeight / 2) + startX, c.y * squareWidth - (pointWidth / 2),
 					pointWidth, pointHeight);
-		}
-
-		//Er is nog geen algoritme uitgevoerd?
-		if(sortedCoords==null||sortedCoords.size()==0) return;
-
-		//Als er een algoritme uitgevoerd is, laat de route zien
-		if (currentAlgorithm != null && sortedCoords.size() != 0) {
-			for (int i = 0; i < sortedCoords.size() - 1; i++) {
-				g.setColor(Color.RED);
-				drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i + 1));
-			}
-
-			drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size() - 1));
-
-			for (int i = 0; i < sortedCoords.size(); i++) {
-				g.setColor(Color.BLACK);
-				g.setFont(new Font("TimesRoman", Font.BOLD, 24));
-				g.drawString(Integer.toString(i + 1), sortedCoords.get(i).x * squareHeight - (pointHeight / 2) + startX,
-						sortedCoords.get(i).y * squareWidth - (pointWidth / 2));
-			}
 		}
 	}
 
