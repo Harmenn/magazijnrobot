@@ -20,4 +20,8 @@ public class Order {
 	public ArrayList<Product> getProducten() {
 		return producten;
 	}
+	
+	public void clear() {
+		producten.clear();
+	}
 }

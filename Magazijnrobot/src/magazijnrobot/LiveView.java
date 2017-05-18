@@ -54,7 +54,6 @@ public class LiveView extends JFrame {
         bpp_panel.setAutoscrolls(true);
         
         tsp_panel.setCurrentCoord(tsp_panel.getSortedCoords().get(0));
-        //scrollFrame.setPreferredSize(new Dimension(1050, 800));
         scrollFrame.setBounds(10, 10, 350, 350);
         tsp_panel.setBounds(380, 10, 350, 350);
         add(scrollFrame);
