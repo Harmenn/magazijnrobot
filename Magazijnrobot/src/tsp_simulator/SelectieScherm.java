@@ -203,6 +203,7 @@ public class SelectieScherm {
 		JButton btnToevoegen = new JButton("Toevoegen");
 		btnToevoegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+                            try{
                             int puntx = Integer.parseInt(txtX.getText());
                             int punty = Integer.parseInt(txtY.getText());
                             int panelWidth = panel.getGridWidth();
@@ -226,9 +227,16 @@ public class SelectieScherm {
                                 //show an error if the point is outside the grid
                                 String error = "Het opgegeven punt moet binnen het grid vallen.";
                                 JOptionPane.showMessageDialog(list, error);
-                                txtX.setText("0");
-                                txtY.setText("0");
                             }
+                            } catch(NumberFormatException ex) {
+                                //show an error if the point is outside the grid
+                                String error = "De opgegeven coördinaten moeten uit cijfers bestaan";
+                                JOptionPane.showMessageDialog(list, error);
+                            }
+                            
+                            //reset values
+                            txtX.setText("0");
+                            txtY.setText("0");
 			}
 		});
 		btnToevoegen.setFont(new Font("Tahoma", Font.PLAIN, 9));
