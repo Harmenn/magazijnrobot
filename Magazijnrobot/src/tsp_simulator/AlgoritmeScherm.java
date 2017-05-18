@@ -56,15 +56,15 @@ public class AlgoritmeScherm {
 		frame.getContentPane().add(panel);
 
 		JRadioButton rdbtnAlgoritme = new JRadioButton("Brute force");
-		rdbtnAlgoritme.setBounds(6, 328, 180, 23);
+		rdbtnAlgoritme.setBounds(6, 328, 250, 23);
 		frame.getContentPane().add(rdbtnAlgoritme);
 
 		JRadioButton rdbtnNearestNeighbour = new JRadioButton("Nearest Neighbour");
 		rdbtnNearestNeighbour.setSelected(true);
-		rdbtnNearestNeighbour.setBounds(6, 354, 180, 23);
+		rdbtnNearestNeighbour.setBounds(6, 354, 250, 23);
 		frame.getContentPane().add(rdbtnNearestNeighbour);
 
-		JRadioButton rdbtnoptTour = new JRadioButton("2-opt tour");
+		JRadioButton rdbtnoptTour = new JRadioButton("2-opt");
 		rdbtnoptTour.setBounds(6, 380, 163, 23);
 		frame.getContentPane().add(rdbtnoptTour);
 
@@ -92,7 +92,7 @@ public class AlgoritmeScherm {
 					rdbtnAlgoritme.setText("Brute Force - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				} else if (rdbtnoptTour.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.TWO_OPT_ALGORITHM);
-					rdbtnoptTour.setText("2-opt tour - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
+					rdbtnoptTour.setText("2-opt - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
 				} else if (rdbtnEigen.isSelected()) {
 					panel.setAlgorithm(SimulatiePanel.OWN_ALGORITHM);
 					rdbtnEigen.setText("Eigen - " + (System.currentTimeMillis() - startTime) + "ms, "  + panel.getAlgorithmDistance());
