@@ -90,17 +90,17 @@ public class SelectieScherm {
 		frmSelecteerTspParameters.getContentPane().add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Hoogte:");
-		lblNewLabel_1.setBounds(10, 46, 64, 14);
+		lblNewLabel_1.setBounds(10, 71, 64, 14);
 		frmSelecteerTspParameters.getContentPane().add(lblNewLabel_1);
 
 		JLabel lblBreedte = new JLabel("Breedte:");
-		lblBreedte.setBounds(10, 71, 64, 14);
+		lblBreedte.setBounds(10, 46, 64, 14);
 		frmSelecteerTspParameters.getContentPane().add(lblBreedte);
 
 		NumberFormat amountFormat = NumberFormat.getNumberInstance();
 		txtHeight = new JFormattedTextField(amountFormat);
 		txtHeight.setText("5");
-		txtHeight.setBounds(77, 46, 72, 20);
+		txtHeight.setBounds(77, 71, 72, 20);
 		frmSelecteerTspParameters.getContentPane().add(txtHeight);
 		txtHeight.setColumns(3);
 
@@ -132,7 +132,7 @@ public class SelectieScherm {
 
 		txtWidth = new JTextField();
 		txtWidth.setText("5");
-		txtWidth.setBounds(77, 71, 72, 20);
+		txtWidth.setBounds(77, 46, 72, 20);
 		txtWidth.setColumns(3);
 
 		txtWidth.addKeyListener(new KeyListener() {
