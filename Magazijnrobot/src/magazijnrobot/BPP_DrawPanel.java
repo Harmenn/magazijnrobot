@@ -60,7 +60,10 @@ public class BPP_DrawPanel extends JPanel {
             System.out.println("SIZE: " + size);
             if(bin.getRealSize() >= bin.getCurrentSize()){
                 g.setColor(Color.red);
-                g.drawString("VOL!", x, y +  115);
+                g.drawString("VERWISSEL", x, y +  115);
+            } else{
+                g.setColor(Color.GREEN.darker());
+                g.drawString("VULLEN", x, y +  115);                
             }
             x += 100;
             if (x > 250) {
