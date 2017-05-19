@@ -44,6 +44,9 @@ import java.awt.Color;
 public class StartScherm {
 
 	Order order = new Order();
+	public static ArrayList<Product> producten;
+	public static int lastRetrievedProduct = 0;
+	
 	
 	public int currentPackages = 0;
 
@@ -68,8 +71,8 @@ public class StartScherm {
 	public JLabel lblTsp;
 	public JLabel lblBpp;
 
-	SerialEvent bpp_connectie; // COM2
-	SerialEvent tsp_connectie; // COM1
+	public static SerialEvent bpp_connectie; // COM2
+	public static SerialEvent tsp_connectie; // COM1
 
 	/**
 	 * Launch the application.
@@ -231,7 +234,7 @@ public class StartScherm {
 		btnNieuweOrder.setBounds(10, 11, 176, 29);
 		frmMagazijnrobot.getContentPane().add(btnNieuweOrder);
 
-		ArrayList<Product> producten = order.getProducten();
+		producten = order.getProducten();
 		Object[][] data = { {} };
 		String[] columnNames = { "#", "Naam", "Volume", "xy", "Status" };
 
@@ -340,15 +343,15 @@ public class StartScherm {
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
-                                int doosvol = 0;
-                                for (Product product : producten) {
-                                    if(doosvol < 3){
-                                    resultaat.addProduct(product);
-                                    } else{
-                                        break;
-                                    }
-                                    doosvol++;
-                                }
+                int doosvol = 0;
+                for (Product product : producten) {
+                    if(doosvol < 3){
+                    resultaat.addProduct(product);
+                    } else{
+                        break;
+                    }
+                    doosvol++;
+                }
 			}
 		});
 

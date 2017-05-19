@@ -61,9 +61,29 @@ public class SerialEvent implements SerialPortEventListener {
 				}
 				String inputLine = input.readLine();
 				System.out.println(inputLine);
-				switch (inputLine.split("-")[0]) {
-				case "update":
-					
+				String[] splitted = inputLine.split("-");
+				switch (splitted[0]) {
+				case "tsp":
+					if(splitted[1]=="update") {
+						if(splitted[2]=="at_location") {
+							StartScherm.bpp_connectie.sendMessage("command-arm_out");
+						}
+					}
+					break;
+				case "bpp":
+					if(splitted[1]=="update") {
+						if(splitted[2]=="retrieved_product") {
+							if(StartScherm.lastRetrievedProduct==StartScherm.producten.size()-1) {
+								System.out.println("Alle producten zijn verzamelt");
+								StartScherm.tsp_connectie.sendMessage("left-2000-200");
+							} else {
+								System.out.println("Haal product "+StartScherm.producten.get(StartScherm.lastRetrievedProduct));
+								StartScherm.lastRetrievedProduct++;
+								StartScherm.tsp_connectie.sendMessage("getproduct-"+StartScherm.producten.get(StartScherm.lastRetrievedProduct).getX()+"-"+StartScherm.producten.get(StartScherm.lastRetrievedProduct).getY());
+							}
+						}
+						
+					}
 					break;
 				case "commando":
 
