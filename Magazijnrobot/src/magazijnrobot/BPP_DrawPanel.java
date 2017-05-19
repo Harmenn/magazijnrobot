@@ -48,11 +48,7 @@ public class BPP_DrawPanel extends JPanel {
                 for (Product ArrayProduct : ArrayProducts) {
                     if(product == ArrayProduct){
                     size += ArrayProduct.getVolume();
-                    double hue = Math.random();
-                    int rgb;
-                    rgb = Color.HSBtoRGB((float) hue, 0.8f, 0.8f);
-                    Color color = new Color(rgb);
-                    g.setColor(color);
+                    g.setColor(ArrayProduct.getColor());
                     g.fillRect(x, yProduct, 50, product.getVolume() * 10);
                     yProduct += product.getVolume() * 10;
                     g.setColor(Color.black);
