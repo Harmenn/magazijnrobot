@@ -1,5 +1,7 @@
 package magazijnrobot;
 
+import java.awt.Color;
+
 public class Product {
 
 	private int id;
@@ -8,6 +10,7 @@ public class Product {
 	private int x;
 	private int y;
 	private String status;
+        private Color color;
 
 	public Product(int id, String name, int volume, int x, int y, String status) {
 		this.id = id;
@@ -16,7 +19,15 @@ public class Product {
 		this.x = x;
 		this.y = y;
 		this.status = status;
+                double hue = Math.random();
+                int rgb;
+                rgb = Color.HSBtoRGB((float) hue, 0.8f, 0.8f);
+                this.color = new Color(rgb);
 	}
+
+        public Color getColor() {
+            return color;
+        }
 
 	public int getId() {
 		return this.id;
