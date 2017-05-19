@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -329,15 +330,29 @@ public class StartScherm {
 			public void actionPerformed(ActionEvent arg0) {
 				tsp_connectie = new SerialEvent("COM1");
 				bpp_connectie = new SerialEvent("COM2");
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				int err = 0;
 				if (tsp_connectie.connected) {
 					lblTsp.setText("TSP connected");
 					lblTsp.setForeground(Color.GREEN);
+				} else {
+					System.out.println("TSP not connected");
+					err++;
 				}
 
 				if (bpp_connectie.connected) {
 					lblBpp.setText("BPP connected");
 					lblBpp.setForeground(Color.GREEN);
+				} else {
+					System.out.println("BPP not connected");
+					err++;
 				}
+				if(err>0) return;
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
 				LiveView resultaat = new LiveView(producten);
 				resultaat.setVisible(true);

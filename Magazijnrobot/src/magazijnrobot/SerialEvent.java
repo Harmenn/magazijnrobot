@@ -45,7 +45,7 @@ public class SerialEvent implements SerialPortEventListener {
 
 		} catch (Exception e) {
 			System.out.println("Finished With an error");
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
@@ -66,16 +66,26 @@ public class SerialEvent implements SerialPortEventListener {
 				case "tsp":
 					if(splitted[1]=="update") {
 						if(splitted[2]=="at_location") {
-							StartScherm.bpp_connectie.sendMessage("command-arm_out");
+							StartScherm.bpp_connectie.sendMessage("command-arm-out");
+						} else if(splitted[2]=="arm_is_up") {
+							StartScherm.bpp_connectie.sendMessage("command-arm-in");
+						} else if(splitted[2]=="at_y_3") {
+							StartScherm.tsp_connectie.sendMessage("command-all_left");
+						} else if(splitted[2]=="all_left") {
+							StartScherm.tsp_connectie.sendMessage("command-y-2");
+						} else if(splitted[2]=="at_y_2") {
+							StartScherm.bpp_connectie.sendMessage("command-arm-in");
 						}
 					}
 					break;
 				case "bpp":
-					if(splitted[1]=="update") {
-						if(splitted[2]=="retrieved_product") {
+					if(splitted[1]=="status") {
+						if(splitted[2]=="arm-out-ok") {
+							StartScherm.bpp_connectie.sendMessage("command-arm_up");
+						} else if(splitted[2]=="arm-out-ok") {
 							if(StartScherm.lastRetrievedProduct==StartScherm.producten.size()-1) {
 								System.out.println("Alle producten zijn verzamelt");
-								StartScherm.tsp_connectie.sendMessage("left-2000-200");
+								StartScherm.tsp_connectie.sendMessage("command-y-3");
 							} else {
 								System.out.println("Haal product "+StartScherm.producten.get(StartScherm.lastRetrievedProduct));
 								StartScherm.lastRetrievedProduct++;
