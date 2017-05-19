@@ -328,14 +328,8 @@ public class StartScherm {
 		});
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				tsp_connectie = new SerialEvent("COM1");
 				bpp_connectie = new SerialEvent("COM2");
-				try {
-					TimeUnit.SECONDS.sleep(2);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				tsp_connectie = new SerialEvent("COM1");
 				int err = 0;
 				if (tsp_connectie.connected) {
 					lblTsp.setText("TSP connected");

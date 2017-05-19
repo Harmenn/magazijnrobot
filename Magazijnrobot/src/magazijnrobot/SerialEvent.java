@@ -28,7 +28,7 @@ public class SerialEvent implements SerialPortEventListener {
 
 				System.out.println(currPortId.getName());
 				if (currPortId.getName().equals(portName) || currPortId.getName().startsWith(portName)) {
-					System.out.println("Found port");
+					System.out.println("Found port "+portName);
 					serialPort = (SerialPort) currPortId.open("fastDel", 1000);
 					portId = currPortId;
 					connected = true;
@@ -62,27 +62,32 @@ public class SerialEvent implements SerialPortEventListener {
 				String inputLine = input.readLine();
 				System.out.println(inputLine);
 				String[] splitted = inputLine.split("-");
-				switch (splitted[0]) {
-				case "tsp":
-					if(splitted[1]=="update") {
-						if(splitted[2]=="at_location") {
-							StartScherm.bpp_connectie.sendMessage("command-arm-out");
-						} else if(splitted[2]=="arm_is_up") {
-							StartScherm.bpp_connectie.sendMessage("command-arm-in");
-						} else if(splitted[2]=="at_y_3") {
+                                for(String s : splitted) {
+                                    System.out.println(s);
+                                }
+				if(splitted[0].equals("tsp")) {
+					if(splitted[1].equals("update")) {
+						if(splitted[2].equals("at_location")) {
+							StartScherm.bpp_connectie.sendMessage("command-arm_out");
+						} else if(splitted[2].equals("arm_is_up")) {
+							StartScherm.bpp_connectie.sendMessage("command-arm_in");
+						} else if(splitted[2].equals("at_y_3")) {
 							StartScherm.tsp_connectie.sendMessage("command-all_left");
-						} else if(splitted[2]=="all_left") {
+						} else if(splitted[2].equals("all_left")) {
 							StartScherm.tsp_connectie.sendMessage("command-y-2");
-						} else if(splitted[2]=="at_y_2") {
-							StartScherm.bpp_connectie.sendMessage("command-arm-in");
+						} else if(splitted[2].equals("at_y_2")) {
+							StartScherm.bpp_connectie.sendMessage("command-arm_in");
 						}
 					}
-					break;
-				case "bpp":
-					if(splitted[1]=="status") {
-						if(splitted[2]=="arm-out-ok") {
-							StartScherm.bpp_connectie.sendMessage("command-arm_up");
-						} else if(splitted[2]=="arm-out-ok") {
+                                }
+                                else if(splitted[0].equals("bpp")) {
+                                        System.out.println("DEBUG: REACHED BPP");
+					if(splitted[1].equals("status")) {
+                                            System.out.println("DEBUG: STATUS OK");
+						if(splitted[2].equals("arm_out_ok")) {
+                                                    System.out.println("DEBUG: REACHED ARM-OUT-OK");
+							StartScherm.tsp_connectie.sendMessage("command-arm_up");
+						} else if(splitted[2].equals("arm-in-ok")) {
 							if(StartScherm.lastRetrievedProduct==StartScherm.producten.size()-1) {
 								System.out.println("Alle producten zijn verzamelt");
 								StartScherm.tsp_connectie.sendMessage("command-y-3");
@@ -94,14 +99,8 @@ public class SerialEvent implements SerialPortEventListener {
 						}
 						
 					}
-					break;
-				case "commando":
-
-					break;
-				default:
-
-					break;
-				}
+                                }
+                                
 			}
 		} catch (Exception e) {
 			System.err.println(e.toString());
