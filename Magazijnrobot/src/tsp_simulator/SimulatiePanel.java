@@ -110,14 +110,12 @@ public class SimulatiePanel extends JPanel {
 		g.setColor(Color.BLACK);
 		for (int i = 0; i <= gridWidth; i++) {
 
-//			g.drawLine(startX, i * squareWidth, calcWidth + startX, i * squareWidth);
-			g.drawLine(startX + i * squareWidth, 0, startX  + i * squareWidth, calcHeight-(calcHeight%squareHeight));
+			g.drawLine(startX + i * squareWidth, 0, startX  + i * squareWidth, gridHeight * squareHeight);
 		}
 
 		for (int i = 0; i <= gridHeight; i++) {
 
-//			g.drawLine(i * squareHeight + startX, 0, i * squareHeight + startX, calcHeight);
-			g.drawLine(startX,i * squareHeight, startX + calcWidth-(calcWidth%squareWidth),i * squareHeight);
+			g.drawLine(startX,i * squareHeight, startX + gridWidth * squareWidth,i * squareHeight);
 		}
 
 		
@@ -136,8 +134,6 @@ public class SimulatiePanel extends JPanel {
 				for (int i = 0; i < sortedCoords.size(); i++) {
 					g.setColor(Color.BLACK);
 					g.setFont(new Font("TimesRoman", Font.BOLD, 24));
-//					g.drawString(Integer.toString(i + 1), sortedCoords.get(i).x * squareHeight - (pointHeight / 2) + startX,
-//							sortedCoords.get(i).y * squareWidth - (pointWidth / 2));
 					g.drawString(Integer.toString(i + 1), startX + sortedCoords.get(i).x * squareWidth - (pointWidth / 2),
 							sortedCoords.get(i).y * squareHeight - (pointHeight / 2));
 				}
@@ -147,8 +143,6 @@ public class SimulatiePanel extends JPanel {
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
 			if(c==currentCoord) g.setColor(Color.BLUE);
-//			g.fillOval(c.x * squareHeight - (pointHeight / 2) + startX, c.y * squareWidth - (pointWidth / 2),
-//					pointWidth, pointHeight);
 			g.fillOval(startX + c.x * squareWidth - pointWidth/2, c.y * squareHeight - pointHeight/2, pointWidth, pointHeight);
 		}
 	}
@@ -158,7 +152,6 @@ public class SimulatiePanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		g2.setColor(Color.red);
-//		g2.drawLine(c1.x * squareHeight + startX, c1.y * squareWidth, c2.x * squareHeight + startX, c2.y * squareWidth);
 		g2.drawLine(startX + c1.x * squareWidth, c1.y * squareHeight, startX + c2.x * squareWidth, c2.y * squareHeight);
 	}
 
