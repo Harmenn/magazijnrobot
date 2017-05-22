@@ -18,6 +18,7 @@ public class SerialEvent implements SerialPortEventListener {
 	private SerialPort serialPort = null;
 	private CommPortIdentifier portId = null;
 	// private String portName = "COM3";
+        private int fallenProducts = 0;
 
 	public SerialEvent(String portName) {
 		@SuppressWarnings("rawtypes")
@@ -78,19 +79,8 @@ public class SerialEvent implements SerialPortEventListener {
 						} else if (splitted[2].equals("all_left")) {
 							StartScherm.tsp_connectie.sendMessage("command-y-2");
 						} else if (splitted[2].equals("at_y_2")) {
-                                                        for(int i = 0; i < StartScherm.binlist.size()-1; i++)
-                                                        {   
-                                                            Bin b = StartScherm.binlist.get(i);
-                                                            if(b.getProducts().contains(StartScherm.producten.get(StartScherm.lastRetrievedProduct-1))) {
-                                                                if(i==0) {
-                                                                    //draailinks
-                                                                    StartScherm.bpp_connectie.sendMessage("bpp-rotate_left");
-                                                                } else {
-                                                                    StartScherm.bpp_connectie.sendMessage("bpp-rotate_right");
-                                                                }
-                                                                break;
-                                                            }
-                                                                    }//StartScherm.bpp_connectie.sendMessage("command-arm_all_in");
+                                                    sortProduct();
+                                                    //StartScherm.bpp_connectie.sendMessage("command-arm_all_in");
 						}
 					}
 				} else if (splitted[0].equals("bpp")) {
@@ -113,7 +103,11 @@ public class SerialEvent implements SerialPortEventListener {
 										+ StartScherm.producten.get(lastP).getX() + "-"
 										+ StartScherm.producten.get(lastP).getY());
 							}
-						}
+						} else if (splitted[2].equals("sort_succes")){
+                                                    if(fallenProducts != StartScherm.binlist.size() - 1){
+                                                        sortProduct();
+                                                    }
+                                                }
 
 					}
 				}
@@ -136,4 +130,21 @@ public class SerialEvent implements SerialPortEventListener {
 	public void disconnect() {
 		serialPort.close();
 	}
+        
+        private void sortProduct(){
+                                                        for(int i = 0; i < StartScherm.binlist.size()-1; i++)
+                                                        {   
+                                                            Bin b = StartScherm.binlist.get(i);
+                                                            if(b.getProducts().contains(StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts))) {
+                                                                if(i==0) {
+                                                                    //draailinks
+                                                                    StartScherm.bpp_connectie.sendMessage("bpp-rotate_left");
+                                                                } else {
+                                                                    StartScherm.bpp_connectie.sendMessage("bpp-rotate_right");
+                                                                }
+                                                                    fallenProducts++;
+                                                            }
+                                                            break;
+                                                        }
+        }
 }
