@@ -47,7 +47,7 @@ public class StartScherm {
 	Order order = new Order();
 	public static ArrayList<Product> producten;
 	public static int lastRetrievedProduct = 0;
-	
+        public static ArrayList<Bin> binlist;
 	
 	public int currentPackages = 0;
 
@@ -348,10 +348,27 @@ public class StartScherm {
 				}
 				if(err>0) return;
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
-				LiveView resultaat = new LiveView(producten);
+                                BPP_Algoritme alg = new BPP_Algoritme();
+                                binlist = alg.start(producten, 10); 
+        
+				LiveView resultaat = new LiveView(producten, binlist);
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
+                                int bincount = 0;
+                                
+                                // Mijn geniaal idee
+                                for (Bin bin : binlist) {
+                                    for (Product product : bin.getProducts()) {
+                                        
+                                    }
+                                    if((bincount % 2) == 0){
+                                       bpp_connectie.sendMessage("command-rotate_left");
+                                    } else{
+                                        bpp_connectie.sendMessage("command-rotate_right");
+                                    }
+                                    bincount++;
+                            }
                 int doosvol = 0;
                 for (Product product : producten) {
                     if(doosvol < 3){

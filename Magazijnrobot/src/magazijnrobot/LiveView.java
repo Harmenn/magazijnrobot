@@ -24,7 +24,7 @@ public class LiveView extends JFrame {
     
     private SimulatiePanel tsp_panel;
     
-    public LiveView(ArrayList<Product> producten) {
+    public LiveView(ArrayList<Product> producten, ArrayList<Bin> Bins) {
     	
 
 		setTitle("LiveView");
@@ -32,15 +32,11 @@ public class LiveView extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setResizable(false);
-
-        BPP_Algoritme alg = new BPP_Algoritme();
-        ArrayList<Bin> binlist = alg.start(producten, BinSize); 
-        
         for(Product p : producten) {
         	coords.add(new Coordinate(p.getX(),p.getY()));
         }
         
-        this.Bins = binlist;
+        this.Bins = Bins;
         setTitle("Resultaat");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
