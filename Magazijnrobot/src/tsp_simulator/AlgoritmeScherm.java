@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
@@ -54,7 +55,11 @@ public class AlgoritmeScherm {
 		SimulatiePanel panel = new SimulatiePanel(gridWidth, gridHeight, coords);
 		panel.setBounds(6, 11, 310, 310);
 		frame.getContentPane().add(panel);
-
+                
+                JLabel jlUitleg = new JLabel("Algoritme - uitvoertijd, afstand route");
+		jlUitleg.setBounds(6, 310, 250, 23);
+		frame.getContentPane().add(jlUitleg);
+                
 		JRadioButton rdbtnAlgoritme = new JRadioButton("Brute force");
 		rdbtnAlgoritme.setBounds(6, 328, 250, 23);
 		frame.getContentPane().add(rdbtnAlgoritme);
