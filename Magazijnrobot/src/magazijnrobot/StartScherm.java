@@ -355,20 +355,21 @@ public class StartScherm {
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
-                                int bincount = 0;
-                                
-                                // Mijn geniaal idee
-                                for (Bin bin : binlist) {
-                                    for (Product product : bin.getProducts()) {
-                                        
-                                    }
-                                    if((bincount % 2) == 0){
-                                       bpp_connectie.sendMessage("command-rotate_left");
-                                    } else{
-                                        bpp_connectie.sendMessage("command-rotate_right");
-                                    }
-                                    bincount++;
-                            }
+				int bincount = 0;
+            
+				/* Mijn geniaal idee
+				 * Geniale idee is afgekeurd, maar goed dat je iniatief toont hoor
+	            for (Bin bin : binlist) {
+	                for (Product product : bin.getProducts()) {
+	                    
+	                }
+	                if((bincount % 2) == 0){
+	                   bpp_connectie.sendMessage("command-rotate_left");
+	                } else{
+	                    bpp_connectie.sendMessage("command-rotate_right");
+	                }
+	                bincount++;
+                }
                 int doosvol = 0;
                 for (Product product : producten) {
                     if(doosvol < 3){
@@ -378,6 +379,7 @@ public class StartScherm {
                     }
                     doosvol++;
                 }
+                */
 			}
 		});
 
