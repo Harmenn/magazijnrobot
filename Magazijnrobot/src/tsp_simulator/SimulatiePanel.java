@@ -33,6 +33,9 @@ public class SimulatiePanel extends JPanel {
 	int squareHeight = calcHeight / gridHeight;
 	int pointWidth = 20;
 	int pointHeight = 20;
+        
+        //Used for drawing points differently when used by the robot
+        boolean forRobot = false;
 	
 	private Coordinate currentCoord = null;
 
@@ -56,6 +59,10 @@ public class SimulatiePanel extends JPanel {
 
 		System.out.println(coords);
 	}
+        public SimulatiePanel(ArrayList<Coordinate> coords) {
+            this(5,5,coords);
+            forRobot = true;
+        }
 
 	public void setHeight(int height) {
 		this.gridHeight = height;
@@ -119,7 +126,17 @@ public class SimulatiePanel extends JPanel {
 		}
 
 		
-
+                //De coordinaten tekenen
+		for (Coordinate c : coords) {
+			g.setColor(Color.RED);
+			if(c==currentCoord) g.setColor(Color.BLUE);
+                        if(forRobot) {
+                            g.fillOval(startX + c.x * squareWidth, c.y * squareHeight, squareWidth, squareHeight);
+                        } else {
+                            g.fillOval(startX + c.x * squareWidth - pointWidth/2, c.y * squareHeight - pointHeight/2, pointWidth, pointHeight);
+                        }
+		}
+                
 		//Er is nog geen algoritme uitgevoerd?
 		if(sortedCoords!=null||sortedCoords.size()!=0) {
 			//Als er een algoritme uitgevoerd is, laat de route zien
@@ -134,16 +151,15 @@ public class SimulatiePanel extends JPanel {
 				for (int i = 0; i < sortedCoords.size(); i++) {
 					g.setColor(Color.BLACK);
 					g.setFont(new Font("TimesRoman", Font.BOLD, 24));
-					g.drawString(Integer.toString(i + 1), startX + sortedCoords.get(i).x * squareWidth - (pointWidth / 2),
+                                        if(forRobot) {
+                                            g.drawString(Integer.toString(i + 1), startX + sortedCoords.get(i).x * squareWidth,
+							sortedCoords.get(i).y * squareHeight + squareHeight);
+                                        } else {
+                                            g.drawString(Integer.toString(i + 1), startX + sortedCoords.get(i).x * squareWidth - (pointWidth / 2),
 							sortedCoords.get(i).y * squareHeight - (pointHeight / 2));
+                                        }
 				}
 			}
-		}
-		//De coordinaten tekenen
-		for (Coordinate c : coords) {
-			g.setColor(Color.RED);
-			if(c.equals(currentCoord)) g.setColor(Color.BLUE);
-			g.fillOval(startX + c.x * squareWidth - pointWidth/2, c.y * squareHeight - pointHeight/2, pointWidth, pointHeight);
 		}
 	}
 
@@ -152,7 +168,11 @@ public class SimulatiePanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		g2.setColor(Color.red);
-		g2.drawLine(startX + c1.x * squareWidth, c1.y * squareHeight, startX + c2.x * squareWidth, c2.y * squareHeight);
+                if (forRobot) {
+                    g2.drawLine(startX + c1.x * squareWidth + squareWidth/2, c1.y * squareHeight + squareHeight/2, startX + c2.x * squareWidth + squareWidth/2, c2.y * squareHeight + squareHeight/2);
+                } else {
+                    g2.drawLine(startX + c1.x * squareWidth, c1.y * squareHeight, startX + c2.x * squareWidth, c2.y * squareHeight);
+                }
 	}
 
 	public void setAlgorithm(int algorithm) {
