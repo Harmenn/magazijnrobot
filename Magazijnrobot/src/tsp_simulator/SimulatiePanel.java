@@ -142,7 +142,7 @@ public class SimulatiePanel extends JPanel {
 		//De coordinaten tekenen
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
-			if(c==currentCoord) g.setColor(Color.BLUE);
+			if(c.equals(currentCoord)) g.setColor(Color.BLUE);
 			g.fillOval(startX + c.x * squareWidth - pointWidth/2, c.y * squareHeight - pointHeight/2, pointWidth, pointHeight);
 		}
 	}

@@ -54,8 +54,7 @@ public class Product {
 	}
 
 	public String toString() {
-		// return new Object({});
-		return "";
+		return "x: "+this.x + ", y: " + this.y;
 	}
 
 }

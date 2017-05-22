@@ -36,6 +36,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import tsp_simulator.Coordinate;
+import tsp_simulator.TSPOwnAlgorithm;
+
 import javax.swing.JScrollPane;
 import java.awt.ScrollPane;
 import java.awt.Panel;
@@ -348,6 +350,26 @@ public class StartScherm {
 				}
 				lastRetrievedProduct = 0;
 				if(err>0) return;
+				
+				// hoop tovenerij om de producten in de juiste volgorde te zetten
+				ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
+				for(Product p : producten) {
+					coords.add(new Coordinate(p.getX(),p.getY()));
+				}
+				TSPOwnAlgorithm tsp = new TSPOwnAlgorithm((ArrayList<Coordinate>) coords.clone());
+				coords = tsp.getSortedList();
+				
+				ArrayList<Product> tmpProducten = new ArrayList<Product>();
+				for(Coordinate c : coords) {
+					for(Product p : producten) {
+						if(c.equals(new Coordinate(p.getX(), p.getY()))) {
+							tmpProducten.add(p);
+						}
+					}
+				}
+				producten = tmpProducten;
+				//einde harry potter acties
+				
 				bpp_connectie.sendMessage("command-arm_reset");
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
                                 BPP_Algoritme alg = new BPP_Algoritme();
