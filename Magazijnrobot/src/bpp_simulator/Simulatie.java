@@ -130,20 +130,8 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             }
             pwFileWriter.write(endResult.toString());
             pwFileWriter.close();
-            if (BruteForceResult != null) {
-                BruteForceResult.SaveScreen(location + "\\Bruteforce.png");
-            }
-            if (NextFitResult != null) {
-                NextFitResult.SaveScreen(location + "\\Nextfit.png");
-            }
-            if (BestFitResult != null) {
-                BestFitResult.SaveScreen(location + "\\Bestfit.png");
-            }
-            if (FirstFitResult != null) {
-                FirstFitResult.SaveScreen(location + "\\Firstfit.png");
-            }
-            if (EigenFitResult != null) {
-                EigenFitResult.SaveScreen(location + "\\EigenFit.png");
+            for (Resultaat result : ArrayResults) {
+                result.SaveScreen(location + "\\" + result.getAlgoritme().getName() + ".png");
             }
             try {
                 Desktop.getDesktop().open(new File(location));
