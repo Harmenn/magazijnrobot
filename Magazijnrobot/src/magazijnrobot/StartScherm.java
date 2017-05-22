@@ -374,19 +374,12 @@ public class StartScherm {
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
                                 BPP_Algoritme alg = new BPP_Algoritme();
                                 binlist = alg.start(producten, 10); 
-                                int bincount = 0;
-                                for (Bin bin : binlist) {
-                                    if((bincount % 2) == 0){
-                                       bin.rechts = false;
-                                    } else{
-                                       bin.rechts = true;
-                                    }
-                                    bincount++;
-                                }
+        
 				LiveView resultaat = new LiveView(producten, binlist);
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
+				int bincount = 0;
 			}
 		});
 
