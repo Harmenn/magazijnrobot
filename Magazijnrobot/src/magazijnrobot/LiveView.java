@@ -42,7 +42,7 @@ public class LiveView extends JFrame {
 
         // Maak een nieuw tekenpaneel aan die wordt verpakt aan een scrollframe
         bpp_panel = new BPP_DrawPanel(Bins, BinSize);
-	    tsp_panel = new SimulatiePanel(5,5,coords);
+	    tsp_panel = new SimulatiePanel(coords);
 	    tsp_panel.setAlgorithm(tsp_panel.OWN_ALGORITHM);
         JScrollPane scrollFrame = new JScrollPane(bpp_panel);
         scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
