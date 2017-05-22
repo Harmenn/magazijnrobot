@@ -13,7 +13,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 	public TSPOptTwo(ArrayList<Coordinate> coords) {
 		this.coords = coords;
 		for (Coordinate c : this.coords) {
-			System.out.println(c);
+			////System.out.println(c);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 
 			for (int j = 0; j < coords.size(); j++) {
 
-				System.out.println("____");
+				//System.out.println("____");
 				if (j + 2 >= coords.size()) {
 					cor_3_i = j + 2 - coords.size();
 				} else {
@@ -59,12 +59,12 @@ public class TSPOptTwo extends TSPAlgorithm {
 					cor_4_i = j + 3;
 				}
 
-				System.out.println("Iteration i: " + i);
-				System.out.println("Iteration j: " + j);
-				System.out.println("cor_1_i: " + cor_1_i);
-				System.out.println("cor_2_i: " + cor_2_i);
-				System.out.println("cor_3_i: " + cor_3_i);
-				System.out.println("cor_4_i: " + cor_4_i);
+				//System.out.println("Iteration i: " + i);
+				//System.out.println("Iteration j: " + j);
+				//System.out.println("cor_1_i: " + cor_1_i);
+				//System.out.println("cor_2_i: " + cor_2_i);
+				//System.out.println("cor_3_i: " + cor_3_i);
+				//System.out.println("cor_4_i: " + cor_4_i);
 				int count = 0;
 				if (cor_1_i == cor_2_i)
 					count++;
@@ -81,7 +81,7 @@ public class TSPOptTwo extends TSPAlgorithm {
 				if (cor_3_i == cor_4_i)
 					count++;
 
-				System.out.println(count + " duplicate points");
+				//System.out.println(count + " duplicate points");
 				if (count == 1)
 					continue;
 				if (count == 2)
@@ -137,18 +137,15 @@ public class TSPOptTwo extends TSPAlgorithm {
 
 				//Controleer of de lijnen elkaar snijden
 				if (Line2D.linesIntersect(cor_1.x, cor_1.y, cor_2.x, cor_2.y, cor_3.x, cor_3.y, cor_4.x, cor_4.y)) {
-					System.out.println("Found intersection (" + (cor_1_i + 1) + ", " + (cor_2_i + 1) + ")-("
-							+ (cor_3_i + 1) + ", " + (cor_4_i + 1) + ")");
-					System.out.println("Found intersection (" + cor_1.x + ", " + cor_1.y + ")-(" + cor_2.x + ", "
-							+ cor_2.y + ") (" + cor_3.x + ", " + cor_3.y + ")-(" + cor_4.x + ", " + cor_4.y + ")");
-					System.out.println("Found intersection (" + tmpX_1 + ", " + tmpY_1 + ")-(" + tmpX_2 + ", " + tmpY_2
-							+ ") (" + tmpX_3 + ", " + tmpY_3 + ")-(" + tmpX_4 + ", " + tmpY_4 + ")");
+					//System.out.println("Found intersection (" + (cor_1_i + 1) + ", " + (cor_2_i + 1) + ")-("+ (cor_3_i + 1) + ", " + (cor_4_i + 1) + ")");
+					//System.out.println("Found intersection (" + cor_1.x + ", " + cor_1.y + ")-(" + cor_2.x + ", "+ cor_2.y + ") (" + cor_3.x + ", " + cor_3.y + ")-(" + cor_4.x + ", " + cor_4.y + ")");
+					//System.out.println("Found intersection (" + tmpX_1 + ", " + tmpY_1 + ")-(" + tmpX_2 + ", " + tmpY_2+ ") (" + tmpX_3 + ", " + tmpY_3 + ")-(" + tmpX_4 + ", " + tmpY_4 + ")");
 					Collections.swap(coords, cor_2_i, cor_3_i);
 
 					fixIntersections();
 					return true;
 				}
-				System.out.println("No intersections found");
+				//System.out.println("No intersections found");
 
 			}
 		}

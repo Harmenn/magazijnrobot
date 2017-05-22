@@ -11,12 +11,13 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import tsp_simulator.Coordinate;
 
 public class SerialEvent implements SerialPortEventListener {
 	public boolean connected = false;
 	private SerialPort serialPort = null;
 	private CommPortIdentifier portId = null;
-	//private String portName = "COM3";
+	// private String portName = "COM3";
 
 	public SerialEvent(String portName) {
 		@SuppressWarnings("rawtypes")
@@ -28,7 +29,7 @@ public class SerialEvent implements SerialPortEventListener {
 
 				System.out.println(currPortId.getName());
 				if (currPortId.getName().equals(portName) || currPortId.getName().startsWith(portName)) {
-					System.out.println("Found port "+portName);
+					System.out.println("Found port " + portName);
 					serialPort = (SerialPort) currPortId.open("fastDel", 1000);
 					portId = currPortId;
 					connected = true;
@@ -51,7 +52,6 @@ public class SerialEvent implements SerialPortEventListener {
 
 	@Override
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
-		System.out.println("Received data");
 		try {
 
 			BufferedReader input = null;
@@ -62,48 +62,53 @@ public class SerialEvent implements SerialPortEventListener {
 				String inputLine = input.readLine();
 				System.out.println(inputLine);
 				String[] splitted = inputLine.split("-");
-                                for(String s : splitted) {
-                                    System.out.println(s);
-                                }
-				if(splitted[0].equals("tsp")) {
-					if(splitted[1].equals("update")) {
-						if(splitted[2].equals("at_location")) {
+				/*for (String s : splitted) {
+					System.out.println(s);
+				}*/
+				if (splitted[0].equals("tsp")) {
+					//System.out.println("DEBUG: REACHED TSP");
+					if (splitted[1].equals("update")) {
+						if (splitted[2].equals("at_location")) {
 							StartScherm.bpp_connectie.sendMessage("command-arm_out");
-						} else if(splitted[2].equals("arm_is_up")) {
+						} else if (splitted[2].equals("arm_is_up")) {
+							System.out.println("Arm is up");
 							StartScherm.bpp_connectie.sendMessage("command-arm_in");
-						} else if(splitted[2].equals("at_y_3")) {
+						} else if (splitted[2].equals("at_y_3")) {
 							StartScherm.tsp_connectie.sendMessage("command-all_left");
-						} else if(splitted[2].equals("all_left")) {
+						} else if (splitted[2].equals("all_left")) {
 							StartScherm.tsp_connectie.sendMessage("command-y-2");
-						} else if(splitted[2].equals("at_y_2")) {
-							StartScherm.bpp_connectie.sendMessage("command-arm_in");
+						} else if (splitted[2].equals("at_y_2")) {
+							StartScherm.bpp_connectie.sendMessage("command-arm_all_in");
 						}
 					}
-                                }
-                                else if(splitted[0].equals("bpp")) {
-                                        System.out.println("DEBUG: REACHED BPP");
-					if(splitted[1].equals("status")) {
-                                            System.out.println("DEBUG: STATUS OK");
-						if(splitted[2].equals("arm_out_ok")) {
-                                                    System.out.println("DEBUG: REACHED ARM-OUT-OK");
+				} else if (splitted[0].equals("bpp")) {
+					//System.out.println("DEBUG: REACHED BPP");
+					if (splitted[1].equals("status")) {
+						//System.out.println("DEBUG: STATUS OK");
+						if (splitted[2].equals("arm_out_ok")) {
+							//System.out.println("DEBUG: REACHED ARM-OUT-OK");
 							StartScherm.tsp_connectie.sendMessage("command-arm_up");
-						} else if(splitted[2].equals("arm-in-ok")) {
-							if(StartScherm.lastRetrievedProduct==StartScherm.producten.size()-1) {
+						} else if (splitted[2].equals("arm_in_ok")) {
+							StartScherm.lastRetrievedProduct++;
+							if (StartScherm.lastRetrievedProduct == StartScherm.producten.size()) {
 								System.out.println("Alle producten zijn verzamelt");
 								StartScherm.tsp_connectie.sendMessage("command-y-3");
 							} else {
-								System.out.println("Haal product "+StartScherm.producten.get(StartScherm.lastRetrievedProduct));
-								StartScherm.lastRetrievedProduct++;
-								StartScherm.tsp_connectie.sendMessage("getproduct-"+StartScherm.producten.get(StartScherm.lastRetrievedProduct).getX()+"-"+StartScherm.producten.get(StartScherm.lastRetrievedProduct).getY());
+								int lastP = StartScherm.lastRetrievedProduct;//-1;
+								System.out.println("Haal product " + StartScherm.producten.get(lastP));
+								LiveView.setCurrentCoord(new Coordinate(StartScherm.producten.get(lastP).getX(),StartScherm.producten.get(lastP).getY()));
+								StartScherm.tsp_connectie.sendMessage("getproduct-"
+										+ StartScherm.producten.get(lastP).getX() + "-"
+										+ StartScherm.producten.get(lastP).getY());
 							}
 						}
-						
+
 					}
-                                }
-                                
+				}
+
 			}
 		} catch (Exception e) {
-			System.err.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 

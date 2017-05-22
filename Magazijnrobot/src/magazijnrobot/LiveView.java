@@ -22,7 +22,7 @@ public class LiveView extends JFrame {
     private final int Volume = 10;
     private final int BinSize = 10;
     
-    private SimulatiePanel tsp_panel;
+    private static SimulatiePanel tsp_panel;
     
     public LiveView(ArrayList<Product> producten, ArrayList<Bin> Bins) {
     	
@@ -56,8 +56,9 @@ public class LiveView extends JFrame {
         pack();
     }
     
-    public void setCurrentCoord(Coordinate currentCoord) {
+    public static void setCurrentCoord(Coordinate currentCoord) {
     	tsp_panel.setCurrentCoord(currentCoord);
+    	tsp_panel.repaint();
     }
     public void addProduct(Product currentProduct) {
     	bpp_panel.setCurrentProduct(currentProduct);

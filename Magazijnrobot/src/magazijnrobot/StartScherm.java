@@ -346,7 +346,9 @@ public class StartScherm {
 					System.out.println("BPP not connected");
 					err++;
 				}
+				lastRetrievedProduct = 0;
 				if(err>0) return;
+				bpp_connectie.sendMessage("command-arm_reset");
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
                                 BPP_Algoritme alg = new BPP_Algoritme();
                                 binlist = alg.start(producten, 10); 
