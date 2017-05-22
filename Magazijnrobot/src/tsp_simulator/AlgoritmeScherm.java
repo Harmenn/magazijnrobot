@@ -56,9 +56,9 @@ public class AlgoritmeScherm {
 		panel.setBounds(6, 11, 310, 310);
 		frame.getContentPane().add(panel);
                 
-                JLabel jlUitleg = new JLabel("Algoritme - uitvoertijd, afstand route");
-		jlUitleg.setBounds(6, 310, 250, 23);
-		frame.getContentPane().add(jlUitleg);
+//                JLabel jlUitleg = new JLabel("Algoritme - uitvoertijd, afstand route");
+//		jlUitleg.setBounds(6, 310, 250, 23);
+//		frame.getContentPane().add(jlUitleg);
                 
 		JRadioButton rdbtnAlgoritme = new JRadioButton("Brute force");
 		rdbtnAlgoritme.setBounds(6, 328, 250, 23);
