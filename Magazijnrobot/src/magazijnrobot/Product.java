@@ -19,15 +19,15 @@ public class Product {
 		this.x = x;
 		this.y = y;
 		this.status = status;
-                double hue = Math.random();
-                int rgb;
-                rgb = Color.HSBtoRGB((float) hue, 0.8f, 0.8f);
-                this.color = new Color(rgb);
+	    double hue = Math.random();
+	    int rgb;
+	    rgb = Color.HSBtoRGB((float) hue, 0.8f, 0.8f);
+	    this.color = new Color(rgb);
 	}
 
-        public Color getColor() {
-            return color;
-        }
+    public Color getColor() {
+        return color;
+    }
 
 	public int getId() {
 		return this.id;
@@ -55,6 +55,12 @@ public class Product {
 
 	public String toString() {
 		return "x: "+this.x + ", y: " + this.y;
+	}
+	
+	public boolean equals(Object o){ 
+		Product tmpO = (Product) o;
+		if(this.id==tmpO.id) return true;
+		return false;
 	}
 
 }

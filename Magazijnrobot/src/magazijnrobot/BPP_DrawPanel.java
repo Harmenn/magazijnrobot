@@ -57,7 +57,7 @@ public class BPP_DrawPanel extends JPanel {
                 }
             }
             bin.setRealSize(size);
-            System.out.println("SIZE: " + size);
+            //System.out.println("SIZE: " + size);
             if(bin.getRealSize() >= bin.getCurrentSize()){
                 g.setColor(Color.red);
                 g.drawString("VERWISSEL", x, y +  115);

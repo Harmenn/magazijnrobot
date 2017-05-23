@@ -15,16 +15,22 @@ public class Bin {
 		return MaxSize;
 	}
 
-        public int getRealSize() {
-            return realSize;
-        }
+    public int getRealSize() {
+        return realSize;
+    }
 
-        public void setRealSize(int realSize) {
-            this.realSize = realSize;
-        }
+    public void setRealSize(int realSize) {
+        this.realSize = realSize;
+    }
 
 	public ArrayList<Product> getProducts() {
 		return Products;
+	}
+	
+	public void printList() {
+		for(Product p : Products) {
+			System.out.println(p);
+		}
 	}
         // Constructor, gebruik Bin(Product, 10); of Bin(10); of Bin(Product);
 	public Bin(Product Product, int MaxGrootte) {

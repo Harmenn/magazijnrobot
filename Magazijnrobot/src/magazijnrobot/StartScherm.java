@@ -49,7 +49,7 @@ public class StartScherm {
 	Order order = new Order();
 	public static ArrayList<Product> producten;
 	public static int lastRetrievedProduct = 0;
-        public static ArrayList<Bin> binlist;
+    public static ArrayList<Bin> binlist;
 	
 	public int currentPackages = 0;
 
@@ -371,6 +371,8 @@ public class StartScherm {
 				//einde harry potter acties
 				
 				bpp_connectie.sendMessage("command-arm_reset");
+
+				//StartScherm.tsp_connectie.sendMessage("command-y-2");
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
                                 BPP_Algoritme alg = new BPP_Algoritme();
                                 binlist = alg.start(producten, 10); 
