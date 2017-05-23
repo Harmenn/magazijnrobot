@@ -49,7 +49,8 @@ public class StartScherm {
 	Order order = new Order();
 	public static ArrayList<Product> producten;
 	public static int lastRetrievedProduct = 0;
-        public static ArrayList<Bin> binlist;
+    public static ArrayList<Bin> binlist;
+    public static LiveView resultaat;
 	
 	public int currentPackages = 0;
 
@@ -371,22 +372,18 @@ public class StartScherm {
 				//einde harry potter acties
 				
 				bpp_connectie.sendMessage("command-arm_reset");
+				//tsp_connectie.sendMessage("command-reset");
+				
+				//StartScherm.tsp_connectie.sendMessage("command-y-2");
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
                                 BPP_Algoritme alg = new BPP_Algoritme();
                                 binlist = alg.start(producten, 10); 
-                                int bincount = 0;
-                                for (Bin bin : binlist) {
-                                    if((bincount % 2) == 0){
-                                       bin.rechts = false;
-                                    } else{
-                                       bin.rechts = true;
-                                    }
-                                    bincount++;
-                                }
-				LiveView resultaat = new LiveView(producten, binlist);
+        
+				resultaat = new LiveView(producten, binlist);
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
+				int bincount = 0;
 			}
 		});
 

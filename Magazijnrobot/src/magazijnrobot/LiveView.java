@@ -62,6 +62,7 @@ public class LiveView extends JFrame {
     }
     public void addProduct(Product currentProduct) {
     	bpp_panel.setCurrentProduct(currentProduct);
+    	bpp_panel.repaint();
     }
     public ArrayList<Bin> getBins() {
         return Bins;

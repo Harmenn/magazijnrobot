@@ -1,13 +1,13 @@
 package magazijnrobot;
 
 import java.util.ArrayList;
-
+import magazijnrobot.Product;
 public class Bin {
 
 	private int CurrentSize = 0, realSize = 0;
 	private int MaxSize;
 	private ArrayList<Product> Products = new ArrayList<>();
-        protected boolean rechts = false;
+
 	public Bin() {
 	}
 
@@ -15,16 +15,22 @@ public class Bin {
 		return MaxSize;
 	}
 
-        public int getRealSize() {
-            return realSize;
-        }
+    public int getRealSize() {
+        return realSize;
+    }
 
-        public void setRealSize(int realSize) {
-            this.realSize = realSize;
-        }
+    public void setRealSize(int realSize) {
+        this.realSize = realSize;
+    }
 
 	public ArrayList<Product> getProducts() {
 		return Products;
+	}
+	
+	public void printList() {
+		for(Product p : Products) {
+			System.out.println(p);
+		}
 	}
         // Constructor, gebruik Bin(Product, 10); of Bin(10); of Bin(Product);
 	public Bin(Product Product, int MaxGrootte) {
