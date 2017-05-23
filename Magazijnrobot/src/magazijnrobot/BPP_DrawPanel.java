@@ -23,7 +23,9 @@ public class BPP_DrawPanel extends JPanel {
     }
 
     public void setCurrentProduct(Product currentProduct) {
-        ArrayProducts.add(currentProduct);
+        if(!ArrayProducts.contains(currentProduct)){
+         ArrayProducts.add(currentProduct);           
+        }
     }
     
     @Override
