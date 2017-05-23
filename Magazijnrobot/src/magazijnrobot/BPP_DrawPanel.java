@@ -15,7 +15,7 @@ public class BPP_DrawPanel extends JPanel {
 
     public BPP_DrawPanel(ArrayList<Bin> Bins, int BinSize) {
         this.bins = Bins;
-        Collections.reverse(this.bins);
+        //Collections.reverse(this.bins);
         this.volumeDozen = BinSize * Bins.size();
         this.BinSize = BinSize;
         int prefsize = (Bins.size() / 3) * (BinSize * 10) + (Bins.size() / 3 * 100);

@@ -372,7 +372,14 @@ public class StartScherm {
 				//einde harry potter acties
 				
 				bpp_connectie.sendMessage("command-arm_reset");
-				//tsp_connectie.sendMessage("command-reset");
+				tsp_connectie.sendMessage("command-reset");
+
+				try {
+					TimeUnit.MILLISECONDS.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				//StartScherm.tsp_connectie.sendMessage("command-y-2");
 				tsp_connectie.sendMessage("getproduct-"+producten.get(0).getX()+"-"+producten.get(0).getY());
