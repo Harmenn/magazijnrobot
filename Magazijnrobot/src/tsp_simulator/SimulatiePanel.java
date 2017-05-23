@@ -35,7 +35,7 @@ public class SimulatiePanel extends JPanel {
 	int pointHeight = 20;
         
         //Used for drawing points differently when used by the robot
-        boolean forRobot = true;
+        boolean forRobot = false;
 	
 	private Coordinate currentCoord = null;
 
