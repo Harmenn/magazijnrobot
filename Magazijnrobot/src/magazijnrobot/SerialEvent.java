@@ -153,7 +153,7 @@ public class SerialEvent implements SerialPortEventListener {
 					System.out.println("Turn right");
 					StartScherm.bpp_connectie.sendMessage("command-rotate_right");
 				}
-                                StartScherm.resultaat.addProduct(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
+                StartScherm.resultaat.addProduct(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
 				fallenProducts++;
 				System.out.println("___________________");
 				return;
