@@ -18,7 +18,7 @@ public class SimulatiePanel extends JPanel {
 	public static final int NEAREST_NEIGBOUR_ALGORITHM = 1;
 	public static final int TWO_OPT_ALGORITHM = 2;
 	public static final int OWN_ALGORITHM = 3;
-	
+
 	private TSPAlgorithm currentAlgorithm;
 
 	int gridWidth = 5;
@@ -33,10 +33,10 @@ public class SimulatiePanel extends JPanel {
 	int squareHeight = calcHeight / gridHeight;
 	int pointWidth = 20;
 	int pointHeight = 20;
-        
-        //Used for drawing points differently when used by the robot
-        boolean forRobot = false;
-	
+
+	// Used for drawing points differently when used by the robot
+	boolean forRobot = false;
+
 	private Coordinate currentCoord = null;
 
 	ArrayList<Coordinate> coords;
@@ -59,10 +59,11 @@ public class SimulatiePanel extends JPanel {
 
 		System.out.println(coords);
 	}
-        public SimulatiePanel(ArrayList<Coordinate> coords) {
-            this(5,5,coords);
-            forRobot = true;
-        }
+
+	public SimulatiePanel(ArrayList<Coordinate> coords) {
+		this(5, 5, coords);
+		forRobot = true;
+	}
 
 	public void setHeight(int height) {
 		this.gridHeight = height;
@@ -73,23 +74,23 @@ public class SimulatiePanel extends JPanel {
 		repaint();
 	}
 
-        public int getGridWidth() {
-            return gridWidth;
-        }
+	public int getGridWidth() {
+		return gridWidth;
+	}
 
-        public int getGridHeight() {
-            return gridHeight;
-        }
+	public int getGridHeight() {
+		return gridHeight;
+	}
 
 	public void setCoords(ArrayList<Coordinate> coords) {
 		this.coords = coords;
 		repaint();
 	}
-	
+
 	public ArrayList<Coordinate> getSortedCoords() {
 		return this.sortedCoords;
 	}
-	
+
 	public void setCurrentCoord(Coordinate currentCoord) {
 		this.currentCoord = currentCoord;
 	}
@@ -113,51 +114,54 @@ public class SimulatiePanel extends JPanel {
 		pointWidth = squareWidth / 3;
 		pointHeight = squareHeight / 3;
 
-		//Het Grid tekenen
+		// Het Grid tekenen
 		g.setColor(Color.BLACK);
 		for (int i = 0; i <= gridWidth; i++) {
 
-			g.drawLine(startX + i * squareWidth, 0, startX  + i * squareWidth, gridHeight * squareHeight);
+			g.drawLine(startX + i * squareWidth, 0, startX + i * squareWidth, gridHeight * squareHeight);
 		}
 
 		for (int i = 0; i <= gridHeight; i++) {
 
-			g.drawLine(startX,i * squareHeight, startX + gridWidth * squareWidth,i * squareHeight);
+			g.drawLine(startX, i * squareHeight, startX + gridWidth * squareWidth, i * squareHeight);
 		}
 
-		
-                //De coordinaten tekenen
+		// De coordinaten tekenen
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
-			if(c==currentCoord) g.setColor(Color.BLUE);
-                        if(forRobot) {
-                            g.fillOval(startX + (c.x-1) * squareWidth, gridHeight*squareHeight - c.y * squareHeight, squareWidth, squareHeight);
-                        } else {
-                            g.fillOval(startX + c.x * squareWidth - pointWidth/2, c.y * squareHeight - pointHeight/2, pointWidth, pointHeight);
-                        }
+			if (c.equals(currentCoord))
+				g.setColor(Color.BLUE);
+			if (forRobot) {
+				g.fillOval(startX + (c.x - 1) * squareWidth, gridHeight * squareHeight - c.y * squareHeight,
+						squareWidth, squareHeight);
+			} else {
+				g.fillOval(startX + c.x * squareWidth - pointWidth / 2, c.y * squareHeight - pointHeight / 2,
+						pointWidth, pointHeight);
+			}
 		}
-                
-		//Er is nog geen algoritme uitgevoerd?
-		if(sortedCoords!=null||sortedCoords.size()!=0) {
-			//Als er een algoritme uitgevoerd is, laat de route zien
+
+		// Er is nog geen algoritme uitgevoerd?
+		if (sortedCoords != null || sortedCoords.size() != 0) {
+			// Als er een algoritme uitgevoerd is, laat de route zien
 			if (currentAlgorithm != null && sortedCoords.size() != 0) {
 				for (int i = 0; i < sortedCoords.size() - 1; i++) {
 					g.setColor(Color.RED);
 					drawLineBetween(g, sortedCoords.get(i), sortedCoords.get(i + 1));
 				}
-	
+
 				drawLineBetween(g, sortedCoords.get(0), sortedCoords.get(sortedCoords.size() - 1));
-	
+
 				for (int i = 0; i < sortedCoords.size(); i++) {
 					g.setColor(Color.BLACK);
 					g.setFont(new Font("TimesRoman", Font.BOLD, 24));
-                                        if(forRobot) {
-                                            g.drawString(Integer.toString(i + 1), startX + (sortedCoords.get(i).x-1) * squareWidth,
-							gridHeight*squareHeight - sortedCoords.get(i).y * squareHeight + squareHeight);
-                                        } else {
-                                            g.drawString(Integer.toString(i + 1), startX + sortedCoords.get(i).x * squareWidth - (pointWidth / 2),
-							sortedCoords.get(i).y * squareHeight - (pointHeight / 2));
-                                        }
+					if (forRobot) {
+						g.drawString(Integer.toString(i + 1), startX + (sortedCoords.get(i).x - 1) * squareWidth,
+								gridHeight * squareHeight - sortedCoords.get(i).y * squareHeight + squareHeight);
+					} else {
+						g.drawString(Integer.toString(i + 1),
+								startX + sortedCoords.get(i).x * squareWidth - (pointWidth / 2),
+								sortedCoords.get(i).y * squareHeight - (pointHeight / 2));
+					}
 				}
 			}
 		}
@@ -168,11 +172,15 @@ public class SimulatiePanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(3));
 		g2.setColor(Color.red);
-                if (forRobot) {
-                    g2.drawLine(startX + (c1.x-1) * squareWidth + squareWidth/2, gridHeight*squareHeight - c1.y * squareHeight + squareHeight/2, startX + (c2.x-1) * squareWidth + squareWidth/2, gridHeight*squareHeight - c2.y * squareHeight + squareHeight/2);
-                } else {
-                    g2.drawLine(startX + c1.x * squareWidth, c1.y * squareHeight, startX + c2.x * squareWidth, c2.y * squareHeight);
-                }
+		if (forRobot) {
+			g2.drawLine(startX + (c1.x - 1) * squareWidth + squareWidth / 2,
+					gridHeight * squareHeight - c1.y * squareHeight + squareHeight / 2,
+					startX + (c2.x - 1) * squareWidth + squareWidth / 2,
+					gridHeight * squareHeight - c2.y * squareHeight + squareHeight / 2);
+		} else {
+			g2.drawLine(startX + c1.x * squareWidth, c1.y * squareHeight, startX + c2.x * squareWidth,
+					c2.y * squareHeight);
+		}
 	}
 
 	public void setAlgorithm(int algorithm) {
@@ -180,7 +188,7 @@ public class SimulatiePanel extends JPanel {
 		switch (algorithm) {
 		case BRUTE_FORCE_ALGORITHM:
 			currentAlgorithm = new TSPBruteForce((ArrayList<Coordinate>) coords.clone());
-			
+
 			break;
 		case NEAREST_NEIGBOUR_ALGORITHM:
 			currentAlgorithm = new TSPNearestNeighbour((ArrayList<Coordinate>) coords.clone());
@@ -195,12 +203,12 @@ public class SimulatiePanel extends JPanel {
 		this.sortedCoords = currentAlgorithm.getSortedList();
 		repaint();
 	}
-        
-        public float getAlgorithmDistance() {
-            //Do not execute this function before calculating the algorithm!
-            //It returns the distance of the current algorithm result
-            Route calculatedRoute = new Route(sortedCoords);
-            return calculatedRoute.getDistance();
-        }
-	
+
+	public float getAlgorithmDistance() {
+		// Do not execute this function before calculating the algorithm!
+		// It returns the distance of the current algorithm result
+		Route calculatedRoute = new Route(sortedCoords);
+		return calculatedRoute.getDistance();
+	}
+
 }

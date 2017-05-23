@@ -77,7 +77,7 @@ public class SerialEvent implements SerialPortEventListener {
 							StartScherm.bpp_connectie.sendMessage("command-arm_in");
 						} else if (splitted[2].equals("at_y_3")) {
 							StartScherm.tsp_connectie.sendMessage("command-all_left");
-						} else if (splitted[2].equals("all_left")) {
+						} else if (splitted[2].equals("all_left")) {	
 							StartScherm.tsp_connectie.sendMessage("command-prepare_sort");
 						} else if (splitted[2].equals("ready_to_sort")) {
 							//StartScherm.lastRetrievedProduct = 3;
