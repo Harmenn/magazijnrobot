@@ -43,8 +43,7 @@ public class SerialEvent implements SerialPortEventListener {
 
 			serialPort.addEventListener(this);
 			serialPort.notifyOnDataAvailable(true);
-			//TimeUnit.SECONDS.sleep(2);
-			TimeUnit.MILLISECONDS.sleep(500);
+			TimeUnit.SECONDS.sleep(2);
 
 		} catch (Exception e) {
 			System.out.println("Finished With an error");
@@ -108,7 +107,7 @@ public class SerialEvent implements SerialPortEventListener {
 												+ StartScherm.producten.get(lastP).getY());
 							}
 						} else if (splitted[2].equals("sort_succes")) {
-							if (fallenProducts != StartScherm.producten.size()) {
+							if (fallenProducts != StartScherm.producten.size() - 1) {
 								sortProduct();
 							} else {
 								System.out.println("Done sorting");

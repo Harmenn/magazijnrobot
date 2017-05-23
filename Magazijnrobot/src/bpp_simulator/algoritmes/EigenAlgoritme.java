@@ -9,41 +9,41 @@ import bpp_simulator.Product;
 
 public class EigenAlgoritme extends Algoritme {
 
-    private ArrayList<Bin> Dozen = new ArrayList<Bin>();
+    private ArrayList<Bin> bins = new ArrayList<Bin>();
 
     public EigenAlgoritme() {
         super("Eigenfit");
     }
 
-    public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
+    public ArrayList<Bin> start(ArrayList<Product> arrayProducts, int binSize) {
         int berekening = 0;
-        Collections.sort(pk, new Comparator<Product>() {
+        Collections.sort(arrayProducts, new Comparator<Product>() {
             public int compare(Product a, Product b) {
-                return ((Integer) (grootte - a.getLength())).compareTo(grootte - b.getLength());
+                return ((Integer) (binSize - a.getLength())).compareTo(binSize - b.getLength());
             }
         });
         producttenloop:
-        for (Product product : pk) {
-            if (Dozen.isEmpty()) {
-                Dozen.add(new Bin());
+        for (Product product : arrayProducts) {
+            if (bins.isEmpty()) {
+                bins.add(new Bin());
             } else {
-                Collections.sort(Dozen, new Comparator<Bin>() {
+                Collections.sort(bins, new Comparator<Bin>() {
                     public int compare(Bin a, Bin b) {
-                        return ((Integer) (grootte - a.getCurrentSize())).compareTo(grootte - b.getCurrentSize());
+                        return ((Integer) (binSize - a.getCurrentSize())).compareTo(binSize - b.getCurrentSize());
                     }
                 });
             }
-            for (Bin doos : Dozen) {
+            for (Bin doos : bins) {
                 berekening = doos.getCurrentSize() + product.getLength();
-                if (berekening <= grootte) {
+                if (berekening <= binSize) {
                     doos.addProduct(product);
                     continue producttenloop;
                 }
             }
-            if (berekening >= grootte) {
-                Dozen.add(new Bin(product, grootte));
+            if (berekening >= binSize) {
+                bins.add(new Bin(product, binSize));
             }
         }
-        return Dozen;
+        return bins;
     }
 }

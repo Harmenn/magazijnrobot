@@ -4,47 +4,47 @@ import java.util.ArrayList;
 
 public class Bin {
 
-	private int CurrentSize = 0;
-	private int MaxSize;
-	private ArrayList<Product> Products = new ArrayList<>();
+	private int currentSize = 0;
+	private int maxSize;
+	private ArrayList<Product> products = new ArrayList<>();
 
 	public Bin() {
 	}
 
 	public int getMaxSize() {
-		return MaxSize;
+		return maxSize;
 	}
 
 	public ArrayList<Product> getProducts() {
-		return Products;
+		return products;
 	}
         // Constructor, gebruik Bin(Product, 10); of Bin(10); of Bin(Product);
-	public Bin(Product Product, int MaxGrootte) {
-		Products.add(Product);
-		this.MaxSize = MaxGrootte;
-		CurrentSize += Product.getLength();
+	public Bin(Product product, int maxSize) {
+		products.add(product);
+		this.maxSize = maxSize;
+		currentSize += product.getLength();
 	}
 
         
 	public Bin(Product Product) {
-		Products.add(Product);
+		products.add(Product);
 	}
         
-	public Bin(int MaxSize) {
-		this.MaxSize = MaxSize;
+	public Bin(int maxSize) {
+		this.maxSize = maxSize;
 	}
 
         // addProduct functie om een product toe te voegen aan de huidige bin
 	public void addProduct(Product Product) {
-		Products.add(Product);
-		CurrentSize += Product.getLength();
+		products.add(Product);
+		currentSize += Product.getLength();
 	}
 
         // addProduct overloading met check om te kijken of het product wel in de doos past
-	public boolean addProduct(Product Product, boolean Check) {
-		if (Check) {
-			if (CurrentSize + Product.getLength() <= MaxSize) {
-				addProduct(Product);
+	public boolean addProduct(Product product, boolean check) {
+		if (check) {
+			if (currentSize + product.getLength() <= maxSize) {
+				addProduct(product);
 				return true; // past wel
 			} else {
 				return false; // past niet
@@ -54,24 +54,24 @@ public class Bin {
 		}
 	}
 
-	public void removeProduct(Product Product) {
-		CurrentSize -= Product.getLength();
-		Products.remove(Product);
+	public void removeProduct(Product product) {
+		currentSize -= product.getLength();
+		products.remove(product);
 	}
 
 	public int getCurrentSize() {
-		return CurrentSize;
+		return currentSize;
 	}
 
 	public int getProductAmount() {
-		return Products.size();
+		return products.size();
 	}
 
         // Kopieeer huidige bin naar een nieuwe bin en die returnen
 	public Bin deepCopy() {
-		Bin copy = new Bin(MaxSize);
-		copy.Products = new ArrayList<>(Products);
-		copy.CurrentSize = CurrentSize;
+		Bin copy = new Bin(maxSize);
+		copy.products = new ArrayList<>(products);
+		copy.currentSize = currentSize;
 		return copy;
 	}
 }

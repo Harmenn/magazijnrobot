@@ -9,26 +9,26 @@ public class Bruteforce extends Algoritme {
 
 	// Code komt deels van:
 	// https://software-talk.org/blog/2014/08/bin-packing-algorithm-java/
-	private ArrayList<Product> ArrayProducts = new ArrayList<>();
+	private ArrayList<Product> arrayProducts = new ArrayList<>();
 	private ArrayList<Bin> bins, currentBestBins = new ArrayList<>();
 	private int currentBestSolution;
 
-	public Bruteforce(ArrayList<Product> ArrayPakketten, int DoosInhoud) {
+	public Bruteforce(ArrayList<Product> arrayProducts, int binSize) {
                 super("Bruteforce");
-		this.ArrayProducts = ArrayPakketten;
+		this.arrayProducts = arrayProducts;
 
 		this.bins = new ArrayList<>();
 
-		for (Product p : ArrayPakketten) {
-			bins.add(new Bin(DoosInhoud)); // create maximum of needed bins
-			currentBestBins.add(new Bin(p, DoosInhoud));
+		for (Product p : arrayProducts) {
+			bins.add(new Bin(binSize)); // create maximum of needed bins
+			currentBestBins.add(new Bin(p, binSize));
 		}
-		currentBestSolution = ArrayPakketten.size(); // worst case solution:
+		currentBestSolution = arrayProducts.size(); // worst case solution:
 														// every item one bin
 	}
 
 	public ArrayList<Bin> start() {
-		bruteforce(ArrayProducts, 0);
+		bruteforce(arrayProducts, 0);
 		return currentBestBins;
 	}
 
