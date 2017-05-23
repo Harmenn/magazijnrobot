@@ -214,7 +214,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField jtProductSize;
     private javax.swing.JTable jtProducts;
     // End of variables declaration//GEN-END:variables
-    private final ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private final ArrayList<Product> arrayProducts = new ArrayList<>();
 
     // Constructor van het selectiescherm
     public SelectieScherm() {
@@ -232,7 +232,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         if (aantal > 0 && grootte > 0) {
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             for (int i = 0; i < aantal; i++) {
-                ArrayProducts.add(new Product(grootte));
+                arrayProducts.add(new Product(grootte));
             }
             model.addRow(new Object[]{grootte, aantal});
         } else {
@@ -248,7 +248,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             int count = 0;
             DefaultTableModel model = (DefaultTableModel) jtProducts.getModel();
             System.out.println(model.getValueAt(row, 0));
-            for (Product p : ArrayProducts) {
+            for (Product p : arrayProducts) {
                 if ((int) model.getValueAt(row, 0) == p.getLength()) {
                     tmpList.add(p);
                     count++;
@@ -258,7 +258,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
                 }
             }
             for (Product p : tmpList) {
-                ArrayProducts.remove(p);
+                arrayProducts.remove(p);
             }
             model.removeRow(row);
         }
@@ -274,21 +274,21 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     }
 
     // Start de simulatie vanuit de knop
-    private void StartSim() {
+    private void startSim() {
         int binSize = tryParseInt(jtBinSize.getText());
         if (binSize < 1) {
             JOptionPane.showMessageDialog(null, "Er is geen inhoud van de doos ingesteld!",
                     "Foutmelding", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (ArrayProducts.size() < 1) {
+        if (arrayProducts.size() < 1) {
             JOptionPane.showMessageDialog(null, "Er zijn geen producten aan de lijst toegevoegd!",
                     "Foutmelding", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        for (Product ArrayProduct : ArrayProducts) {
-            if (ArrayProduct.getLength() > binSize) {
+        for (Product product : arrayProducts) {
+            if (product.getLength() > binSize) {
                 JOptionPane.showMessageDialog(null, "Één of meerdere producten is groter dan de inhoud van de doos", "Foutmelding",
                         JOptionPane.ERROR_MESSAGE);
                 return;
@@ -296,19 +296,19 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
         }
 
         // Maak een array aan om te kijken welk algoritme enabled is
-        boolean[] Algorithms = new boolean[5];
-        Algorithms[0] = jcNextfit.isSelected();
-        Algorithms[1] = jcFirstfit.isSelected();
-        Algorithms[2] = jcBestfit.isSelected();
-        Algorithms[3] = jcOwnFit.isSelected();
-        Algorithms[4] = jcBruteforce.isSelected();
+        boolean[] algorithms = new boolean[5];
+        algorithms[0] = jcNextfit.isSelected();
+        algorithms[1] = jcFirstfit.isSelected();
+        algorithms[2] = jcBestfit.isSelected();
+        algorithms[3] = jcOwnFit.isSelected();
+        algorithms[4] = jcBruteforce.isSelected();
 
         // Als er geen algo geselecteerd is dan komt er een foutmelding
-        if (!Algorithms[0] && !Algorithms[1] && !Algorithms[2] && !Algorithms[3] && !Algorithms[4]) {
+        if (!algorithms[0] && !algorithms[1] && !algorithms[2] && !algorithms[3] && !algorithms[4]) {
             JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            Simulatie s1 = new Simulatie(this, ArrayProducts, binSize, Algorithms);
+            Simulatie s1 = new Simulatie(this, arrayProducts, binSize, algorithms);
             setVisible(false);
         }
     }
@@ -320,9 +320,9 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
         } else if (e.getSource() == jbReset) {
-            ResetForm();
+            resetForm();
         } else if (e.getSource() == jbStart) {
-            StartSim();
+            startSim();
         } else if (e.getSource() == jbRemoveProduct) {
             removeRow(jtProducts.getSelectedRow());
         }
@@ -337,7 +337,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     }
 
     // Function om het formulier te resetten en de tabel en de array
-    private void ResetForm() {
+    private void resetForm() {
         if (JOptionPane.showConfirmDialog(null,
                 "Weet je zeker dat je de ingevoerde gegevens wil resetten?", "Resetten", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             jcBestfit.setSelected(false);
@@ -352,10 +352,10 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             while (model.getRowCount() > 0) {
                 model.removeRow(0);
             }
-            for (Product pakket : ArrayProducts) {
+            for (Product pakket : arrayProducts) {
                 pakket = null;
             }
-            ArrayProducts.removeAll(ArrayProducts);
+            arrayProducts.removeAll(arrayProducts);
         }
     }
 }

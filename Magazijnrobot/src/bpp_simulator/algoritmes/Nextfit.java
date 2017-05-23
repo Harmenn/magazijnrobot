@@ -7,40 +7,40 @@ import bpp_simulator.Product;
 
 public class Nextfit extends Algoritme {
 
-    ArrayList<Bin> Dozen = new ArrayList<>();
+    ArrayList<Bin> bins = new ArrayList<>();
 
     public Nextfit() {
         super("Nextfit");
     }
 
-    public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
-        int s = grootte;
+    public ArrayList<Bin> start(ArrayList<Product> arrayProducts, int binSize) {
+        int s = binSize;
 
-        for (Product product : pk) {
+        for (Product product : arrayProducts) {
             if (s - product.getLength() >= 0) {
                 s -= product.getLength();
-                if (Dozen.size() > 0) {
-                    Dozen.get(Dozen.size() - 1).addProduct(product);
+                if (bins.size() > 0) {
+                    bins.get(bins.size() - 1).addProduct(product);
                 } else {
-                    Dozen.add(new Bin(product, grootte));
+                    bins.add(new Bin(product, binSize));
                 }
                 if (s - product.getLength() < 0) {
-                    Dozen.add(new Bin(grootte));
-                    s = grootte;
+                    bins.add(new Bin(binSize));
+                    s = binSize;
                 }
                 continue;
             } else {
-                Dozen.add(new Bin(grootte));
-                s = grootte;
+                bins.add(new Bin(binSize));
+                s = binSize;
             }
         }
         // Hotfix voor lege doos
-        for (int i = 0; i < Dozen.size(); i++) {
-            if (Dozen.get(i).getCurrentSize() < 1) {
-                Dozen.remove(i);
+        for (int i = 0; i < bins.size(); i++) {
+            if (bins.get(i).getCurrentSize() < 1) {
+                bins.remove(i);
             }
         }
-        return Dozen;
+        return bins;
     }
 
 }

@@ -28,10 +28,10 @@ import bpp_simulator.algoritmes.Nextfit;
 
 public class Simulatie extends javax.swing.JFrame implements MouseListener, ActionListener, Runnable {
 
-    private ArrayList<Product> ArrayProducts = new ArrayList<>();
+    private ArrayList<Product> arrayProducts = new ArrayList<>();
     private final ArrayList<Algoritme> ArrayAlgoritmes = new ArrayList<>();
-    private final ArrayList<Resultaat> ArrayResults = new ArrayList<>();
-    private final int BoxSize, vol;
+    private final ArrayList<Resultaat> arrayResults = new ArrayList<>();
+    private final int boxSize, vol;
     private StringBuilder endResult = new StringBuilder();
     private Thread t;
     private Bruteforce BruteForceAlgoritme;
@@ -42,34 +42,34 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     private Resultaat BruteForceResult, NextFitResult, FirstFitResult, BestFitResult, EigenFitResult;
     private final SelectieScherm selectieScherm;
 
-    public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> ArrayProducts, int BoxSize, boolean[] Algorithms) {
+    public Simulatie(SelectieScherm selectieScherm, ArrayList<Product> arrayProducts, int boxSize, boolean[] algorithms) {
         initComponents();
         this.selectieScherm = selectieScherm;
-        this.ArrayProducts = ArrayProducts;
-        this.BoxSize = BoxSize;
-        if (Algorithms[0]) {
+        this.arrayProducts = arrayProducts;
+        this.boxSize = boxSize;
+        if (algorithms[0]) {
             jlNextFitStatus.setText("In wachtrij");
             NextFitAlgoritme = new Nextfit();
             ArrayAlgoritmes.add(NextFitAlgoritme);
         }
-        if (Algorithms[1]) {
+        if (algorithms[1]) {
             jlFirstFitStatus.setText("In wachtrij");
             FirstFitAlgoritme = new Firstfit();
             ArrayAlgoritmes.add(FirstFitAlgoritme);
         }
-        if (Algorithms[2]) {
+        if (algorithms[2]) {
             jlBestFitStatus.setText("In wachtrij");
             BestFitAlgoritme = new Bestfit();
             ArrayAlgoritmes.add(BestFitAlgoritme);
         }
-        if (Algorithms[3]) {
+        if (algorithms[3]) {
             jlEigenFitStatus.setText("In wachtrij");
             EigenAlgoritme = new EigenAlgoritme();
             ArrayAlgoritmes.add(EigenAlgoritme);
         }
-        if (Algorithms[4]) {
+        if (algorithms[4]) {
             jlBruteforceStatus.setText("In wachtrij");
-            BruteForceAlgoritme = new Bruteforce(ArrayProducts, BoxSize);
+            BruteForceAlgoritme = new Bruteforce(arrayProducts, boxSize);
             ArrayAlgoritmes.add(BruteForceAlgoritme);
         }
         // Action listeners voor de knoppen
@@ -130,7 +130,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             }
             pwFileWriter.write(endResult.toString());
             pwFileWriter.close();
-            for (Resultaat result : ArrayResults) {
+            for (Resultaat result : arrayResults) {
                 result.SaveScreen(location + "\\" + result.getAlgoritme().getName() + ".png");
             }
             try {
@@ -173,38 +173,38 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
             if (alg instanceof Nextfit) {
                 jlNextFitStatus.setText("Uitvoeren...");
                 jlCurrentSimulation.setText(alg.getName());
-                bins = (NextFitAlgoritme.start(ArrayProducts, BoxSize));
+                bins = (NextFitAlgoritme.start(arrayProducts, boxSize));
                 jlNextFitStatus.setText("Voltooid");
                 alg.setBins(bins.size());
-                ArrayResults.add(NextFitResult = new Resultaat(bins, alg, vol, BoxSize));
+                arrayResults.add(NextFitResult = new Resultaat(bins, alg, vol, boxSize));
                 MakeHyperlink(jlNextFitStatus);
             }
             if (alg instanceof Firstfit) {
                 jlFirstFitStatus.setText("Uitvoeren...");
                 jlCurrentSimulation.setText(alg.getName());
-                bins = (FirstFitAlgoritme.start(ArrayProducts, BoxSize));
+                bins = (FirstFitAlgoritme.start(arrayProducts, boxSize));
                 jlFirstFitStatus.setText("Voltooid");
                 alg.setBins(bins.size());
-                ArrayResults.add(FirstFitResult = new Resultaat(bins, alg, vol, BoxSize));
+                arrayResults.add(FirstFitResult = new Resultaat(bins, alg, vol, boxSize));
                 MakeHyperlink(jlFirstFitStatus);
             }
             if (alg instanceof Bestfit) {
                 jlBestFitStatus.setText("Uitvoeren...");
                 jlCurrentSimulation.setText(alg.getName());
-                bins = (BestFitAlgoritme.start(ArrayProducts, BoxSize));
+                bins = (BestFitAlgoritme.start(arrayProducts, boxSize));
                 jlBestFitStatus.setText("Voltooid");
                 alg.setBins(bins.size());
-                ArrayResults.add(BestFitResult = new Resultaat(bins, alg, vol, BoxSize));
+                arrayResults.add(BestFitResult = new Resultaat(bins, alg, vol, boxSize));
                 MakeHyperlink(jlBestFitStatus);
             }
             if (alg instanceof EigenAlgoritme) {
                 nu = Instant.now().toEpochMilli();
                 jlEigenFitStatus.setText("Uitvoeren...");
                 jlCurrentSimulation.setText(alg.getName());
-                bins = (EigenAlgoritme.start(ArrayProducts, BoxSize));
+                bins = (EigenAlgoritme.start(arrayProducts, boxSize));
                 jlEigenFitStatus.setText("Voltooid");
                 alg.setBins(bins.size());
-                ArrayResults.add(EigenFitResult = new Resultaat(bins, alg, vol, BoxSize));
+                arrayResults.add(EigenFitResult = new Resultaat(bins, alg, vol, boxSize));
                 MakeHyperlink(jlEigenFitStatus);
             }
             if (alg instanceof Bruteforce) {
@@ -215,7 +215,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
                 jlBruteforceStatus.setText("Voltooid");
                 MakeHyperlink(jlBruteforceStatus);
                 alg.setBins(bins.size());
-                ArrayResults.add(BruteForceResult = new Resultaat(bins, alg, vol, BoxSize));
+                arrayResults.add(BruteForceResult = new Resultaat(bins, alg, vol, boxSize));
             }
             tijdsduur = Instant.now().toEpochMilli() - nu;
             AppendResultaat(alg.getName(), bins.size(), tijdsduur);
@@ -234,7 +234,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
     // Verkrijg totale volume van producten
     private int getVolume() {
         int v = 0;
-        for (Product ArrayProduct : ArrayProducts) {
+        for (Product ArrayProduct : arrayProducts) {
             v += ArrayProduct.getLength();
         }
         return v;
@@ -245,7 +245,7 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
         long fastestTime = -1, eft = -1;
         int bins = -1, fbins = -1;
         String fastestAlg = "", EfficientAlg = "";
-        for (Resultaat result : ArrayResults) {
+        for (Resultaat result : arrayResults) {
             if (fastestTime == -1 && bins == -1) {
                 fastestTime = result.getAlgoritme().getEndTime();
                 bins = result.getBins().size();
@@ -565,10 +565,10 @@ public class Simulatie extends javax.swing.JFrame implements MouseListener, Acti
 
     public void ExitWindow() {
         this.setVisible(false);
-        for (Resultaat res : ArrayResults) {
+        for (Resultaat res : arrayResults) {
             res = null;
         }
-        ArrayResults.removeAll(ArrayResults);
+        arrayResults.removeAll(arrayResults);
         endResult = null;
         selectieScherm.setVisible(true);
         dispose();
