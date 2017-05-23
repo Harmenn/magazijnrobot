@@ -3,8 +3,6 @@ package magazijnrobot;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Iterator;
-import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 
@@ -46,7 +44,7 @@ public class BPP_DrawPanel extends JPanel {
             for (Product product : bin.getProducts()) {
 
                 for (Product ArrayProduct : ArrayProducts) {
-                    if(product == ArrayProduct){
+                    if(product.equals(ArrayProduct)){
                     size += ArrayProduct.getVolume();
                     g.setColor(ArrayProduct.getColor());
                     g.fillRect(x, yProduct, 50, product.getVolume() * 10);
