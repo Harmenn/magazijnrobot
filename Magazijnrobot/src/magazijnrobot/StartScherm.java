@@ -50,6 +50,7 @@ public class StartScherm {
 	public static ArrayList<Product> producten;
 	public static int lastRetrievedProduct = 0;
     public static ArrayList<Bin> binlist;
+    public static LiveView resultaat;
 	
 	public int currentPackages = 0;
 
@@ -377,7 +378,7 @@ public class StartScherm {
                                 BPP_Algoritme alg = new BPP_Algoritme();
                                 binlist = alg.start(producten, 10); 
         
-				LiveView resultaat = new LiveView(producten, binlist);
+				resultaat = new LiveView(producten, binlist);
 				resultaat.setVisible(true);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
