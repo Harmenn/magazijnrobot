@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -94,6 +96,8 @@ public class SerialEvent implements SerialPortEventListener {
 							StartScherm.tsp_connectie.sendMessage("command-arm_up");
 						} else if (splitted[2].equals("arm_in_ok")) {
 							StartScherm.lastRetrievedProduct++;
+							StartScherm.producten.get(StartScherm.lastRetrievedProduct-1).setStatus("Retrieved");
+							StartScherm.refreshTable();
 							if (StartScherm.lastRetrievedProduct == StartScherm.producten.size()) {
 								System.out.println("Alle producten zijn verzamelt");
 								StartScherm.tsp_connectie.sendMessage("command-y-3");
@@ -107,10 +111,26 @@ public class SerialEvent implements SerialPortEventListener {
 												+ StartScherm.producten.get(lastP).getY());
 							}
 						} else if (splitted[2].equals("sort_succes")) {
+							StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts).setStatus("Sorting");
+							StartScherm.refreshTable();
 							if (fallenProducts != StartScherm.producten.size() - 1) {
 								sortProduct();
 							} else {
 								System.out.println("Done sorting");
+								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt", JOptionPane.INFORMATION_MESSAGE);
+								
+//								CODE OM PRODUCTEN UIT DB TE VERWIJDEREN NA VERWERKEN ORDER
+//								NIET VERWIJDEREN
+//								MOETEN WE MISSCHIEN TIJDENS ASSESMENT LATEN ZIEN
+//								
+//								String ids = "";
+//								for(Product p : StartScherm.producten) {
+//									ids += "magazijnrobot.stock.id="+p.getId()+" OR ";
+//								}
+//								ids = ids.substring(0, ids.length() - 4);
+//								StartScherm.preparedStatement = StartScherm.conn.prepareStatement(
+//										"DELETE FROM magazijnrobot.stock WHERE "+ids);
+								
 							}
 						}
 
@@ -156,6 +176,8 @@ public class SerialEvent implements SerialPortEventListener {
                 StartScherm.resultaat.addProduct(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
 				fallenProducts++;
 				System.out.println("___________________");
+				StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts).setStatus("Done");
+				StartScherm.refreshTable();
 				return;
 			}
 		}

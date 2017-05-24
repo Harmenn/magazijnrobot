@@ -52,6 +52,10 @@ public class Product {
 	public String getStatus() {
 		return status;
 	}
+	
+	public void setStatus(String s) {
+		this.status = s;
+	}
 
 	public String toString() {
 		return "x: "+this.x + ", y: " + this.y;
