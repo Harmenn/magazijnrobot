@@ -78,11 +78,12 @@ public class SerialEvent implements SerialPortEventListener {
 							StartScherm.bpp_connectie.sendMessage("command-arm_in");
 						} else if (splitted[2].equals("at_y_3")) {
 							StartScherm.tsp_connectie.sendMessage("command-all_left");
-						} else if (splitted[2].equals("all_left")) {	
+						} else if (splitted[2].equals("all_left")) {
 							StartScherm.tsp_connectie.sendMessage("command-prepare_sort");
 						} else if (splitted[2].equals("ready_to_sort")) {
-							//StartScherm.lastRetrievedProduct = 3;
-							//System.out.println("there are "+StartScherm.binlist.size()+" bins");
+							// StartScherm.lastRetrievedProduct = 3;
+							// System.out.println("there are
+							// "+StartScherm.binlist.size()+" bins");
 							sortProduct();
 							// StartScherm.bpp_connectie.sendMessage("command-arm_all_in");
 						}
@@ -96,7 +97,7 @@ public class SerialEvent implements SerialPortEventListener {
 							StartScherm.tsp_connectie.sendMessage("command-arm_up");
 						} else if (splitted[2].equals("arm_in_ok")) {
 							StartScherm.lastRetrievedProduct++;
-							StartScherm.producten.get(StartScherm.lastRetrievedProduct-1).setStatus("Retrieved");
+							StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1).setStatus("Retrieved");
 							StartScherm.refreshTable();
 							if (StartScherm.lastRetrievedProduct == StartScherm.producten.size()) {
 								System.out.println("Alle producten zijn verzamelt");
@@ -111,33 +112,41 @@ public class SerialEvent implements SerialPortEventListener {
 												+ StartScherm.producten.get(lastP).getY());
 							}
 						} else if (splitted[2].equals("sort_succes")) {
-							StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts).setStatus("Sorting");
+
+							fallenProducts++;
+							StartScherm.producten.get(StartScherm.lastRetrievedProduct- fallenProducts).setStatus("Sorting");
 							StartScherm.refreshTable();
-							if (fallenProducts != StartScherm.producten.size() - 1) {
+							if (fallenProducts != StartScherm.producten.size()) {
 								sortProduct();
 							} else {
 								System.out.println("Done sorting");
-								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt", JOptionPane.INFORMATION_MESSAGE);
-								//Maak pakbonnen
-                                                                int counter = 1;
-                                                                for(Bin b: StartScherm.binlist) {
-                                                                    Pakbon pakbon = new Pakbon(b.getProducts(),counter,1);
-                                                                    pakbon.SaveResults(counter, null);
-                                                                    counter++;
-                                                                }
-                                                                
-//								CODE OM PRODUCTEN UIT DB TE VERWIJDEREN NA VERWERKEN ORDER
-//								NIET VERWIJDEREN
-//								MOETEN WE MISSCHIEN TIJDENS ASSESMENT LATEN ZIEN
-//								
-//								String ids = "";
-//								for(Product p : StartScherm.producten) {
-//									ids += "magazijnrobot.stock.id="+p.getId()+" OR ";
-//								}
-//								ids = ids.substring(0, ids.length() - 4);
-//								StartScherm.preparedStatement = StartScherm.conn.prepareStatement(
-//										"DELETE FROM magazijnrobot.stock WHERE "+ids);
-								
+								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt",
+										JOptionPane.INFORMATION_MESSAGE);
+								// Maak pakbonnen
+								int counter = 1;
+								for (Bin b : StartScherm.binlist) {
+									Pakbon pakbon = new Pakbon(b.getProducts(), counter, StartScherm.order.getId());
+									pakbon.SaveResults(counter, null);
+									counter++;
+								}
+
+								// CODE OM PRODUCTEN UIT DB TE VERWIJDEREN NA
+								// VERWERKEN ORDER
+								// NIET VERWIJDEREN
+								// MOETEN WE MISSCHIEN TIJDENS ASSESMENT LATEN
+								// ZIEN
+								//
+								// String ids = "";
+								// for(Product p : StartScherm.producten) {
+								// ids += "magazijnrobot.stock.id="+p.getId()+"
+								// OR ";
+								// }
+								// ids = ids.substring(0, ids.length() - 4);
+								// StartScherm.preparedStatement =
+								// StartScherm.conn.prepareStatement(
+								// "DELETE FROM magazijnrobot.stock WHERE
+								// "+ids);
+
 							}
 						}
 
@@ -164,15 +173,21 @@ public class SerialEvent implements SerialPortEventListener {
 	}
 
 	private void sortProduct() {
-		System.out.println("Fallenproducts: "+fallenProducts);
-		System.out.println("lastProduct: "+StartScherm.lastRetrievedProduct );
-		System.out.println("sorteer product: "+StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
+		System.out.println("Fallenproducts: " + fallenProducts);
+		System.out.println("lastProduct: " + StartScherm.lastRetrievedProduct);
+		System.out.println("sorteer product: " + StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
 		for (int i = 0; i < StartScherm.binlist.size(); i++) {
 			Bin b = StartScherm.binlist.get(i);
 			b.printList();
-			System.out.println("at iteration i:"+i);
-			if (b.getProducts().contains(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts))) {
+			System.out.println("at iteration i:" + i);
+			if (b.getProducts()
+					.contains(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts))) {
 				System.out.println("found product in bin");
+
+				StartScherm.resultaat
+						.addProduct(StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts));
+				StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts).setStatus("Done");
+				StartScherm.refreshTable();
 				if (i == 0) {
 					System.out.println("Turn left");
 					StartScherm.bpp_connectie.sendMessage("command-rotate_left");
@@ -180,10 +195,6 @@ public class SerialEvent implements SerialPortEventListener {
 					System.out.println("Turn right");
 					StartScherm.bpp_connectie.sendMessage("command-rotate_right");
 				}
-                StartScherm.resultaat.addProduct(StartScherm.producten.get(StartScherm.lastRetrievedProduct - 1 - fallenProducts));
-				StartScherm.producten.get(StartScherm.lastRetrievedProduct-1-fallenProducts).setStatus("Done");
-				StartScherm.refreshTable();
-				fallenProducts++;
 				System.out.println("___________________");
 				return;
 			}

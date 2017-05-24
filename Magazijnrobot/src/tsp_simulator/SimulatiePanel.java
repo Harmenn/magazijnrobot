@@ -129,8 +129,10 @@ public class SimulatiePanel extends JPanel {
 		// De coordinaten tekenen
 		for (Coordinate c : coords) {
 			g.setColor(Color.RED);
-			if (c.equals(currentCoord))
-				g.setColor(Color.BLUE);
+			if(currentCoord!=null) {
+				if (c.equals(currentCoord))
+					g.setColor(Color.BLUE);
+			}
 			if (forRobot) {
 				g.fillOval(startX + (c.x - 1) * squareWidth, gridHeight * squareHeight - c.y * squareHeight,
 						squareWidth, squareHeight);

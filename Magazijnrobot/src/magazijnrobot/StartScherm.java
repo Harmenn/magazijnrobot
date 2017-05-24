@@ -153,7 +153,7 @@ public class StartScherm {
 						Document doc = dBuilder.parse(file);
 						System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 						NodeList nList = doc.getElementsByTagName("artikelnr");
-
+						order.setId(Integer.parseInt(doc.getElementsByTagName("ordernummer").item(0).getTextContent()));
 						String ids = "";
 						for (int temp = 0; temp < nList.getLength(); temp++) {
 							Node nNode = nList.item(temp);

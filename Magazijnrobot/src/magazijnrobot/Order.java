@@ -4,15 +4,25 @@ import java.util.ArrayList;
 
 public class Order {
 	ArrayList<Product> producten;
-
+	private int id;
+	
 	public Order() {
 		this.producten = new ArrayList();
 	}
 
-	public Order(ArrayList<Product> producten) {
+	public Order(int id, ArrayList<Product> producten) {
 		this.producten = producten;
+		this.id=id;
 	}
 
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id=id;
+	}
+	
 	public void addProduct(Product product) {
 		producten.add(product);
 	}
