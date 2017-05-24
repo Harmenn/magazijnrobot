@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -115,6 +117,7 @@ public class SerialEvent implements SerialPortEventListener {
 								sortProduct();
 							} else {
 								System.out.println("Done sorting");
+								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt", JOptionPane.INFORMATION_MESSAGE);
 							}
 						}
 
