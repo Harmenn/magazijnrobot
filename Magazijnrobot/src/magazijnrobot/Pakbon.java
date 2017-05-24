@@ -22,15 +22,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author wouterwijsman
  */
 public class Pakbon {
-
-    //This main is only here for testing
-    public static void main(String[] args) {
-        ArrayList<Product> prds = new ArrayList<>();
-        prds.add(new Product(0, "ding", 0, 0, 0, "ingepakt"));
-        Pakbon pb1 = new Pakbon(prds, 1,12);
-        pb1.SaveResults("", new JFrame());
-    }
-    
     ArrayList<Product> producten;;
     int doos, ordernummer;
     
@@ -52,14 +43,14 @@ public class Pakbon {
         return content;
     }
     
-    public void SaveResults(String name, JFrame parent) {
+    public void SaveResults(int doosnummer, JFrame parent) {
         PrintWriter pwFileWriter;
         
         //sla op als csv
         JFileChooser jfChooser = new JFileChooser();
         FileNameExtensionFilter csvfilter = new FileNameExtensionFilter("csv files (*.csv)", "csv");
 	jfChooser.setFileFilter(csvfilter);
-        jfChooser.setDialogTitle("Pakbon opslaan");
+        jfChooser.setDialogTitle("Pakbon doos "+doosnummer+" opslaan");
         if (jfChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
             String location = jfChooser.getSelectedFile().getAbsolutePath() + ".csv";
             try {
