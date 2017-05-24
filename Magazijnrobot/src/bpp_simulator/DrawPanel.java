@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import bpp_simulator.algoritmes.Algoritme;
+import bpp_simulator.algorithms.Algorithm;
 
-public class TekenPanel extends JPanel {
+public class DrawPanel extends JPanel {
     
-    Resultaat result;
+    Result result;
     private int x = 50, y = 90, yProduct = 90, volume = 0, volumeDozen = 0, binSize = 0;
     ArrayList<Bin> bins = new ArrayList<>();
-    private final Algoritme algoritme;
+    private final Algorithm algoritme;
     
-    public TekenPanel(Resultaat result, ArrayList<Bin> bins, Algoritme algoritme, int volume, int binSize) {
+    public DrawPanel(Result result, ArrayList<Bin> bins, Algorithm algoritme, int volume, int binSize) {
         this.result = result;
         this.bins = bins;
         this.volume = volume;

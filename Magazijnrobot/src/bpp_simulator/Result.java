@@ -11,17 +11,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import bpp_simulator.algoritmes.Algoritme;
+import bpp_simulator.algorithms.Algorithm;
 
-public class Resultaat extends JFrame {
+public class Result extends JFrame {
 
     private ArrayList<Bin> bins = new ArrayList<>();
     private JButton jbSave;
-    private final Algoritme algoritme;
+    private final Algorithm algoritme;
     private final int volume;
-    private final TekenPanel drawPanel;
-    
-    public Resultaat(ArrayList<Bin> bins, Algoritme algoritme, int volume, int boxSize) {
+    private final DrawPanel drawPanel;
+
+    public Result(ArrayList<Bin> bins, Algorithm algoritme, int volume, int boxSize) {
         this.bins = bins;
         this.algoritme = algoritme;
         this.volume = volume;
@@ -29,7 +29,7 @@ public class Resultaat extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         // Maak een nieuw tekenpaneel aan die wordt verpakt aan een scrollframe
-        drawPanel = new TekenPanel(this, bins, algoritme, volume, boxSize);
+        drawPanel = new DrawPanel(this, bins, algoritme, volume, boxSize);
         JScrollPane scrollFrame = new JScrollPane(drawPanel);
         scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -40,10 +40,10 @@ public class Resultaat extends JFrame {
         setResizable(false);
     }
 
+    // Deze functie wordt gebruikt voor het opslaan van het drawpanel, zodat resultaten als een plaatje worden opgeslagen    
     public void SaveScreen(String Location) {
         // Functie gekopieerd van:
         // http://stackoverflow.com/questions/5655908/export-jpanel-graphics-to-png-or-gif-or-jpg
-        // Deze functie wordt gebruikt voor het opslaan van het drawpanel, zodat resultaten als een plaatje worden opgeslagen
         BufferedImage bi = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         drawPanel.paint(g);
@@ -58,7 +58,8 @@ public class Resultaat extends JFrame {
         return bins;
     }
 
-    public Algoritme getAlgoritme() {
+    // Functie wordt gebruikt voor de simulatie, zoals berekenen wat het snelste algoritme is.
+    public Algorithm getAlgoritme() {
         return algoritme;
     }
 
