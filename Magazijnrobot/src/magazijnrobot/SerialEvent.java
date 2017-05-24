@@ -118,7 +118,14 @@ public class SerialEvent implements SerialPortEventListener {
 							} else {
 								System.out.println("Done sorting");
 								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt", JOptionPane.INFORMATION_MESSAGE);
-								
+								//Maak pakbonnen
+                                                                int counter = 1;
+                                                                for(Bin b: StartScherm.binlist) {
+                                                                    Pakbon pakbon = new Pakbon(b.getProducts(),counter,1);
+                                                                    pakbon.SaveResults(counter, null);
+                                                                    counter++;
+                                                                }
+                                                                
 //								CODE OM PRODUCTEN UIT DB TE VERWIJDEREN NA VERWERKEN ORDER
 //								NIET VERWIJDEREN
 //								MOETEN WE MISSCHIEN TIJDENS ASSESMENT LATEN ZIEN
