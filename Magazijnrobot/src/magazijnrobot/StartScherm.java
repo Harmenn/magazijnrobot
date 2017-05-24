@@ -54,10 +54,10 @@ public class StartScherm {
 	
 	public int currentPackages = 0;
 
-	private Connection conn;
-	private Statement statement = null;
-	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
+	public static Connection conn;
+	public static Statement statement = null;
+	public static PreparedStatement preparedStatement = null;
+	public static ResultSet resultSet = null;
 
 	private JFrame frmMagazijnrobot;
 	private static DefaultTableModel model;

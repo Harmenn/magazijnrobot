@@ -118,6 +118,19 @@ public class SerialEvent implements SerialPortEventListener {
 							} else {
 								System.out.println("Done sorting");
 								JOptionPane.showMessageDialog(null, "Order is succesvol opgehaalt!", "Order opgehaalt", JOptionPane.INFORMATION_MESSAGE);
+								
+//								CODE OM PRODUCTEN UIT DB TE VERWIJDEREN NA VERWERKEN ORDER
+//								NIET VERWIJDEREN
+//								MOETEN WE MISSCHIEN TIJDENS ASSESMENT LATEN ZIEN
+//								
+//								String ids = "";
+//								for(Product p : StartScherm.producten) {
+//									ids += "magazijnrobot.stock.id="+p.getId()+" OR ";
+//								}
+//								ids = ids.substring(0, ids.length() - 4);
+//								StartScherm.preparedStatement = StartScherm.conn.prepareStatement(
+//										"DELETE FROM magazijnrobot.stock WHERE "+ids);
+								
 							}
 						}
 
