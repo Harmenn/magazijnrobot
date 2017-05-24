@@ -1,11 +1,11 @@
-package bpp_simulator.algoritmes;
+package bpp_simulator.algorithms;
 
 import java.util.ArrayList;
 
 import bpp_simulator.Bin;
 import bpp_simulator.Product;
 
-public class Nextfit extends Algoritme {
+public class Nextfit extends Algorithm {
 
     ArrayList<Bin> bins = new ArrayList<>();
 

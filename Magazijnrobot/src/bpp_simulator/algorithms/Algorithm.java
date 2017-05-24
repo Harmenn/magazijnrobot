@@ -1,12 +1,12 @@
-package bpp_simulator.algoritmes;
+package bpp_simulator.algorithms;
 
-public abstract class Algoritme {
+public abstract class Algorithm {
 
     private String name;
     private long endTime;
     private int bins;
 
-    public Algoritme(String name) {
+    public Algorithm(String name) {
         this.name = name;
     }
 
@@ -26,7 +26,7 @@ public abstract class Algoritme {
         return endTime;
     }
 
-    public void setEndTime(long eindtijd) {
-        this.endTime = eindtijd;
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 }
