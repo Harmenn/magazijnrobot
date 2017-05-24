@@ -275,6 +275,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
 
     // Start de simulatie vanuit de knop
     private void startSim() {
+
+        // Kijken of alle parameters kloppen. Hieronder worden 3 checks uitgevoerd.
         int binSize = tryParseInt(jtBinSize.getText());
         if (binSize < 1) {
             JOptionPane.showMessageDialog(null, "Er is geen inhoud van de doos ingesteld!",
@@ -308,7 +310,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             JOptionPane.showMessageDialog(null, "Er is geen algoritme geselecteerd!", "Foutmelding",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            Simulatie s1 = new Simulatie(this, arrayProducts, binSize, algorithms);
+            Simulation s1 = new Simulation(this, arrayProducts, binSize, algorithms);
             setVisible(false);
         }
     }
@@ -316,6 +318,7 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbAddProduct) {
+            // Voeg het product toe en zet daarna aantal en grootte op 0
             addRow(tryParseInt(jtProductAmount.getText()), tryParseInt(jtProductSize.getText()));
             jtProductAmount.setText("0");
             jtProductSize.setText("0");
@@ -352,8 +355,8 @@ public class SelectieScherm extends javax.swing.JFrame implements ActionListener
             while (model.getRowCount() > 0) {
                 model.removeRow(0);
             }
-            for (Product pakket : arrayProducts) {
-                pakket = null;
+            for (Product product : arrayProducts) {
+                product = null;
             }
             arrayProducts.removeAll(arrayProducts);
         }
