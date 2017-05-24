@@ -46,7 +46,7 @@ import java.awt.Color;
 
 public class StartScherm {
 
-	Order order = new Order();
+	static Order order = new Order();
 	public static ArrayList<Product> producten;
 	public static int lastRetrievedProduct = 0;
     public static ArrayList<Bin> binlist;
@@ -60,7 +60,7 @@ public class StartScherm {
 	private ResultSet resultSet = null;
 
 	private JFrame frmMagazijnrobot;
-	private DefaultTableModel model;
+	private static DefaultTableModel model;
 	private JTable table;
 	JButton btnStop;
 	JButton btnStart;
@@ -398,7 +398,7 @@ public class StartScherm {
 
 	}
 
-	public void refreshTable() {
+	public static void refreshTable() {
 		model.setRowCount(0);
 		for (Product p : order.getProducten()) {
 			model.addRow(new Object[] { p.getId(), p.getName(), p.getVolume(),
