@@ -15,21 +15,21 @@ import bpp_simulator.algoritmes.Algoritme;
 
 public class Resultaat extends JFrame {
 
-    private ArrayList<Bin> Bins = new ArrayList<>();
+    private ArrayList<Bin> bins = new ArrayList<>();
     private JButton jbSave;
-    private final Algoritme Algoritme;
-    private final int Volume;
+    private final Algoritme algoritme;
+    private final int volume;
     private final TekenPanel drawPanel;
     
-    public Resultaat(ArrayList<Bin> Bins, Algoritme Algoritme, int Volume, int BoxSize) {
-        this.Bins = Bins;
-        this.Algoritme = Algoritme;
-        this.Volume = Volume;
+    public Resultaat(ArrayList<Bin> bins, Algoritme algoritme, int volume, int boxSize) {
+        this.bins = bins;
+        this.algoritme = algoritme;
+        this.volume = volume;
         setTitle("Resultaat");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         // Maak een nieuw tekenpaneel aan die wordt verpakt aan een scrollframe
-        drawPanel = new TekenPanel(this, Bins, Algoritme, Volume, BoxSize);
+        drawPanel = new TekenPanel(this, bins, algoritme, volume, boxSize);
         JScrollPane scrollFrame = new JScrollPane(drawPanel);
         scrollFrame.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollFrame.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -55,11 +55,11 @@ public class Resultaat extends JFrame {
     }
 
     public ArrayList<Bin> getBins() {
-        return Bins;
+        return bins;
     }
 
     public Algoritme getAlgoritme() {
-        return Algoritme;
+        return algoritme;
     }
 
 }

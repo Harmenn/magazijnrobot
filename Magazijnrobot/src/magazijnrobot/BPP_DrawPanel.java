@@ -3,26 +3,29 @@ package magazijnrobot;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JPanel;
 
 public class BPP_DrawPanel extends JPanel {
     
-    private ArrayList<Product> ArrayProducts = new ArrayList<>();
-    private int x, y, yProduct, volumeDozen, BinSize;
+    private ArrayList<Product> arrayProducts = new ArrayList<>();
+    private int x, y, yProduct, volumeDozen, binSize;
     ArrayList<Bin> bins = new ArrayList<>();
 
-    public BPP_DrawPanel(ArrayList<Bin> Bins, int BinSize) {
-        this.bins = Bins;
-        this.volumeDozen = BinSize * Bins.size();
-        this.BinSize = BinSize;
-        int prefsize = (Bins.size() / 3) * (BinSize * 10) + (Bins.size() / 3 * 100);
-        this.setIgnoreRepaint(true);
+    public BPP_DrawPanel(ArrayList<Bin> bins, int binSize) {
+        this.bins = bins;
+        Collections.reverse(this.bins);
+        this.volumeDozen = binSize * bins.size();
+        this.binSize = binSize;
+        int prefsize = (bins.size() / 3) * (binSize * 10) + (bins.size() / 3 * 100);
         this.setPreferredSize(new java.awt.Dimension(350, prefsize + 100));
     }
 
     public void setCurrentProduct(Product currentProduct) {
-        ArrayProducts.add(currentProduct);
+        if(!arrayProducts.contains(currentProduct)){
+         arrayProducts.add(currentProduct);           
+        }
     }
     
     @Override
@@ -43,7 +46,7 @@ public class BPP_DrawPanel extends JPanel {
             int size = 0;
             for (Product product : bin.getProducts()) {
 
-                for (Product ArrayProduct : ArrayProducts) {
+                for (Product ArrayProduct : arrayProducts) {
                     if(product.equals(ArrayProduct)){
                     size += ArrayProduct.getVolume();
                     g.setColor(ArrayProduct.getColor());
@@ -65,7 +68,7 @@ public class BPP_DrawPanel extends JPanel {
             }
             x += 100;
             if (x > 250) {
-                y += (BinSize * 10) + 50;
+                y += (binSize * 10) + 50;
                 x = 20;
             }
         }

@@ -3,7 +3,7 @@ package bpp_simulator.algoritmes;
 public abstract class Algoritme {
 
     private String name;
-    private long EndTime;
+    private long endTime;
     private int bins;
 
     public Algoritme(String name) {
@@ -23,10 +23,10 @@ public abstract class Algoritme {
     }
 
     public long getEndTime() {
-        return EndTime;
+        return endTime;
     }
 
     public void setEndTime(long eindtijd) {
-        this.EndTime = eindtijd;
+        this.endTime = eindtijd;
     }
 }

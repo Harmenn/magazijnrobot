@@ -7,30 +7,30 @@ import bpp_simulator.Product;
 
 public class Firstfit extends Algoritme {
 
-	private final ArrayList<Bin> Dozen = new ArrayList<>();
+	private final ArrayList<Bin> bins = new ArrayList<>();
 
     public Firstfit() {
         super("Firstfit");
     }
 
-	public ArrayList<Bin> start(ArrayList<Product> pk, int grootte) {
+	public ArrayList<Bin> start(ArrayList<Product> arrayProducts, int binSize) {
 		int berekening = 0;
-		producttenloop: for (Product product : pk) {
-			if (Dozen.isEmpty()) {
-				Dozen.add(new Bin());
+		producttenloop: for (Product product : arrayProducts) {
+			if (bins.isEmpty()) {
+				bins.add(new Bin());
 			}
-			for (Bin doos : Dozen) {
+			for (Bin doos : bins) {
 				berekening = doos.getCurrentSize() + product.getLength();
-				if (berekening <= grootte) {
+				if (berekening <= binSize) {
 					doos.addProduct(product);
 					continue producttenloop;
 				}
 			}
-			if (berekening >= grootte) {
-				Dozen.add(new Bin(product, grootte));
+			if (berekening >= binSize) {
+				bins.add(new Bin(product, binSize));
 			}
 		}
 
-		return Dozen;
+		return bins;
 	}
 }
