@@ -32,19 +32,19 @@ public class Pakbon {
     }
     
     ArrayList<Product> producten;;
-    int doos, order;
+    int doos, ordernummer;
     
     public Pakbon(ArrayList<Product> producten, int doos, int order) {
         this.producten = producten;
         this.doos = doos;
-        this.order = order;
+        this.ordernummer = order;
     }
     
     //Generates the content of the Pakbon as a string
     private String getContent(){
         DateTimeFormatter datumFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate dag = LocalDate.now();
-        String content = "Pakbon;"+datumFormat.format(dag)+"\n\nOrdernummer:;"+order+";\nDoos:;"+doos+"\n\nProduct ID;Productnaam;\n"; 
+        String content = "Pakbon;"+datumFormat.format(dag)+"\n\nOrdernummer:;"+ordernummer+";\nDoos:;"+doos+"\n\nProduct ID;Productnaam;\n"; 
         for(Product p: producten) {
             content += p.getId()+";"+p.getName()+";\n";
         }
